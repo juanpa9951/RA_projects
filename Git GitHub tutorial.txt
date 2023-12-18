@@ -34,9 +34,11 @@ git branch -d <branchName>                                    # this will delete
 
 torrejon, alcala de henrares, parque europa
 
-
+#......................this just once..............
 git remote add origin https://github.com/juanpa9951/RA_projects.git    # "origin" is the name we give the connection, can be anything
 git branch -M main
+#...........................................................
+
 git push -u origin main                                                # push means send to online GitHub, here we are sending the main branch
 git push -u origin main --force                                        # this will override any error when pushing, try carefully
 git push --all                                                         # here we send All the branches
