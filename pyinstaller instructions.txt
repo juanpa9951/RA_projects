@@ -1,0 +1,17 @@
+abrir cmd
+>>>pip install pyinstaller
+( si no funciona entonces intentar primero >>>python3.11, >>>pip install pyinstaller,
+si tampoco funciona entonces instalar el paquete pyinstaller desde la IDE que usemos y luego seguir los sig pasos)
+
+se debe bucar el archivo  pyinstaller.exe y pegarlo en la carpeta donde esta el script que queremos convertir  
+(está generalmente en c:/user/local/app data/program/python3.11/scripts)
+
+cerrar el cmd y volver a abrir, luego
+
+>>>cd C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP
+>>>pyinstaller fichaje_app.py --onefile --icon=icono.ico --windowed --add-data "foto.jpg:."
+
+el argumento principal es "pyinstaller fichaje_app.py --onefile", lo demas es para agregarle fotos, iconos, etc)
+
+
+
