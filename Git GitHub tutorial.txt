@@ -26,4 +26,36 @@ git log -p                                                    # this will show a
 git log --oneline                                             # this will print the versions (commits) along with a keycode usually in yellow
 git reset <keycode>                                           # replace <keycode> with the actual keycode of the version to restore it 
 
-git branch <branchName>                                                                                         
+git branch <branchName>                                       # creates a branch , similar to a version, this is used to try new features or ideas, replace <branchname> with actua name 
+git branch                                                    # see available branches, the one in green is the current branch replace <branchname> with actual name 
+git switch <branchName>                                       # switch to a different branch to work
+git merge -m "description of merged version" <branchName>     # merge the branches to the main, do this if you dont need the separate versions apart anymore
+git branch -d <branchName>                                    # this will delete the branch you no longer need
+
+torrejon, alcala de henrares, parque europa
+
+
+git remote add origin https://github.com/juanpa9951/RA_projects.git    # "origin" is the name we give the connection, can be anything
+git branch -M main
+git push -u origin main                                                # push means send to online GitHub, here we are sending the main branch
+git push -u origin main --force                                        # this will override any error when pushing, try carefully
+git push --all                                                         # here we send All the branches
+git pull origin main                                                   # this will download the versions from GitHub for the main branch
+git pull                                                               # this will download everything from GitHub all branches
+
+
+#..........to set the initial working directory
+find the location of the shortcut of gitbash
+right click- properties
+
+original version
+  target  "C:\Program Files\Git\git-bash.exe" --cd-to-home
+new version   
+  target    "C:\Program Files\Git\git-bash.exe"    # just deleted the last part
+  start in  "C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP"     #this is the directory I want to start in
+
+
+
+
+
+                                                 
