@@ -1,0 +1,29 @@
+#............this only the first time.....................
+
+git config --global user.name "Juan Pablo Lopez"
+git config --global user.email juanpa9951@gmail.com
+git config --global init.default branch main
+
+#.............normal commands..........................................
+
+cd "C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP"    # this must be the folder where you want to create a repository
+git init                                 # this creates a repository for all the files contained in the current directory
+git status                               # this to see the files available inside the repository and their tracking status either tracked or not tracked
+
+git add "file_name.extension"            # this is to create a tracking for a file (version control) it also works without the quotations
+git rm --cached "file_name.extension"    # this is to stop tracking a file
+
+git commit -m "here write the description of the version"     # this is to create a version of all the tracked files inside the repository with its corresponding description
+
+git diff                                                      # this will show the differences inside all the files in the repostory respect to their previous version
+
+                                                              # if i make changes to any file after commiting the only way to save the changes in the repository is commiting again (creating a new version). it is very important to fill the description correctly
+
+git log                                                       # this will show all the versions of the tracked files with their corresponding descriptions
+git log -p                                                    # this will show all version along with the specific changes made
+
+# to restore a previous version we do this
+git log --oneline                                             # this will print the versions (commits) along with a keycode usually in yellow
+git reset <keycode>                                           # replace <keycode> with the actual keycode of the version to restore it 
+
+git branch <branchName>                                                                                         
