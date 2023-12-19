@@ -60,7 +60,7 @@ right click- properties
 original version
   target  "C:\Program Files\Git\git-bash.exe" --cd-to-home
 new version   
-  target    "C:\Program Files\Git\git-bash.exe"    # just deleted the last part
+  target    "C:\Program Files\Git\git-bash.exe"                       # just deleted the last part
   start in  "C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP"     #this is the directory I want to start in
 
 
