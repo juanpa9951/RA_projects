@@ -62,7 +62,7 @@ new version
 #.......to clone repositories from github to your local pc......................
 
 cd "C:\Users\Juan Pablo Lopez\....."                     # path to the folder where you want to save the repository
-git clone https://github.com/whatever/the-repository     # here replace the URL with the actual url from the repository you want
+git clone https://github.com/whatever/the-repository     # here replace the URL with the actual url from the repository you wanted
 
 
                                                  
