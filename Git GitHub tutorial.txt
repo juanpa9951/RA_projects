@@ -11,9 +11,14 @@ git init                                 # this creates a repository for all the
 git status                               # this to see the files available inside the repository and their tracking status either tracked or not tracked
 
 git add "file_name.extension"            # this is to create a tracking for a file (version control) it also works without the quotations
+git add .                                # track All the files inside the repository
 git rm --cached "file_name.extension"    # this is to stop tracking a file
 
 git commit -m "here write the description of the version"     # this is to create a version of all the tracked files inside the repository with its corresponding description
+git commit-am "description of the version"                    # this combines the Add and Commit step in 1 line
+
+#  everytime you make changes and you want to save a version with the changes you will have to "add" then "commit", or you can use the "commit -am" command 
+
 
 git diff                                                      # this will show the differences inside all the files in the repostory respect to their previous version
 
