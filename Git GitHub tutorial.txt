@@ -34,9 +34,11 @@ git branch -d <branchName>                                    # this will delete
 
 torrejon, alcala de henrares, parque europa
 
-#......................this just once..............
+#......................this just once.....................
+
 git remote add origin https://github.com/juanpa9951/RA_projects.git    # "origin" is the name we give the connection, can be anything
 git branch -M main
+
 #...........................................................
 
 git push -u origin main                                                # push means send to online GitHub, here we are sending the main branch
@@ -57,7 +59,10 @@ new version
   start in  "C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP"     #this is the directory I want to start in
 
 
+#.......to clone repositories from github to your local pc......................
 
+cd "C:\Users\Juan Pablo Lopez\....."                     # path to the folder where you want to save the repository
+git clone https://github.com/whatever/the-repository     # here replace the URL with the actual url from the repository you want
 
 
                                                  
