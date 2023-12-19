@@ -4,11 +4,13 @@ git config --global user.name "Juan Pablo Lopez"
 git config --global user.email juanpa9951@gmail.com
 git config --global init.default branch main
 
-#.............normal commands..........................................
+#.............to start a new repository..........................................
 
 cd "C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP"    # this must be the folder where you want to create a repository
 git init                                 # this creates a repository for all the files contained in the current directory
 git status                               # this to see the files available inside the repository and their tracking status either tracked or not tracked
+
+#..............normal commands.....................................................
 
 git add "file_name.extension"            # this is to create a tracking for a file (version control) it also works without the quotations
 git add .                                # track All the files inside the repository
@@ -27,9 +29,12 @@ git diff                                                      # this will show t
 git log                                                       # this will show all the versions of the tracked files with their corresponding descriptions
 git log -p                                                    # this will show all version along with the specific changes made
 
-# to restore a previous version we do this
+#.............to restore a previous version we do this.....................................................
+
 git log --oneline                                             # this will print the versions (commits) along with a keycode usually in yellow
 git reset <keycode>                                           # replace <keycode> with the actual keycode of the version to restore it 
+
+#.............to create branches...............................................................................
 
 git branch <branchName>                                       # creates a branch , similar to a version, this is used to try new features or ideas, replace <branchname> with actua name 
 git branch                                                    # see available branches, the one in green is the current branch replace <branchname> with actual name 
@@ -37,14 +42,13 @@ git switch <branchName>                                       # switch to a diff
 git merge -m "description of merged version" <branchName>     # merge the branches to the main, do this if you dont need the separate versions apart anymore
 git branch -d <branchName>                                    # this will delete the branch you no longer need
 
-torrejon, alcala de henrares, parque europa
 
-#......................this just once.....................
+#......................GITHUB this just once........................................................................
 
 git remote add origin https://github.com/juanpa9951/RA_projects.git    # "origin" is the name we give the connection, can be anything
 git branch -M main
 
-#...........................................................
+#.......................GITHUB command...............................................................................
 
 git push -u origin main                                                # push means send to online GitHub, here we are sending the main branch
 git push -u origin main --force                                        # this will override any error when pushing, try carefully
@@ -53,7 +57,8 @@ git pull origin main                                                   # this wi
 git pull                                                               # this will download everything from GitHub all branches
 
 
-#..........to set the initial working directory
+#..........to set the initial working directory.........................................................
+
 find the location of the shortcut of gitbash
 right click- properties
 
@@ -64,7 +69,7 @@ new version
   start in  "C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP"     #this is the directory I want to start in
 
 
-#.......to clone repositories from github to your local pc......................
+#.......to clone repositories from github to your local pc..................................................
 
 cd "C:\Users\Juan Pablo Lopez\....."                     # path to the folder where you want to save the repository
 git clone https://github.com/whatever/the-repository     # here replace the URL with the actual url from the repository you wanted
