@@ -79,4 +79,11 @@ git clone https://github.com/whatever/the-repository     # here replace the URL 
 # the .gitignore can be open in notepad and inside each Row is a file or type or folder you want to ignore
     *.pdf      # ignore  all pdf files
     photos/    # ignore the folder called photos
-    photo1.jpg # ignore the photo1.jpg file                                            
+    photo1.jpg # ignore the photo1.jpg file    
+
+
+
+#...........save changes and upload to web................
+
+git commit-am "description of the version"
+git push -u origin main                                         
