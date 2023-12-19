@@ -1,0 +1,13 @@
+# ignore all .json
+*.json
+ImageTester/
+build/
+dist/
+OriginalPhoto/
+Photos/
+PracticeScripts/
+Routing_final
+__pycache__/
+pdf_name.pdf
+pyinstaller.exe
+test.db
