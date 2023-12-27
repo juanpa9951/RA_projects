@@ -83,7 +83,15 @@ git clone https://github.com/whatever/the-repository     # here replace the URL 
 
 
 
-#...........save changes and upload to web................
+#...........save changes and upload to web  PYTHON PROJECT................
 
 git commit-am "description of the version"
-git push -u origin main                                         
+git push -u origin main  
+
+
+#...........save changes and upload to web  ARDUINO PROJECT................
+
+git commit-am "description of the version"
+git push -u origin2 main 
+
+                                       

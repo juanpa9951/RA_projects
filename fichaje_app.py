@@ -9,6 +9,7 @@ def attendance(person_id, last_states_path):
     import datetime
     import pandas as pd
     import pyodbc
+    x=yeah
     ##########...........CONEXION A SQL SERVER...........................................................
     driver = '{ODBC Driver 17 for SQL Server}'  # utilizar cualquier driver de la lista    ODBC Driver 17 for SQL Server  or   SQL SERVER
     server = 'RAES034'
@@ -83,7 +84,10 @@ def wait_press_enter():  # this function presses Enter 2 seconds after typing an
 
 def print_input(event=None): # this function executes the main code after the enter key press
     entered_text = entry.get()
-    result_line=attendance(entered_text,last_states_path)
+    try:
+        result_line=attendance(entered_text,last_states_path)
+    except:
+        result_line="Error de fichaje doble"
     text_box.insert(1.0, f"{result_line}\n")
     entry.delete(0, tk.END)  # Clear the entry after printing
 

@@ -2,7 +2,7 @@ def arduino_test_v0():
     import pandas as pd
     import serial
     import time
-    # this code works with the Arduino file called 'Servo2'
+    # this code works with the Arduino file called 'Servo3'
     arduinoData=serial.Serial('COM10',115200) # this must comply with the com and serial in the arduino IDE
     Proyection=pd.read_excel(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\AngleDistance.xlsx',sheet_name='P1') # projection file
     Layers=[1,3,5,7,9] # this is for 5 layers (each layer starts with uneven number)
@@ -39,7 +39,7 @@ def arduino_test_v1():
     import pandas as pd
     import serial
     import time
-    # this code works with the Arduino file called 'Servo2'
+    # this code works with the Arduino file called 'Servo4'
     arduinoData=serial.Serial('COM10',115200) # this must comply with the com and serial in the arduino IDE
     Proyection=pd.read_excel(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\AngleDistance.xlsx',sheet_name='P1') # projection file
     Layers=[1,3,5,7,9] # this is for 5 layers (each layer starts with uneven number)
@@ -79,9 +79,9 @@ def arduino_test():
     import serial
     import time
     import keyboard
-    # this code works with the Arduino file called 'Servo2'
+    # this code works with the Arduino file called 'Servo4'
     arduinoData=serial.Serial('COM10',115200) # this must comply with the com and serial in the arduino IDE
-    Proyection=pd.read_excel(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\AngleDistance.xlsx',sheet_name='P1') # projection file
+    Proyection=pd.read_excel(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\AngleDistance.xlsx',sheet_name='P3') # projection file
     Layers=[1,3,5,7,9] # this is for 5 layers (each layer starts with uneven number)
     off_cmd='OFF'+'\r'
     ASW2=input('START PROJECTION??  Y/N')  # this is just to make a stop for the user
@@ -108,7 +108,7 @@ def arduino_test():
         print('to move NEXT layer HOLD RIGHT KEY (->)')
         while True:
          arduinoData.write(mycmd.encode())  # here we send the command string to the arduino serial port
-         time.sleep(0.8)  # CRITICAL TIME
+         time.sleep(1)  # CRITICAL TIME in seconds
          if keyboard.is_pressed("right"):
              break
         # here is to test the change of layer with the arduino code 'servo3'
