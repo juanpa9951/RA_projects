@@ -34,7 +34,7 @@ def command_selector(X_layer,Y_layer):
 
 
 # Replace 'your_file.dxf' with the path to your .dxf file
-file_path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\DIBUJO1.dxf'
+file_path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\DIBUJO6.dxf'
 
 edges = get_rectangle_edges(file_path)   # this gets the coordenates of the edges of each line detected
 

@@ -5,7 +5,7 @@ a = Analysis(
     ['fichaje_app.py'],
     pathex=[],
     binaries=[],
-    datas=[('rewair2.JPG', '.')],
+    datas=[],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},

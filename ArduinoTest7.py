@@ -1,9 +1,9 @@
 def coordenate_tuner(X_layer, Y_layer):
     import numpy as np
 
-    h = 2040  # MM Height of the projector
-    Theta_f_X = 76  # origin X angle of proyector  (lower left corner)
-    Theta_f_Y = 66  # origin Y angle of proyector  (lower left corner)
+    h = 1910 #2040  # MM Height of the projector
+    Theta_f_X = 79  # origin X angle of proyector  (lower left corner)
+    Theta_f_Y = 72  # origin Y angle of proyector  (lower left corner)
 
     Theta_X = np.rad2deg(np.arctan((h * np.tan(np.deg2rad(np.abs(90-Theta_f_X))) - X_layer) / h))
     Theta_Y = np.rad2deg(np.arctan((h * np.tan(np.deg2rad(np.abs(90-Theta_f_Y))) - Y_layer) / h))
@@ -21,7 +21,6 @@ def coordenate_tuner(X_layer, Y_layer):
     else:
         Theta_p_Y = 90 + Theta_Y
 
-
     Theta_p_X = Theta_p_X.tolist()  # need to return a List, not an np.array
     Theta_p_Y = Theta_p_Y.tolist()  # need to return a List, not an np.array
     print("X original--->", X_layer)
@@ -31,13 +30,12 @@ def coordenate_tuner(X_layer, Y_layer):
 
 
     return Theta_p_X, Theta_p_Y
-
 def coordenate_tuner2(X_layer, Y_layer):
     import numpy as np
 
-    h = 2040  # MM Height of the projector
-    Theta_f_X = 115  # origin X angle of proyector  (lower left corner)
-    Theta_f_Y = 104  # origin Y angle of proyector  (lower left corner)
+    h = 1910    #2040  # MM Height of the projector
+    Theta_f_X = 119  # origin X angle of proyector  (lower left corner)
+    Theta_f_Y = 101  # origin Y angle of proyector  (lower left corner)
 
     Theta_X = np.rad2deg(np.arctan((h * np.tan(np.deg2rad(np.abs(90-Theta_f_X))) - X_layer) / h))
     Theta_Y = np.rad2deg(np.arctan((h * np.tan(np.deg2rad(np.abs(90-Theta_f_Y))) - Y_layer) / h))
@@ -119,8 +117,7 @@ def Arduino_servo(file_path):
     init_edge=X_start[0]  # initialize variable
     layer_qty=0           # initialize variable
     z=0                   # first layer starting index
-
-    off_cmd='OFF'+'\r'
+    off_cmd = '0:90' + '\r'
     ASW2=input('START PROJECTION??  Y/N')  # this is just to make a stop for the user
 
     for i in range(0,len(edges)):   # this loop finds the number of layers we have and then creates a List with the X and Y coordenates
@@ -148,8 +145,6 @@ def Arduino_servo(file_path):
     # print("Total layers is: ",layer_qty)
     print('FIN DE PROGRAMA')
     arduinoData.close()
-
-
 def Arduino_servo2(file_path):
     # this code works with the Arduino file called 'Servo5'
     import ezdxf
@@ -241,10 +236,12 @@ def Arduino_servo2(file_path):
 
     # print("Total layers is: ",layer_qty)
     print('FIN DE PROGRAMA')
+    arduinoData.write(off_cmd.encode())
+    time.sleep(1)
     arduinoData.close()
 
 #run the code
-file_path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\DIBUJO3.dxf'
+file_path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\DIBUJO5.dxf'
 Arduino_servo2(file_path)
 
 

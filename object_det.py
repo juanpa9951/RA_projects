@@ -87,7 +87,7 @@ if circles is not None:
         # Draw the center of the circle
         cv2.circle(image, (i[0], i[1]), 2, (0, 0, 255), 3)
 
-cv2.imshow('Detected circles', image)
+cv2.imshow('Detected circles', gray)
 cv2.waitKey(0)
 cv2.destroyAllWindows()
 

@@ -2,9 +2,21 @@ import tkinter as tk
 import keyboard
 import time
 from PIL import ImageTk, Image
+import os
+import sys
 
 last_states_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\output.csv'  # this is a .csv listing the [existent codes,first name,last name,last state]
 
+def resource_path(relative_path):
+    """ Get absolute path to resource, works for dev and for PyInstaller """
+    try:
+        # PyInstaller creates a temp folder and stores path in _MEIPASS
+        base_path = sys._MEIPASS
+    except Exception:
+        base_path = os.path.abspath(".")
+
+    return os.path.join(base_path, relative_path)
+#...........................................................
 def attendance(person_id, last_states_path):
     import datetime
     import pandas as pd
@@ -104,13 +116,12 @@ keyboard.add_hotkey('9', wait_press_enter)  # assign the key of number 9 to the 
 keyboard.add_hotkey('esc', lambda: keyboard.unhook_all_hotkeys())
 #.....................................................................................
 
-
 # Create the main window
 root = tk.Tk()
 root.title("User Input")
 
 # Load the image file
-image = Image.open(r"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Pictures\rewair2.JPG")  # Replace "image.png" with your image file name and path
+image = Image.open(resource_path(r"rewair2.JPG"))  # Replace "image.png" with your image file name and path
 photo = ImageTk.PhotoImage(image)
 # Create a Label for the image
 image_label = tk.Label(root, image=photo)

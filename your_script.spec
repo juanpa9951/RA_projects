@@ -2,10 +2,10 @@
 
 
 a = Analysis(
-    ['fichaje_app.py'],
+    ['your_script.py'],
     pathex=[],
     binaries=[],
-    datas=[('rewair2.JPG', '.')],
+    datas=[('image.png', '.')],
     hiddenimports=[],
     hookspath=[],
     hooksconfig={},
@@ -21,7 +21,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='fichaje_app',
+    name='your_script',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
