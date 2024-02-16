@@ -21,17 +21,17 @@ def get_rectangle_edges(file_path):
 
 # INPUTS............................................
 arduinoData = serial.Serial('COM12', 115200)  # this must comply with the COM and Serial config in the arduino IDE
-Height=5000
-X0_bottom_x=2500
-Y0_bottom_x=2500
-X0_top_x=2500
-Y0_top_x=2500
-X0_bottom_y=2500
-Y0_bottom_y=2500
-X0_top_y=2500
-Y0_top_y=2500
+Height=2000
+X0_bottom_x=2200
+Y0_bottom_x=1500
+X0_top_x=2200
+Y0_top_x=3400
+X0_bottom_y=3700
+Y0_bottom_y=2300
+X0_top_y=1500
+Y0_top_y=2300
 # Replace 'your_file.dxf' with the path to your .dxf file
-file_path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\DIBUJO6.dxf'
+file_path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\DIBUJO7.dxf'
 #............................................................................................................
 
 # GET THE EDGES COORDENATES

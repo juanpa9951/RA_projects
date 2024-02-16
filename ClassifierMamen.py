@@ -253,9 +253,9 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
               trip=1
        # Continuation of classification based on PROJECT #####################################################
        elif "n81" in ExtractedText:
-          if ("81.5-1" in ExtractedText) or ("5x" in ExtractedText) or ("81 5-1" in ExtractedText):
+          if ("81.5-1" in ExtractedText) or ("5x" in ExtractedText) or ("81 5-1" in ExtractedText) or ("815-1" in ExtractedText) or ("81,5-1" in ExtractedText):
               Path000="5X"
-          elif ("81.5-2" in ExtractedText) or ("6x" in ExtractedText) or ("81 5-2" in ExtractedText):
+          elif ("81.5-2" in ExtractedText) or ("6x" in ExtractedText) or ("81 5-2" in ExtractedText) or ("815-2" in ExtractedText) or ("81,5-2" in ExtractedText):
               Path000 ="6X"
           else:
               trip=1
@@ -415,6 +415,7 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
                if track in ExtractedText:
                    Pos0=ExtractedText.find(track) # possible position of the P+number
                    ODF=ExtractedText[Pos0 - 4:Pos0] # here I extract the possible odf number
+                   ODF=ODF.replace(" ","") # here to remove empty spaces
                    if ODF.isnumeric()==True: # here I verify if ODF is in fact a number
                        Pos = Pos0 # here I extract the position of the P+number
                        trip2=1
