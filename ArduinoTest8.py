@@ -21,17 +21,17 @@ def get_rectangle_edges(file_path):
 
 # INPUTS............................................
 arduinoData = serial.Serial('COM12', 115200)  # this must comply with the COM and Serial config in the arduino IDE
-Height=2000
-X0_bottom_x=2200
-Y0_bottom_x=1500
-X0_top_x=2200
-Y0_top_x=3400
-X0_bottom_y=3700
-Y0_bottom_y=2300
-X0_top_y=1500
-Y0_top_y=2300
+Height=2400
+X0_bottom_x=2195  #A
+Y0_bottom_x=1010  #A
+X0_bottom_y=3195  #B
+Y0_bottom_y=2160  #B
+X0_top_x=2455     #C
+Y0_top_x=3450     #C
+X0_top_y=1575     #D
+Y0_top_y=2230     #D
 # Replace 'your_file.dxf' with the path to your .dxf file
-file_path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\DIBUJO7.dxf'
+file_path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\DIBUJO8.dxf'
 #............................................................................................................
 
 # GET THE EDGES COORDENATES
@@ -69,7 +69,7 @@ for i in range(0,len(edges)):   # this loop finds the number of layers we have a
         d_X_bottom = slope_X_bottom * (X0_bottom_x - X_layer[0]) + Y_layer[0] - Y0_bottom_x
         B_X_bottom = np.rad2deg(np.arcsin(d_X_bottom/Height))
         Theta_X_bottom=np.rad2deg(np.arctan(slope_X_bottom*np.sin(np.deg2rad(90-B_X_bottom))))
-        Theta_X_bottom_ard=Theta_X_bottom+90
+        Theta_X_bottom_ard=57-Theta_X_bottom
         B_X_bottom_ard=B_X_bottom+90
 
         slope_X_top = (Y_layer[2] - Y_layer[3]) / (X_layer[2] - X_layer[3])
@@ -77,7 +77,7 @@ for i in range(0,len(edges)):   # this loop finds the number of layers we have a
         d_X_top = slope_X_top * (X0_top_x - X_layer[3]) + Y_layer[3] - Y0_top_x
         B_X_top = np.rad2deg(np.arcsin(d_X_top/Height))
         Theta_X_top=np.rad2deg(np.arctan(slope_X_top*np.sin(np.deg2rad(90-B_X_top))))
-        Theta_X_top_ard=Theta_X_top+90
+        Theta_X_top_ard=55-Theta_X_top
         B_X_top_ard=B_X_top+90
 
         slope_Y_bottom = -(X_layer[2] - X_layer[1]) / (Y_layer[2] - Y_layer[1])
@@ -85,18 +85,18 @@ for i in range(0,len(edges)):   # this loop finds the number of layers we have a
         d_Y_bottom = slope_Y_bottom * (Y0_bottom_y - Y_layer[1]) - (X_layer[1] - X0_bottom_y)
         B_Y_bottom = np.rad2deg(np.arcsin(d_Y_bottom/Height))
         Theta_Y_bottom = np.rad2deg(np.arctan(slope_Y_bottom*np.sin(np.deg2rad(90-B_Y_bottom))))
-        Theta_Y_bottom_ard = Theta_Y_bottom+90
-        B_Y_bottom_ard=B_Y_bottom+90
+        Theta_Y_bottom_ard = 58-Theta_Y_bottom
+        B_Y_bottom_ard=90-B_Y_bottom
 
         slope_Y_top = -(X_layer[3] - X_layer[0]) / (Y_layer[3] - Y_layer[0])
         angle_Y_top = np.rad2deg(np.arctan(slope_Y_top))
         d_Y_top = slope_Y_top * (Y0_top_y - Y_layer[0]) - (X_layer[0] - X0_top_y)
         B_Y_top = np.rad2deg(np.arcsin(d_Y_top/Height))
         Theta_Y_top=np.rad2deg(np.arctan(slope_Y_top*np.sin(np.deg2rad(90-B_Y_top))))
-        Theta_Y_top_ard=Theta_Y_top+90
-        B_Y_top_ard=B_Y_top+90
+        Theta_Y_top_ard=56-Theta_Y_top
+        B_Y_top_ard=90-B_Y_top
 
-        my_cmd = str(Theta_X_bottom_ard)+":"+str(Theta_X_top_ard)+":"+str(Theta_Y_bottom_ard)+":"+str(Theta_Y_top_ard)+":"+str(B_X_bottom_ard)+":"+str(B_X_top_ard)+":"+str(B_Y_bottom_ard)+":"+str(B_Y_top_ard)+"\r"
+        my_cmd = str(Theta_X_bottom_ard)+":"+str(Theta_Y_bottom_ard)+":"+str(Theta_X_top_ard)+":"+str(Theta_Y_top_ard)+":"+str(B_X_bottom_ard)+":"+str(B_Y_bottom_ard)+":"+str(B_X_top_ard)+":"+str(B_Y_top_ard)+"\r"
         arduinoData.write(my_cmd.encode())
         print("Arduino command is ", my_cmd)
         print("Now displaying Layer : ", layer_qty)
