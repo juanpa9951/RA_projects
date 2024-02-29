@@ -19,7 +19,7 @@ def get_rectangle_edges(file_path):
 
     return rectangle_edges
 
-# INPUTS............................................
+# INPUTS............................................  THIS CODE WORKS WITH ARDUINO FILE SERVO6.ino.............
 arduinoData = serial.Serial('COM12', 115200)  # this must comply with the COM and Serial config in the arduino IDE
 my_cmd_0 = "57:58:55:56:90:90:90:90"   # laser initial positions in degrees
 Height=2400.00           # 2400.00
@@ -56,7 +56,7 @@ init_edge=X_start[0]  # initialize variable
 layer_qty=0           # initialize variable
 z=0                   # first layer starting index
 
-print("LAYERS DETECTED = ",len(X_start))
+print("LAYERS DETECTED = ",len(X_start)/4)
 ASW1=input('START PROJECTION??  Y/N')  # this is just to make a stop for the user
 # MAIN LOOP FUNCTION
 for i in range(0,len(edges)):   # this loop finds the number of layers we have and then creates a List with the X and Y coordenates
