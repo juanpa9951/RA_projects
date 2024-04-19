@@ -1,0 +1,102 @@
+import os
+import numpy as np
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+
+x=3257
+y=x
+digits=np.array([0])
+while y>=1:
+   digits=np.append(digits,np.mod(y,10))
+   y=np.floor_divide(y,10)
+digits=np.delete(digits,0)
+print('the digits are ',np.flip(digits))
+s=[0,0,0,0]
+
+for i in np.arange(0,digits.size,1):
+    if i==0:
+        if digits[i]==1:
+            s[i]='I'
+        if digits[i]==2:
+            s[i]='II'
+        if digits[i]==3:
+            s[i]='III'
+        if digits[i]==4:
+            s[i]='IV'
+        if digits[i]==5:
+            s[i]='V'
+        if digits[i]==6:
+            s[i]='VI'
+        if digits[i]==7:
+            s[i]='VII'
+        if digits[i]==8:
+            s[i]='VIII'
+        if digits[i]==9:
+            s[i]='IX'
+
+    if i==1:
+        if digits[i]==1:
+            s[i]='X'
+        if digits[i]==2:
+            s[i]='XX'
+        if digits[i]==3:
+            s[i]='XXX'
+        if digits[i]==4:
+            s[i]='XL'
+        if digits[i]==5:
+            s[i]='L'
+        if digits[i]==6:
+            s[i]='LX'
+        if digits[i]==7:
+            s[i]='LXX'
+        if digits[i]==8:
+            s[i]='LXXX'
+        if digits[i]==9:
+            s[i]='XC'
+
+    if i==2:
+        if digits[i]==1:
+            s[i]='C'
+        if digits[i]==2:
+            s[i]='CC'
+        if digits[i]==3:
+            s[i]='CCC'
+        if digits[i]==4:
+            s[i]='CD'
+        if digits[i]==5:
+            s[i]='D'
+        if digits[i]==6:
+            s[i]='DC'
+        if digits[i]==7:
+            s[i]='DCC'
+        if digits[i]==8:
+            s[i]='DCCC'
+        if digits[i]==9:
+            s[i]='CM'
+
+    if i==3:
+        if digits[i]==1:
+            s[i]='M'
+        if digits[i]==2:
+            s[i]='MM'
+        if digits[i]==3:
+            s[i]='MMM'
+        if digits[i]==4:
+            s[i]='MV`'
+        if digits[i]==5:
+            s[i]='V`'
+        if digits[i]==6:
+            s[i]='V`M'
+        if digits[i]==7:
+            s[i]='V`MM'
+        if digits[i]==8:
+            s[i]='V`MMM'
+        if digits[i]==9:
+            s[i]='MX`'
+
+s.reverse()
+rom = [value for value in s if value != 0] # this will remove all 0
+print('the roman numeral is')
+for j in rom:
+    print(j,end='')
