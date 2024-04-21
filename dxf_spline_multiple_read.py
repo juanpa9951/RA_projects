@@ -6,7 +6,7 @@ from pptx.util import Inches
 
 
 ##............READING THE DXF
-doc = ezdxf.readfile("V236_LW_LRO081.dxf")
+doc = ezdxf.readfile("V236_LW_MRU11.dxf")
 
 # POWERPOINT SLIDE
 prs = Presentation()
@@ -35,8 +35,8 @@ for spline in splines:
             y.append(round(point[1],8)) # Here we extract the y-coordenates of the vertices of the spline
 
 # OPTIONAL TRANSFORMATION FOR CENTERING
-x=[i - min(x)*0.9 for i in x]
-y=[i - min(y)*0.9 for i in y]
+x=[i - min(x)*1 for i in x]
+y=[i - min(y)*1 for i in y]
 Axis_Limit=max(max(x),max(y))+100
 #..............................................
 
