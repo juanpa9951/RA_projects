@@ -77,49 +77,11 @@
 
 
 
-import dxfwrite
 
-def create_dxf_with_layers(filename, entities):
-  """
-  Creates a DXF file with specified layers for different entities.
 
-  Args:
-      filename (str): Name of the DXF file to create.
-      entities (dict): Dictionary mapping layer names to lists of entities.
-          Each entity should be a valid dxfwrite entity class from `dxfwrite.entities`.
-  """
 
-  drawing = dxfwrite.drawing(filename)
 
-  # Create layers in the drawing
-  for layer_name, layer_entities in entities.items():
-    layer = drawing.add_layer(layer_name)
-    for entity in layer_entities:
-      # Set the layer for each entity
-      entity.dxf.layer = layer.name
 
-  # Add entities to the drawing
-  for layer_entities in entities.values():
-    drawing.add(layer_entities)
 
-  drawing.save()
 
-# Example usage
-from dxfwrite.entities import Line, Circle  # Import required entity classes
 
-entities = {
-    "Outline": [
-        Line(((0, 0), (10, 0))),
-        Line((10, 0), (10, 10)),
-        Line((10, 10), (0, 10)),
-        Line((0, 10), (0, 0)),
-    ],
-    "Centerline": [
-        Line((5, 0), (5, 10)),
-    ],
-    "Circles": [
-        Circle(insert=(3, 3), radius=2),  # Example circle entity
-    ]
-}
-
-create_dxf_with_layers("my_dxf_file.dxf", entities)

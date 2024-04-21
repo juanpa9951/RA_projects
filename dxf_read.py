@@ -6,10 +6,10 @@ def get_rectangle_edges(file_path):
     rectangle_edges = []
     # Look for LINE entities which represent the edges of the rectangle
 
-    # for entity in msp:  # this is just to see what entities are detected
-        # print(entity.dxftype())
+    for entity in msp:  # this is just to see what entities are detected
+         print(entity.dxftype())
 
-    for entity in msp.query('LINE'):  # LINE
+    for entity in msp.query('SPLINE'):  # LINE
         start_point = entity.dxf.start
         end_point = entity.dxf.end
         rectangle_edges.append([(start_point[0], start_point[1]), (end_point[0], end_point[1])])
@@ -34,7 +34,8 @@ def command_selector(X_layer,Y_layer):
 
 
 # Replace 'your_file.dxf' with the path to your .dxf file
-file_path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\DIBUJO6.dxf'
+# file_path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Laser Project\DIBUJO6.dxf'
+file_path='36_LRU12.dxf'
 
 edges = get_rectangle_edges(file_path)   # this gets the coordenates of the edges of each line detected
 
