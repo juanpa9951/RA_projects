@@ -16,10 +16,15 @@ file_counter = 0
 for name in DXF_Names:
     old_name=f"{Origin_path}\{name}"
     name_to_lookup = name[:-4]
-    order = order_table.loc[order_table['NAME'] == name_to_lookup, 'ORDER'].values[0]   # value from excel table
-    if order >10:
+    try:
+     order = order_table.loc[order_table['NAME'] == name_to_lookup, 'ORDER'].values[0]   # value from excel table
+    except:
+        print('ERROR: ',name_to_lookup,' no existe en la tabla de Orden de archivos')
+        break
+    if order >=10:
         name2=str(order)+'_'+name
     else:
         name2 ='0'+str(order)+'_' + name
     new_name=f"{Origin_path}\{name2}"
     os.rename(old_name, new_name)
+    print(name_to_lookup,' renamed to ',name2)
