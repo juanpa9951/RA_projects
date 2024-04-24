@@ -1,3 +1,24 @@
+# import ezdxf
+#
+# # Get the block reference entity you want to explode
+# doc = ezdxf.readfile('V236_WW_LRU12.dxf')
+#
+# # Extract entities (spline)
+# msp = doc.modelspace()
+#
+# for entity in msp:
+#     # Get the type of the entity
+#     print(entity.dxftype())
+#     block_ref = entity
+#     # Explode the block reference
+#     exploded_entities = block_ref.explode()
+#     # Add the exploded entities to the drawing
+#     doc.modelspace().extend(exploded_entities)
+#
+# # Save the modified DXF file
+# doc.saveas("exploded_file.dxf")
+
+
 import ezdxf
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -8,11 +29,15 @@ from pptx.util import Inches
 ##............READING THE DXF AND EXTRACTING THE POLYGON LAYERS
 # Load DXF file
 #doc = ezdxf.readfile("36_LRU12.dxf")
-doc = ezdxf.readfile("spline1.dxf")
+doc = ezdxf.readfile('V236_WW_LRU12.dxf')
 
 
 # Extract entities (spline)
 msp = doc.modelspace()
+for entity in msp:
+    # Get the type of the entity
+    print(entity.dxftype())
+
 splines = msp.query('SPLINE')
 i=0
 x=[]

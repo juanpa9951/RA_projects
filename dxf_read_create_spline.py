@@ -87,7 +87,6 @@ def Transform_DXF_V0():
     #########...............................................................................................................
     print('total layers = ',layer_qty)
 
-
 def Transform_DXF_V1(Origin_path,Destination_path,line_color,material):
     import ezdxf
     import os
@@ -672,13 +671,13 @@ def Transform_DXF_V5(Origin_path,Destination_path):
              Error_files.append(Name2)
     print('List of error files to review: ', Error_files)
 
-def Transform_DXF_V6(Origin_path,Destination_path):
+def Transform_DXF_V6(Origin_path,Destination_path,excel_order): ### LAST OFFICIAL
     import ezdxf
     import os
     import pandas as pd
 
     ## .... excel data needed for colors and materials................
-    excel_order = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\DXF_order.xlsx'
+    ## excel_order = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\DXF_order.xlsx'
     material_table = pd.read_excel(excel_order, sheet_name='Sheet2', header=0)
     #.................................................................
 
@@ -687,7 +686,7 @@ def Transform_DXF_V6(Origin_path,Destination_path):
         if k1.endswith("dxf") == False:  # dxf
             Path2Remove = f"{Origin_path}\{k1}"
             os.remove(Path2Remove)
-    DXF_Names = os.listdir(Origin_path)  # this is to update the names after deleting
+    DXF_Names = os.listdir(Origin_path)  # this is to update the names after deleting non dxf files
     print(" TOTAL OF ", len(DXF_Names), " DXF UPLOADED")
     file_counter=0
     Error_files=[]
@@ -773,8 +772,8 @@ def Transform_DXF_V6(Origin_path,Destination_path):
 
             ###### MIDLINE CENTERING INSIDE THE FRAME.........
             if len(x_mid)>0:
-                x_mid = [i - cx+cx2 for i in x_mid] # BRING X VALUES TO THE ORIGIN
-                y_mid = [i - cy+cy2 for i in y_mid] #BRING Y VALUES TO THE ORIGIN
+                x_mid = [i - cx+cx2 for i in x_mid] # BRING X VALUES TO THE ORIGIN THEN TO THE FRAME
+                y_mid = [i - cy+cy2 for i in y_mid] #BRING Y VALUES TO THE ORIGIN THEN TO THE FRAME
                 #########..............................................
 
             x_init = x[0]
@@ -836,9 +835,9 @@ def Transform_DXF_V6(Origin_path,Destination_path):
             # Save the DXF file
             Name2=str(Order)+'_'+Name1+'.dxf'
             if layer_qty==0:
-                Name2='Corregir_'+Name2
+                Name2='Error_'+Name2
             if len(Layer_Names)!=layer_qty and layer_qty>0:
-                Name2 = 'Falta_'+str(len(Layer_Names)-layer_qty)+'_capas_'+Name2
+                Name2 = 'Error_'+str(len(Layer_Names)-layer_qty)+'_capas_'+Name2
                 # print('ERROR: file ', Name2, 'number of layers detected is not equal to layer names detected')
                 Error_capas.append(Name2)
                 # break
@@ -851,18 +850,525 @@ def Transform_DXF_V6(Origin_path,Destination_path):
              Error_files.append(Name2)
 
     print('Error NO layers: ', Error_files)
-    print('Error missing layers: ', Error_capas)
+    print('Error missing layers: ', Error_capas)    #
+
+def Transform_DXF_V7(Origin_path,Destination_path,excel_order):  #### ERROR CORRECTION VERSION
+    import ezdxf
+    import os
+    import pandas as pd
+
+    ## .... excel data needed for colors and materials................
+    ## excel_order = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\DXF_order.xlsx'
+    material_table = pd.read_excel(excel_order, sheet_name='Sheet2', header=0)
+    #.................................................................
+
+    DXF_Names = os.listdir(Origin_path)  # this extracts the names of the files inside source folder
+    for k1 in DXF_Names:  # this is for eliminating the files that are not photos
+        if k1.endswith("dxf") == False:  # dxf
+            Path2Remove = f"{Origin_path}\{k1}"
+            os.remove(Path2Remove)
+    DXF_Names = os.listdir(Origin_path)  # this is to update the names after deleting non dxf files
+    print(" TOTAL OF ", len(DXF_Names), " DXF UPLOADED")
+    file_counter=0
+    Error_files=[]
+    Error_capas=[]
+    for name in DXF_Names:
+            dxf_file = f"{Origin_path}\{name}"
+            Name1 = name[-9:-4]  # file identification
+            Order = name[:2]  # order of files given
+            try:
+                h=int(Order)
+            except:
+                print('ERROR: ',Name1,' no tiene orden de archivo')
+                break
+            ##............READING THE INPUT DXF
+            doc = ezdxf.readfile(dxf_file)
+            ##...EXTRACT THE FIRST REFERENCE BLOCK ( FIRST TEXTBOX IT FINDS) TO GET THE LAYERS NAMES
+            block_refs = doc.modelspace().query('INSERT')
+            Layer_Names=[]
+            for block in block_refs:
+                Layer_Name_i=block.dxf.name  # TIENE QUE HABER UN TEXTBOX EN EL DXF ORIGINAL SINO ESTO DA ERROR
+                Layer_Name_i=Layer_Name_i[8:19]
+                Layer_Names.append(Layer_Name_i)
+            # Create a new OUTPUT DXF document
+            doc2 = ezdxf.new(dxfversion='R2010')  # 10  13 18
+            msp2 = doc2.modelspace()
+
+            Generic_Layer=Layer_Names[0]
+            doc2.layers.new(name=Generic_Layer)
+            #doc2.layers.get(Generic_Layer).set_color(30)  # 30 es como cafe-naranja
+            #msp2.add_lwpolyline(vertices).dxf.layer='FRAME'
+
+
+            # Extract entities (splines)
+            msp = doc.modelspace()
+            splines = msp.query('SPLINE')
+            polylines= msp.query('POLYLINE')
+
+            #### CHECK IF THE FILE IS DECOMPOSED FIRST
+            if len(splines)==0 and len(polylines)==0:
+                print('ERROR: dxf', name, 'is not decomposed')
+                break
+            ####............................................
+            i3 = 0 # JUST FOR DEBUGGING
+            # color=[]
+
+            # Iterate over splines
+            for spline in splines:
+                # Check if the spline is a BSpline
+
+                if spline.dxftype() == 'SPLINE':  # here we look for entity type SPLINE
+
+                        control_points = spline._control_points
+                        x = []
+                        y = []
+                        color = []
+                        # EXTRACT control points, i.e  VERTICES OF THE SPLINES
+                        for point in control_points:
+                            i3 = i3 + 1    # JUST FOR DEBUGGING
+                            # print("Vertice:", point, 'vertice number', i)
+                            x.append(round(point[0], 6))  # Here we extract the x-coordenates of the vertices of the spline rounded to 8 decimals
+                            y.append(round(point[1], 6))  # Here we extract the y-coordenates of the vertices of the spline  8 rounded to 8 decimals
+                            color.append(spline.dxf.color)
+
+
+                        ###### SPLINES CENTERING INSIDE THE FRAME.........
+                        # Fact = 1
+                        # cx = min(x) * Fact
+                        # cy = min(y) * Fact
+                        # x = [i - cx for i in x] # BRING X VALUES TO THE ORIGIN
+                        # y = [i - cy for i in y] #BRING Y VALUES TO THE ORIGIN
+                        # if int(Order)%2!=0:
+                        #     cx2=500       # UNEVEN ALIGN TO THE LEFT OF THE FRAME
+                        # else:
+                        #     cx2=5450-max(x)-500  # EVEN ALIGN TO THE RIGHT OF THE FRAME
+                        # cy2=300
+                        # x = [i + cx2 for i in x]
+                        # y = [i + cy2 for i in y]
+                        #########..............................................
+
+                        Tuples = []
+                        for i in range(0, len(x)):
+                            tuple_i = (x[i], y[i])
+                            Tuples.append(tuple_i)
+                        polyline_new = doc2.modelspace().add_lwpolyline(Tuples)  # THIS IS REALLY A POLYLINE # Adds a polyline to the modelspace
+                        polyline_new.dxf.color=spline.dxf.color #assign the color of the original spline
+                        polyline_new.dxf.layer = Generic_Layer
+
+            for spline in polylines:
+                # Check if the spline is a BSpline
+
+                if spline.dxftype() == 'POLYLINE':  # here we look for entity type POLYLINE
+
+                    control_points = spline.points()
+                    x = []
+                    y = []
+                    color = []
+
+                    # EXTRACT control points, i.e  VERTICES OF THE SPLINES
+                    for point in control_points:
+                        i3 = i3 + 1  # JUST FOR DEBUGGING
+                        # print("Vertice:", point, 'vertice number', i)
+                        x.append(round(point[0],
+                                       6))  # Here we extract the x-coordenates of the vertices of the spline rounded to 8 decimals
+                        y.append(round(point[1],
+                                       6))  # Here we extract the y-coordenates of the vertices of the spline  8 rounded to 8 decimals
+                        color.append(spline.dxf.color)
+
+                    ###### SPLINES CENTERING INSIDE THE FRAME.........
+                    # Fact = 1
+                    # cx = min(x) * Fact
+                    # cy = min(y) * Fact
+                    # x = [i - cx for i in x]  # BRING X VALUES TO THE ORIGIN
+                    # y = [i - cy for i in y]  # BRING Y VALUES TO THE ORIGIN
+                    # if int(Order) % 2 != 0:
+                    #     cx2 = 500  # UNEVEN ALIGN TO THE LEFT OF THE FRAME
+                    # else:
+                    #     cx2 = 5450 - max(x) - 500  # EVEN ALIGN TO THE RIGHT OF THE FRAME
+                    # cy2 = 300
+                    # x = [i + cx2 for i in x]
+                    # y = [i + cy2 for i in y]
+                    #########..............................................
+
+                    Tuples = []
+                    for i in range(0, len(x)):
+                        tuple_i = (x[i], y[i])
+                        Tuples.append(tuple_i)
+                    polyline_new = doc2.modelspace().add_lwpolyline(Tuples)  # THIS IS REALLY A POLYLINE # Adds a polyline to the modelspace
+                    polyline_new.dxf.color = spline.dxf.color  # assign the color of the original spline
+                    polyline_new.dxf.layer = Generic_Layer
+
+
+            # Define the FRAME vertices and add them to the drawing
+            vertices = [(0, 0), (5450, 0), (5450, 2450), (0, 2450), (0, 0)]
+            doc2.layers.new(name='FRAME')
+            doc2.layers.get('FRAME').set_color(30)  # 30 es como cafe-naranja
+            msp2.add_lwpolyline(vertices).dxf.layer='FRAME'
+
+            # Save the DXF file
+            Name2='Nombrar_capas_'+str(Order)+'_'+Name1+'.dxf'
+            out_Name= f"{Destination_path}\{Name2}"
+            doc2.saveas(out_Name)
+            #########...............................................................................................................
+            file_counter=file_counter+1
+            print('File number ',file_counter," of ", len(DXF_Names), ' File Name ', Name2)
+
+
+    # print('Error NO layers: ', Error_files)
+    # print('Error missing layers: ', Error_capas)
+
+def Transform_DXF_V8(Origin_path, Destination_path, excel_order):   # ERROR CORRECTION VERSION WITH CENTERING
+    import ezdxf
+    import os
+    import pandas as pd
+
+    ## .... excel data needed for colors and materials................
+    ## excel_order = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\DXF_order.xlsx'
+    material_table = pd.read_excel(excel_order, sheet_name='Sheet2', header=0)
+    # .................................................................
+
+    DXF_Names = os.listdir(Origin_path)  # this extracts the names of the files inside source folder
+    for k1 in DXF_Names:  # this is for eliminating the files that are not photos
+        if k1.endswith("dxf") == False:  # dxf
+            Path2Remove = f"{Origin_path}\{k1}"
+            os.remove(Path2Remove)
+    DXF_Names = os.listdir(Origin_path)  # this is to update the names after deleting non dxf files
+    print(" TOTAL OF ", len(DXF_Names), " DXF UPLOADED")
+    file_counter = 0
+    Error_files = []
+    Error_capas = []
+    for name in DXF_Names:
+        dxf_file = f"{Origin_path}\{name}"
+        Name1 = name[-9:-4]  # file identification
+        Order = name[:2]  # order of files given
+        try:
+            h = int(Order)
+        except:
+            print('ERROR: ', Name1, ' no tiene orden de archivo')
+            break
+        ##............READING THE INPUT DXF
+        doc = ezdxf.readfile(dxf_file)
+        ##...EXTRACT THE FIRST REFERENCE BLOCK ( FIRST TEXTBOX IT FINDS) TO GET THE LAYERS NAMES
+        block_refs = doc.modelspace().query('INSERT')
+        Layer_Names = []
+        for block in block_refs:
+            Layer_Name_i = block.dxf.name  # TIENE QUE HABER UN TEXTBOX EN EL DXF ORIGINAL SINO ESTO DA ERROR
+            Layer_Name_i = Layer_Name_i[8:19]
+            Layer_Names.append(Layer_Name_i)
+        # Create a new OUTPUT DXF document
+        doc2 = ezdxf.new(dxfversion='R2010')  # 10  13 18
+        msp2 = doc2.modelspace()
+
+        Generic_Layer = Layer_Names[1]
+        doc2.layers.new(name=Generic_Layer)
+        # doc2.layers.get(Generic_Layer).set_color(30)  # 30 es como cafe-naranja
+        # msp2.add_lwpolyline(vertices).dxf.layer='FRAME'
+
+        # Extract entities (splines)
+        msp = doc.modelspace()
+        splines = msp.query('SPLINE')
+        polylines = msp.query('POLYLINE')
+
+        #### CHECK IF THE FILE IS DECOMPOSED FIRST
+        if len(splines) == 0 and len(polylines) == 0:
+            print('ERROR: dxf', name, 'is not decomposed')
+            break
+        ####............................................
+
+        ####........HERE WE FIND THE LIMITS OF THE STACKS.........................
+        x_total = []
+        y_total = []
+        for spline in splines:
+            if spline.dxftype() == 'SPLINE':  # here we look for entity type SPLINE
+                control_points = spline._control_points
+                for point in control_points:
+                    x_total.append(round(point[0], 6))  # Here we extract the x-coordenates of the vertices of the spline rounded to 8 decimals
+                    y_total.append(round(point[1],6))  # Here we extract the y-coordenates of the vertices of the spline  8 rounded to 8 decimals
+        for spline in polylines:
+            if spline.dxftype() == 'POLYLINE':  # here we look for entity type POLYLINE
+                control_points = spline.points()
+                for point in control_points:
+                    x_total.append(round(point[0],6))  # Here we extract the x-coordenates of the vertices of the spline rounded to 8 decimals
+                    y_total.append(round(point[1],6))  # Here we extract the y-coordenates of the vertices of the spline  8 rounded to 8 decimals
+        #...............................................................................................
+
+        # Iterate over splines
+        for spline in splines:
+            # ChecK if the spline is a BSpline
+            if spline.dxftype() == 'SPLINE':  # here we look for entity type SPLINE
+                control_points = spline._control_points
+                x = []
+                y = []
+                color = []
+                # EXTRACT control points, i.e  VERTICES OF THE SPLINES
+                for point in control_points:
+                    # print("Vertice:", point, 'vertice number', i)
+                    x.append(round(point[0], 6))  # Here we extract the x-coordenates of the vertices of the spline rounded to 8 decimals
+                    y.append(round(point[1],6))  # Here we extract the y-coordenates of the vertices of the spline  8 rounded to 8 decimals
+                    color.append(spline.dxf.color)
+
+                ##### SPLINES CENTERING INSIDE THE FRAME.........
+                Fact = 1
+                cx = min(x_total) * Fact
+                cy = min(y_total) * Fact
+                x = [i - cx for i in x] # BRING X VALUES TO THE ORIGIN
+                y = [i - cy for i in y] #BRING Y VALUES TO THE ORIGIN
+                if int(Order)%2!=0:
+                    cx2=500       # UNEVEN ALIGN TO THE LEFT OF THE FRAME
+                else:
+                    cx2=5450-max(x)-500  # EVEN ALIGN TO THE RIGHT OF THE FRAME
+                cy2=300
+                x = [i + cx2 for i in x]
+                y = [i + cy2 for i in y]
+                ########..............................................
+
+                Tuples = []
+                for i in range(0, len(x)):
+                    tuple_i = (x[i], y[i])
+                    Tuples.append(tuple_i)
+                polyline_new = doc2.modelspace().add_lwpolyline(Tuples)  # THIS IS REALLY A POLYLINE # Adds a polyline to the modelspace
+                polyline_new.dxf.color = spline.dxf.color  # assign the color of the original spline
+                polyline_new.dxf.layer = Generic_Layer
+
+        # Iterate over the polylines
+        for spline in polylines:
+            # Check if the spline is a BSpline
+            if spline.dxftype() == 'POLYLINE':  # here we look for entity type POLYLINE
+                control_points = spline.points()
+                x = []
+                y = []
+                color = []
+                # EXTRACT control points, i.e  VERTICES OF THE SPLINES
+                for point in control_points:
+                    # print("Vertice:", point, 'vertice number', i)
+                    x.append(round(point[0],6))  # Here we extract the x-coordenates of the vertices of the spline rounded to 8 decimals
+                    y.append(round(point[1],6))  # Here we extract the y-coordenates of the vertices of the spline  8 rounded to 8 decimals
+                    color.append(spline.dxf.color)
+
+                ##### SPLINES CENTERING INSIDE THE FRAME.........
+                Fact = 1
+                cx = min(x_total) * Fact
+                cy = min(y_total) * Fact
+                x = [i - cx for i in x]  # BRING X VALUES TO THE ORIGIN
+                y = [i - cy for i in y]  # BRING Y VALUES TO THE ORIGIN
+                if int(Order) % 2 != 0:
+                    cx2 = 500  # UNEVEN ALIGN TO THE LEFT OF THE FRAME
+                else:
+                    cx2 = 5450 - max(x) - 500  # EVEN ALIGN TO THE RIGHT OF THE FRAME
+                cy2 = 300
+                x = [i + cx2 for i in x]
+                y = [i + cy2 for i in y]
+                ########..............................................
+
+                Tuples = []
+                for i in range(0, len(x)):
+                    tuple_i = (x[i], y[i])
+                    Tuples.append(tuple_i)
+                polyline_new = doc2.modelspace().add_lwpolyline(Tuples)  # THIS IS REALLY A POLYLINE # Adds a polyline to the modelspace
+                polyline_new.dxf.color = spline.dxf.color  # assign the color of the original spline
+                polyline_new.dxf.layer = Generic_Layer
+
+        # Define the FRAME vertices and add them to the drawing
+        vertices = [(0, 0), (5450, 0), (5450, 2450), (0, 2450), (0, 0)]
+        doc2.layers.new(name='FRAME')
+        doc2.layers.get('FRAME').set_color(30)  # 30 es como cafe-naranja
+        msp2.add_lwpolyline(vertices).dxf.layer = 'FRAME'
+
+        # Save the DXF file
+        Name2 = 'Nombrar_capas_' + str(Order) + '_' + Name1 + '.dxf'
+        out_Name = f"{Destination_path}\{Name2}"
+        doc2.saveas(out_Name)
+        #########...............................................................................................................
+        file_counter = file_counter + 1
+        print('File number ', file_counter, " of ", len(DXF_Names), ' File Name ', Name2)
+
+    # print('Error NO layers: ', Error_files)
+    # print('Error missing layers: ', Error_capas)
+
+def Transform_DXF_V9(Origin_path, Destination_path, excel_order):   # ERROR CORRECTION VERSION WITH CENTERING
+    import ezdxf
+    import os
+    import pandas as pd
+
+    ## .... excel data needed for colors and materials................
+    ## excel_order = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\DXF_order.xlsx'
+    material_table = pd.read_excel(excel_order, sheet_name='Sheet2', header=0)
+    # .................................................................
+
+    DXF_Names = os.listdir(Origin_path)  # this extracts the names of the files inside source folder
+    for k1 in DXF_Names:  # this is for eliminating the files that are not photos
+        if k1.endswith("dxf") == False:  # dxf
+            Path2Remove = f"{Origin_path}\{k1}"
+            os.remove(Path2Remove)
+    DXF_Names = os.listdir(Origin_path)  # this is to update the names after deleting non dxf files
+    print(" TOTAL OF ", len(DXF_Names), " DXF UPLOADED")
+    file_counter = 0
+    Error_files = []
+    Error_capas = []
+    for name in DXF_Names:
+        dxf_file = f"{Origin_path}\{name}"
+        Name1 = name[-9:-4]  # file identification
+        Order = name[:2]  # order of files given
+        try:
+            h = int(Order)
+        except:
+            print('ERROR: ', Name1, ' no tiene orden de archivo')
+            break
+        ##............READING THE INPUT DXF
+        doc = ezdxf.readfile(dxf_file)
+        ##...EXTRACT THE FIRST REFERENCE BLOCK ( FIRST TEXTBOX IT FINDS) TO GET THE LAYERS NAMES
+        block_refs = doc.modelspace().query('INSERT')
+        Layer_Names = []
+        for block in block_refs:
+            Layer_Name_i = block.dxf.name  # TIENE QUE HABER UN TEXTBOX EN EL DXF ORIGINAL SINO ESTO DA ERROR
+            Layer_Name_i = Layer_Name_i[8:19]
+            Layer_Names.append(Layer_Name_i)
+        # Create a new OUTPUT DXF document
+        doc2 = ezdxf.new(dxfversion='R2010')  # 10  13 18
+        msp2 = doc2.modelspace()
+
+        Generic_Layer = Layer_Names[1]
+        doc2.layers.new(name=Generic_Layer)
+        # doc2.layers.get(Generic_Layer).set_color(30)  # 30 es como cafe-naranja
+        # msp2.add_lwpolyline(vertices).dxf.layer='FRAME'
+
+        # Extract entities (splines)
+        msp = doc.modelspace()
+        splines = msp.query('SPLINE')
+        polylines = msp.query('POLYLINE')
+
+        #### CHECK IF THE FILE IS DECOMPOSED FIRST
+        if len(splines) == 0 and len(polylines) == 0:
+            print('ERROR: dxf', name, 'is not decomposed')
+            break
+        ####............................................
+
+        ####........HERE WE FIND THE LIMITS OF THE STACKS.........................
+        x_total = []
+        y_total = []
+        for spline in splines:
+            if spline.dxftype() == 'SPLINE':  # here we look for entity type SPLINE
+                control_points = spline._control_points
+                for point in control_points:
+                    x_total.append(round(point[0], 6))  # Here we extract the x-coordenates of the vertices of the spline rounded to 8 decimals
+                    y_total.append(round(point[1],6))  # Here we extract the y-coordenates of the vertices of the spline  8 rounded to 8 decimals
+        for spline in polylines:
+            if spline.dxftype() == 'POLYLINE':  # here we look for entity type POLYLINE
+                control_points = spline.points()
+                for point in control_points:
+                    x_total.append(round(point[0],6))  # Here we extract the x-coordenates of the vertices of the spline rounded to 8 decimals
+                    y_total.append(round(point[1],6))  # Here we extract the y-coordenates of the vertices of the spline  8 rounded to 8 decimals
+        #...............................................................................................
+
+        # Iterate over splines
+        for spline in splines:
+            # ChecK if the spline is a BSpline
+            if spline.dxftype() == 'SPLINE':  # here we look for entity type SPLINE
+                control_points = spline._control_points
+                x = []
+                y = []
+                color = []
+                # EXTRACT control points, i.e  VERTICES OF THE SPLINES
+                for point in control_points:
+                    # print("Vertice:", point, 'vertice number', i)
+                    x.append(round(point[0], 6))  # Here we extract the x-coordenates of the vertices of the spline rounded to 8 decimals
+                    y.append(round(point[1],6))  # Here we extract the y-coordenates of the vertices of the spline  8 rounded to 8 decimals
+                    color.append(spline.dxf.color)
+
+                ##### SPLINES CENTERING INSIDE THE FRAME.........
+                Fact = 1
+                cx = min(x_total) * Fact
+                cy = min(y_total) * Fact
+                x = [i - cx for i in x] # BRING X VALUES TO THE ORIGIN
+                y = [i - cy for i in y] #BRING Y VALUES TO THE ORIGIN
+                if int(Order)%2!=0:
+                    cx2=500       # UNEVEN ALIGN TO THE LEFT OF THE FRAME
+                else:
+                    cx2=5450-max(x)-500  # EVEN ALIGN TO THE RIGHT OF THE FRAME
+                cy2=300
+                x = [i + cx2 for i in x]
+                y = [i + cy2 for i in y]
+                ########..............................................
+
+                Tuples = []
+                for i in range(0, len(x)):
+                    tuple_i = (x[i], y[i])
+                    Tuples.append(tuple_i)
+                polyline_new = doc2.modelspace().add_lwpolyline(Tuples)  # THIS IS REALLY A POLYLINE # Adds a polyline to the modelspace
+                polyline_new.dxf.color = spline.dxf.color  # assign the color of the original spline
+                polyline_new.dxf.layer = Generic_Layer
+
+        # Iterate over the polylines
+        for spline in polylines:
+            # Check if the spline is a BSpline
+            if spline.dxftype() == 'POLYLINE':  # here we look for entity type POLYLINE
+                control_points = spline.points()
+                x = []
+                y = []
+                color = []
+                # EXTRACT control points, i.e  VERTICES OF THE SPLINES
+                for point in control_points:
+                    # print("Vertice:", point, 'vertice number', i)
+                    x.append(round(point[0],6))  # Here we extract the x-coordenates of the vertices of the spline rounded to 8 decimals
+                    y.append(round(point[1],6))  # Here we extract the y-coordenates of the vertices of the spline  8 rounded to 8 decimals
+                    color.append(spline.dxf.color)
+
+                ##### SPLINES CENTERING INSIDE THE FRAME.........
+                Fact = 1
+                cx = min(x_total) * Fact
+                cy = min(y_total) * Fact
+                x = [i - cx for i in x]  # BRING X VALUES TO THE ORIGIN
+                y = [i - cy for i in y]  # BRING Y VALUES TO THE ORIGIN
+                if int(Order) % 2 != 0:
+                    cx2 = 500  # UNEVEN ALIGN TO THE LEFT OF THE FRAME
+                else:
+                    cx2 = 5450 - max(x) - 500  # EVEN ALIGN TO THE RIGHT OF THE FRAME
+                cy2 = 300
+                x = [i + cx2 for i in x]
+                y = [i + cy2 for i in y]
+                ########..............................................
+
+                Tuples = []
+                for i in range(0, len(x)):
+                    tuple_i = (x[i], y[i])
+                    Tuples.append(tuple_i)
+                polyline_new = doc2.modelspace().add_lwpolyline(Tuples)  # THIS IS REALLY A POLYLINE # Adds a polyline to the modelspace
+                polyline_new.dxf.color = spline.dxf.color  # assign the color of the original spline
+                polyline_new.dxf.layer = Generic_Layer
+
+        # Define the FRAME vertices and add them to the drawing
+        vertices = [(0, 0), (5450, 0), (5450, 2450), (0, 2450), (0, 0)]
+        doc2.layers.new(name='FRAME')
+        doc2.layers.get('FRAME').set_color(30)  # 30 es como cafe-naranja
+        msp2.add_lwpolyline(vertices).dxf.layer = 'FRAME'
+
+        # Save the DXF file
+        Name2 = 'Nombrar_capas_' + str(Order) + '_' + Name1 + '.dxf'
+        out_Name = f"{Destination_path}\{Name2}"
+        doc2.saveas(out_Name)
+        #########...............................................................................................................
+        file_counter = file_counter + 1
+        print('File number ', file_counter, " of ", len(DXF_Names), ' File Name ', Name2)
+
+    # print('Error NO layers: ', Error_files)
+    # print('Error missing layers: ', Error_capas)
+
+
+
 
 Origin_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\Origin'
 Destination_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\Destiny'
+excel_order = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\DXF_order.xlsx'
 line_color=1   # 1 red, 3 green, 5 blue
 material='BX'
 
 # Transform_DXF_V3(Origin_path,Destination_path,line_color,material)
 
-Transform_DXF_V6(Origin_path,Destination_path)
 
+#### V6 LAST OFFICIAL GENERAL VERSION
+#### V7 LAST ERROR CORRECTION VERSION
 
+Transform_DXF_V6(Origin_path,Destination_path,excel_order)
 
 
 
