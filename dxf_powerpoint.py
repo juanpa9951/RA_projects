@@ -373,7 +373,7 @@ Axis_Limit=8000  #in MM
 dist_real=53   # lo que realmente mide  MM,   # 242.5mm
 dist_imagen=1000 # lo que la imagen dice que mide (MM),    # 20
 scale_mode=1    # 1-apply scale, 2- no scale
-Reduce_factor=1  #  default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
+Reduce_factor=100  #  default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
 read_and_plot_layerv2(file_path,image_size,Left_centering,Top_centering,Axis_Limit,dist_real,dist_imagen,scale_mode,Reduce_factor)
 
 
