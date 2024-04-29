@@ -59,7 +59,7 @@ def explode_insertV1(file_path,explode_times):
 
 # Specify the file path of the DXF file
 file_path = 'V236_WW_TRU05.dxf'
-explode_times=1
+explode_times=1   # how many times you want to explode
 
 
 # explode_insertV0(file_path)
