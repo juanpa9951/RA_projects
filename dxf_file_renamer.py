@@ -48,13 +48,16 @@ def shorten_name(Origin_path):
         old_name=f"{Origin_path}\{name}"
         position = name.find('V236')
         name2 = name[position:]
+        name2=name2[:-11]+'.dxf'
         new_name=f"{Origin_path}\{name2}"
         os.rename(old_name, new_name)
         print(name,' renamed to ',name2)
 
 Origin_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\Origin'
 excel_order = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\DXF_order.xlsx'
+MODE=1   # 1- ORDER FILES,   # 2- SHORTEN NAME
 
-# assign_order(Origin_path,excel_order) # call the function
-
-shorten_name(Origin_path)
+if MODE==1:
+ assign_order(Origin_path,excel_order) # call the function
+else:
+ shorten_name(Origin_path)
