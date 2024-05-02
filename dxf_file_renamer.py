@@ -48,7 +48,7 @@ def shorten_name(Origin_path):
         old_name=f"{Origin_path}\{name}"
         position = name.find('V236')
         name2 = name[position:]
-        name2=name2[:-11]+'.dxf'
+        name2=name2[:-10]+'.dxf'     ## name2=name2[:-11]
         new_name=f"{Origin_path}\{name2}"
         os.rename(old_name, new_name)
         print(name,' renamed to ',name2)
