@@ -345,7 +345,7 @@ def read_and_plot_layerv2(file_path,image_size,Left_centering,Top_centering,Axis
 
                 # Plotting the polygon
                 plt.figure(figsize=(image_size, image_size))
-                plt.plot(x_layer, y_layer, color='red', linestyle='-', linewidth=1, marker='o', markersize=3) # 'bo-' means blue circles connected by lines
+                plt.plot(x_layer, y_layer, color='red', linestyle='-', linewidth=0.1, marker='o', markersize=0.1) # 'bo-' means blue circles connected by lines
                 plt.fill(x_layer, y_layer, alpha=1)  # Fill the polygon
                 title='Layer '+str(layer_qty)
                 plt.title(title)
@@ -370,10 +370,10 @@ image_size = 12  # in inches
 Left_centering = -1  # in inches
 Top_centering = -4  # in inches
 Axis_Limit=8000  #in MM
-dist_real=53   # lo que realmente mide  MM,   # 242.5mm
+dist_real=425   # lo que realmente mide  MM,   # 242.5mm
 dist_imagen=1000 # lo que la imagen dice que mide (MM),    # 20
 scale_mode=1    # 1-apply scale, 2- no scale
-Reduce_factor=100  #  default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
+Reduce_factor=3  #  default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
 read_and_plot_layerv2(file_path,image_size,Left_centering,Top_centering,Axis_Limit,dist_real,dist_imagen,scale_mode,Reduce_factor)
 
 
