@@ -536,7 +536,7 @@ def read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis
 
 
 
-file_path='projection_03.dxf'     #### capas miden 3m, 2m y 1m
+file_path='calib_2m.dxf'     #### capas miden 3m, 2m y 1m
 image_size = 12  # in inches
 Left_centering = -1  # in inches
 Top_centering = -4  # in inches
@@ -545,7 +545,7 @@ dist_real_x=845   # lo que realmente mide  MM,   # 242.5mm
 dist_imagen_x=1000 # lo que la imagen dice que mide (MM),    # 20
 dist_real_y=845   # lo que realmente mide  MM,   # 242.5mm
 dist_imagen_y=1000 # lo que la imagen dice que mide (MM),    # 20
-scale_mode=2    # 1-apply scale, 2- no scale
+scale_mode=1    # 1-apply scale, 2- no scale
 Reduce_factor=1  #  default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
 background_color='black'
 layer_color='blue'
