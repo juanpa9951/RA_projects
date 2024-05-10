@@ -504,13 +504,13 @@ def read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis
                 plt.figure(figsize=(image_size, image_size))
                 plt.plot(x_layer, y_layer, color=layer_color, linestyle='-', linewidth=0.1, marker='o', markersize=0.1) # 'bo-' means blue circles connected by lines
                 # plt.fill(x_layer, y_layer, alpha=1)  # Fill the polygon
-                plt.fill(x_layer, y_layer,facecolor = layer_color )  # Fill the polygon
+                plt.fill(x_layer, y_layer,facecolor = layer_color ,alpha=1)  # Fill the polygon
                 title='Layer '+str(layer_qty)
                 plt.title(title)
                 #plt.grid(True, linestyle='--', linewidth=0.5)  # Set linewidth to 1.5
                 plt.xlim(0, Axis_Limit_x)  # Set x-axis limit from 0 to 4
                 plt.ylim(0, Axis_Limit_y)  # Set y-axis limit from 0 to 4
-                # plt.style.use('dark_background')
+                plt.style.use('dark_background')
                 ax = plt.gca()
                 ax.set_facecolor(background_color)
                 ax.spines['top'].set_color(layer_color)
@@ -536,18 +536,18 @@ def read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis
 
 
 
-file_path='calib_2m.dxf'     #### capas miden 3m, 2m y 1m
+file_path='calib_2m.dxf'     ####
 image_size = 12  # in inches
 Left_centering = -1  # in inches
-Top_centering = -4  # in inches
+Top_centering = -3.4  # in inches   -4
 Axis_Limit=8000  #in MM
 dist_real_x=845   # lo que realmente mide  MM,   # 242.5mm
 dist_imagen_x=1000 # lo que la imagen dice que mide (MM),    # 20
 dist_real_y=845   # lo que realmente mide  MM,   # 242.5mm
 dist_imagen_y=1000 # lo que la imagen dice que mide (MM),    # 20
-scale_mode=1    # 1-apply scale, 2- no scale
+scale_mode=2    # 1-apply scale, 2- no scale
 Reduce_factor=1  #  default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
-background_color='black'
+background_color='white'
 layer_color='blue'
 
 read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis_Limit,dist_real_x,dist_imagen_x,dist_real_y,dist_imagen_y,scale_mode,Reduce_factor,background_color,layer_color)
