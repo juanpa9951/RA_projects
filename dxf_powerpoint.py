@@ -503,7 +503,6 @@ def read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis
                 # Plotting the polygon
                 plt.figure(figsize=(image_size, image_size))
                 plt.plot(x_layer, y_layer, color=layer_color, linestyle='-', linewidth=0.1, marker='o', markersize=0.1) # 'bo-' means blue circles connected by lines
-                # plt.fill(x_layer, y_layer, alpha=1)  # Fill the polygon
                 plt.fill(x_layer, y_layer,facecolor = layer_color ,alpha=1)  # Fill the polygon
                 title='Layer '+str(layer_qty)
                 plt.title(title)
@@ -537,9 +536,9 @@ def read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis
 
 
 file_path='calib_2m.dxf'     ####
-image_size = 12  # in inches
-Left_centering = -1  # in inches
-Top_centering = -3.4  # in inches   -4
+image_size = 12.7  # in inches    12.7
+Left_centering = -1.5  # in inches   -1.5
+Top_centering = -3.8  # in inches   -3.8
 Axis_Limit=8000  #in MM
 dist_real_x=845   # lo que realmente mide  MM,   # 242.5mm
 dist_imagen_x=1000 # lo que la imagen dice que mide (MM),    # 20
