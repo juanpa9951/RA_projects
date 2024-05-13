@@ -535,23 +535,239 @@ def read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis
 
 
 
-file_path='calib_2m.dxf'     ####
+def read_and_plot_layerv4(file_path,image_size,Left_centering,Top_centering,Axis_Limit,dist_real_x,dist_imagen_x,dist_real_y,dist_imagen_y,scale_mode,Reduce_factor,background_color,layer_color,dist_real_x_2,dist_imagen_x_2,close_image):
+    import ezdxf
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    from pptx import Presentation
+    from pptx.util import Inches
+
+
+    ##............READING THE DXF
+    doc = ezdxf.readfile(file_path)
+
+    # POWERPOINT SLIDE
+    prs = Presentation()
+    slide_layout = prs.slide_layouts[6]  # Blank slide layout
+    # image_size=12 # in inches
+    # Left_centering=-1   #in inches
+    # Top_centering=-4     #
+
+
+    # Extract entities (splines)
+    msp = doc.modelspace()
+    for entity in msp:
+        # Get the type of the entity
+        print(entity.dxftype())
+    splines = msp.query('SPLINE')
+    polylines= msp.query('POLYLINE')
+    lw_polylines= msp.query('LWPOLYLINE')
+    i=0
+    x=[]
+    y=[]
+    ####.................... Iterate over splines/polylines/lw-polyinies
+    for spline in splines:
+            # Check if the spline is a BSpline
+            if spline.dxftype() == 'SPLINE':  # here we look for entity type SPLINE
+                if spline.dxf.color!=1:   # check if its not the Frame
+                    # Get control points of the spline
+                    control_points = spline._control_points
+
+                    # Print control points
+                    for point in control_points:
+                        i=i+1
+                        print("Vertice:", point,'vertice number', i)
+                        x.append(round(point[0],8)) # Here we extract the x-coordenates of the vertices of the spline
+                        y.append(round(point[1],8)) # Here we extract the y-coordenates of the vertices of the spline
+
+
+    for spline in polylines:
+        # Check if the spline is a BSpline
+            if spline.dxftype() == 'POLYLINE':  # here we look for entity type SPLINE
+                if spline.dxf.color != 1:  # check if its not the Frame
+                    # Get control points of the spline
+                    control_points = spline.points()
+                    # Print control points
+                    for point in control_points:
+                        i=i+1
+                        print("Vertice:", point,'vertice number', i)
+                        x.append(round(point[0],8)) # Here we extract the x-coordenates of the vertices of the spline
+                        y.append(round(point[1],8)) # Here we extract the y-coordenates of the vertices of the spline
+
+
+    for spline in lw_polylines:
+        # Check if the spline is a BSpline
+            if spline.dxftype() == 'LWPOLYLINE':  # here we look for entity type SPLINE
+                 if spline.dxf.color != 1:  # check if its not the Frame
+                    # Get control points of the spline
+                    control_points = spline.get_points('xy')
+
+                    # Print control points
+                    for point in control_points:
+                        i=i+1
+                        print("Vertice:", point,'vertice number', i)
+                        x.append(round(point[0],8)) # Here we extract the x-coordenates of the vertices of the spline
+                        y.append(round(point[1],8)) # Here we extract the y-coordenates of the vertices of the spline
+
+
+
+    #####...................1st scale reduction  OPTIONAL...........................
+    # Reduce_factor=1
+    x = [i / Reduce_factor for i in x]
+    y = [i / Reduce_factor for i in y]
+
+    ####...................Get the original desfase (position relative to the frame)...........................
+    desfase_x=min(x)
+    desfase_y=min(y)
+
+
+    ####....................Apply scale.......................
+    if scale_mode==1:   # 1- apply scale, 2- no scale for debugging
+      scale_x=dist_imagen_x/dist_real_x
+      scale_y=dist_imagen_y/dist_real_y
+      scale_x2=dist_imagen_x_2/dist_real_x_2
+    else:
+      scale_x=1
+      scale_y=1
+      scale_x2=1
+
+    Axis_Limit_x = Axis_Limit
+    Axis_Limit_y = Axis_Limit
+
+
+    ######  save original values
+    x_0=x
+    y_0=y
+
+###### ORIGINAL TRANSFORMATION...................................
+
+    ####................APPLY THE SCALE.................
+    x_1 = [i*scale_x for i in x_0]
+    y_1 = [i*scale_y for i in y_0]
+    ####...................................................
+
+    #### TRANSFORMATION FOR CENTERING
+    if scale_mode==1:
+        ### bring to origin
+        x_2=[i - min(x_1)*1 for i in x_1]
+        y_2=[i - min(y_1)*1 for i in y_1]
+        #### centering
+        x_3 = [i + desfase_x * scale_x for i in x_2]
+        y_3 = [i + desfase_y * scale_y for i in y_2]
+
+    else:
+        x_3=x_0
+        y_3=y_0
+########........................................................
+
+ ##########  ADDITIONAL TRANSFORMATION 1...............................
+    x_1_2 = [i*scale_x2 for i in x_0]
+    y_1_2 = [i*scale_y for i in y_0]
+    ####.................................................................
+
+    #### TRANSFORMATION FOR CENTERING
+    if scale_mode==1:
+        ### bring to origin
+        x_2_2=[i - min(x_1_2)*1 for i in x_1_2]
+        y_2_2=[i - min(y_1_2)*1 for i in y_1_2]
+        #### centering
+        x_3_2 = [i + desfase_x * scale_x2 for i in x_2_2]
+        y_3_2 = [i + desfase_y * scale_y for i in y_2_2]
+    else:
+        x_3=x_0
+        y_3=y_0
+##########................................................................
+
+
+######### FINAL TRANFORMATION.........................
+    for h in range(0,len(x)):
+        if x_3[h]>4000:
+            x_3[h]=x_3_2[h]
+    x=x_3
+    y=y_3
+
+############# BEGGIN THE PLOTTING
+    x_init=x[0]
+    y_init=y[0]
+    z=0
+    layer_qty=0
+    check=0
+    for i in range(0,len(x)):    # loop through all the vertices of the splines found
+        #print(i)
+        if x[i]==x_init and y[i]==y_init:   # layer detection condition is when there is a closed loop, initial and final points are equal
+            check=check+1 # the initial point of the loop
+            if check==2: # the final point of the loop
+                x_layer=x[z:i+ 1]
+                y_layer = y[z:i + 1]
+                z=i+1
+                layer_qty=layer_qty+1
+                check=0
+                if i<(len(x)-1):
+                 x_init = x[i+1]
+                 y_init = y[i+1]
+                print('Layer ', layer_qty)
+                print('X_coordenates ', x_layer)
+                print('y_coordenates ', y_layer)
+
+                # Plotting the polygon
+                plt.figure(figsize=(image_size, image_size))
+                plt.plot(x_layer, y_layer, color=layer_color, linestyle='-', linewidth=0.1, marker='o', markersize=0.1) # 'bo-' means blue circles connected by lines
+                plt.fill(x_layer, y_layer,facecolor = layer_color ,alpha=1)  # Fill the polygon
+                title='Layer '+str(layer_qty)
+                plt.title(title)
+                #plt.grid(True, linestyle='--', linewidth=0.5)  # Set linewidth to 1.5
+                plt.xlim(0, Axis_Limit_x)  # Set x-axis limit from 0 to 4
+                plt.ylim(0, Axis_Limit_y)  # Set y-axis limit from 0 to 4
+                plt.style.use('dark_background')
+                ax = plt.gca()
+                ax.set_facecolor(background_color)
+                ax.spines['top'].set_color(layer_color)
+                ax.spines['bottom'].set_color(layer_color)
+                ax.spines['right'].set_color(layer_color)
+                ax.spines['left'].set_color(layer_color)
+                ax.tick_params(axis='x', colors=layer_color)
+                ax.tick_params(axis='y', colors=layer_color)
+                ax.set_title(ax.get_title(), color=layer_color)  # Update title with green color
+
+                plt.savefig('Layers.png')
+                # add slide
+                slide = prs.slides.add_slide(slide_layout)
+                img_path = 'Layers.png'
+                left = Inches(Left_centering)  # Adjust position as needed in icnhes
+                top = Inches(Top_centering)  # Adjust position as needed in inches
+                slide.shapes.add_picture(img_path, left, top)
+                if close_image==1:
+                 plt.close('all')
+    # Save the PowerPoint presentation
+    prs.save('Layers.pptx')
+
+
+    print('total layers = ',layer_qty)
+
+
+
+file_path='calib_1m.dxf'     ####
 image_size = 12.7  # in inches    12.7
 Left_centering = -1.5  # in inches   -1.5
-Top_centering = -3.8  # in inches   -3.8
+Top_centering = -3.93  # in inches   -3.8
 Axis_Limit=8000  #in MM
-dist_real_x=845   # lo que realmente mide  MM,   # 242.5mm
+dist_real_x=827   # lo que realmente mide  MM,   # 242.5mm
 dist_imagen_x=1000 # lo que la imagen dice que mide (MM),    # 20
-dist_real_y=845   # lo que realmente mide  MM,   # 242.5mm
+dist_real_y=860   # lo que realmente mide  MM,   # 242.5mm
 dist_imagen_y=1000 # lo que la imagen dice que mide (MM),    # 20
-scale_mode=2    # 1-apply scale, 2- no scale
+scale_mode=1    # 1-apply scale, 2- no scale
 Reduce_factor=1  #  default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
 background_color='white'
 layer_color='blue'
 
-read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis_Limit,dist_real_x,dist_imagen_x,dist_real_y,dist_imagen_y,scale_mode,Reduce_factor,background_color,layer_color)
+#read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis_Limit,dist_real_x,dist_imagen_x,dist_real_y,dist_imagen_y,scale_mode,Reduce_factor,background_color,layer_color)
 
 
+
+dist_real_x_2=900   # lo que realmente mide  MM,   # 242.5mm
+dist_imagen_x_2=1000
+close_image=1
+read_and_plot_layerv4(file_path,image_size,Left_centering,Top_centering,Axis_Limit,dist_real_x,dist_imagen_x,dist_real_y,dist_imagen_y,scale_mode,Reduce_factor,background_color,layer_color,dist_real_x_2,dist_imagen_x_2,close_image)
 
 
 
