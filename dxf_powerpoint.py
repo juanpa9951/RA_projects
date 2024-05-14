@@ -1039,11 +1039,30 @@ def read_and_plot_layerv6(file_path,image_size,Left_centering,Top_centering,Axis
 
     if scale_mode==1:
         for i in range(0,len(x)):
-            X_value_index = (X_table['Real_Measure'] - x[i]).abs().idxmin()
-            X_value_autocad= X_table.at[X_value_index, 'Autocad_Measure']
-            x[i]=X_value_autocad
+            # X_value_index = (X_table['Real_Measure'] - x[i]).abs().idxmin()
+            # X_value_autocad= X_table.at[X_value_index, 'Autocad_Measure']
+            # x[i]=X_value_autocad
+            target_value = x[i]
+            df=X_table
+            # Find indices of bracketing points
+            idx = df['Real_Measure'].searchsorted(target_value)
 
-############# BEGGIN THE PLOTTING
+            # Check if target is within data range
+            if idx == 0 or idx == len(x):
+                print("Target value outside data range for interpolation")
+            else:
+                # Extract bracketed values
+                a_prev = df.loc[idx - 1, 'Real_Measure']
+                a_next = df.loc[idx, 'Real_Measure']
+                b_prev = df.loc[idx - 1, 'Autocad_Measure']
+                b_next = df.loc[idx, 'Autocad_Measure']
+
+                # Perform linear interpolation
+                interpolated_value = b_prev + ((target_value - a_prev) / (a_next - a_prev)) * (b_next - b_prev)
+                # print(f"Interpolated value for {target_value}: {interpolated_value}")
+                x[i]=interpolated_value
+
+    ############# BEGGIN THE PLOTTING
 
     Axis_Limit_x = Axis_Limit
     Axis_Limit_y = Axis_Limit
@@ -1107,7 +1126,7 @@ def read_and_plot_layerv6(file_path,image_size,Left_centering,Top_centering,Axis
 
 
 
-file_path='calib_2m.dxf'     ####
+file_path='patron_100mm_Y.dxf'     ####
 image_size = 12.7  # in inches    12.7
 Left_centering = -1.55  # in inches   -1.5
 Top_centering = -4.9  # in inches   -3.93
@@ -1119,12 +1138,10 @@ dist_imagen_y=1000 # lo que la imagen dice que mide (MM),    # 20
 Reduce_factor=1  #  default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
 background_color='white'
 layer_color='blue'
-scale_mode=1    # 1-apply scale, 2- no scale
 close_image=1   # 1- close all images, 2- open all images
+scale_mode=2    # 1-apply scale, 2- no scale
 
 #read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis_Limit,dist_real_x,dist_imagen_x,dist_real_y,dist_imagen_y,scale_mode,Reduce_factor,background_color,layer_color,close_image)
-
-
 
 # dist_real_x_2=6580   # lo que realmente mide  MM,   # 900
 # dist_imagen_x_2=6000
