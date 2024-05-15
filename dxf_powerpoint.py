@@ -1208,7 +1208,8 @@ def read_and_plot_layerv7(file_path,image_size,Left_centering,Top_centering,Axis
                         x.append(round(point[0],8)) # Here we extract the x-coordenates of the vertices of the spline
                         y.append(round(point[1],8)) # Here we extract the y-coordenates of the vertices of the spline
 
-
+    qty_spline=0
+    Layer_Names=[]
     for spline in lw_polylines:
         # Check if the spline is a BSpline
             if spline.dxftype() == 'LWPOLYLINE':  # here we look for entity type SPLINE
@@ -1227,8 +1228,12 @@ def read_and_plot_layerv7(file_path,image_size,Left_centering,Top_centering,Axis
                         print("Vertice:", point,'vertice number', i)
                         x.append(round(point[0],8)) # Here we extract the x-coordenates of the vertices of the spline
                         y.append(round(point[1],8)) # Here we extract the y-coordenates of the vertices of the spline
-
-
+                 #####................................................
+                    if qty_spline == 0:
+                        Layer_Names.append(layer_name)
+                    elif Layer_Names[-1] != layer_name:
+                        Layer_Names.append(layer_name)
+                    qty_spline=qty_spline+1
 
     #####...................1st scale reduction  OPTIONAL...........................
     # Reduce_factor=1
@@ -1305,6 +1310,7 @@ def read_and_plot_layerv7(file_path,image_size,Left_centering,Top_centering,Axis
         if x[i]==x_init and y[i]==y_init:   # layer detection condition is when there is a closed loop, initial and final points are equal
             check=check+1 # the initial point of the loop
             if check==2: # the final point of the loop
+                Layer_Name_plot=Layer_Names[layer_qty]
                 x_layer = x[z:i + 1]
                 y_layer = y[z:i + 1]
                 z=i+1
@@ -1336,7 +1342,7 @@ def read_and_plot_layerv7(file_path,image_size,Left_centering,Top_centering,Axis
                 ax.tick_params(axis='x', colors=layer_color)
                 ax.tick_params(axis='y', colors=layer_color)
                 ax.set_title(ax.get_title(), color=layer_color)  # Update title with green color
-
+                plt.text(2000, 1700, Layer_Name_plot, fontsize=15, color='red')
                 plt.savefig('Layers.png')
                 # add slide
                 slide = prs.slides.add_slide(slide_layout)
@@ -1354,7 +1360,7 @@ def read_and_plot_layerv7(file_path,image_size,Left_centering,Top_centering,Axis
 
 
 
-file_path='tagging.dxf'     ####
+file_path='30_COT24_Tagging.dxf'     ####
 image_size = 12.7  # in inches    12.7
 Left_centering = -1.55  # in inches   -1.5
 Top_centering = -4.9  # in inches   -3.93
@@ -1366,7 +1372,7 @@ dist_imagen_y=1000 # lo que la imagen dice que mide (MM),    # 20
 Reduce_factor=1  #  default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
 background_color='white'
 layer_color='blue'
-close_image=2   # 1- close all images, 2- open all images
+close_image=1   # 1- close all images, 2- open all images
 scale_mode=2   # 1-apply scale, 2- no scale
 
 #read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis_Limit,dist_real_x,dist_imagen_x,dist_real_y,dist_imagen_y,scale_mode,Reduce_factor,background_color,layer_color,close_image)
