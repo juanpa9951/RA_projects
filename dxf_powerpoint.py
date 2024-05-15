@@ -1886,7 +1886,7 @@ def read_and_plot_layerv9(file_path,image_size,Left_centering,Top_centering,Axis
 
                 # Plotting the polygon
                 plt.figure(figsize=(image_size, image_size))
-                plt.scatter(x_layer, y_layer,marker='o', s=3) # 'bo-' means blue circles connected by lines
+                plt.scatter(x_layer, y_layer,marker='x', s=3, color='blue') # 'bo-' means blue circles connected by lines
                 title='Tagging'
                 plt.title(title)
                 plt.xlim(0, Axis_Limit_x)  # Set x-axis limit from 0 to 4
