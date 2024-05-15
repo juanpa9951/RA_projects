@@ -1924,8 +1924,8 @@ def read_and_plot_layerv9(file_path,image_size,Left_centering,Top_centering,Axis
 
 file_path='30_COT24_Tagging.dxf'     ####
 image_size = 12.7  # in inches    12.7
-Left_centering = -1.55  # in inches   -1.5
-Top_centering = -4.9  # in inches   -3.93
+Left_centering = -1.55  # in inches   -1.55
+Top_centering = -4.9  # in inches   -4.9
 Axis_Limit=8000  #in MM
 dist_real_x=1080   # lo que realmente mide  MM,   # 820
 dist_imagen_x=1000 # lo que la imagen dice que mide (MM),    # 20
@@ -1938,11 +1938,9 @@ close_image=1   # 1- close all images, 2- open all images
 scale_mode=1   # 1-apply scale, 2- no scale
 
 #read_and_plot_layerv3(file_path,image_size,Left_centering,Top_centering,Axis_Limit,dist_real_x,dist_imagen_x,dist_real_y,dist_imagen_y,scale_mode,Reduce_factor,background_color,layer_color,close_image)
-
 # dist_real_x_2=6580   # lo que realmente mide  MM,   # 900
 # dist_imagen_x_2=6000
 # read_and_plot_layerv4(file_path,image_size,Left_centering,Top_centering,Axis_Limit,dist_real_x,dist_imagen_x,dist_real_y,dist_imagen_y,scale_mode,Reduce_factor,background_color,layer_color,dist_real_x_2,dist_imagen_x_2,close_image)
 
-
-
+#### V9-LATEST VERSION
 read_and_plot_layerv9(file_path,image_size,Left_centering,Top_centering,Axis_Limit,scale_mode,Reduce_factor,background_color,layer_color,close_image)
