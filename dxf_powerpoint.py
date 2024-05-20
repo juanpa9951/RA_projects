@@ -963,7 +963,7 @@ def read_and_plot_layerv10(file_path,image_size,Left_centering,Top_centering,Axi
 
 
 
-file_path='patron_500mm_X.dxf'     ####
+file_path='107_CUR03_Tagging.dxf'     ####
 image_size = 12.7  # in inches    12.7
 Left_centering = -1.55  # in inches   -1.55
 Top_centering = -4.9  # in inches   -4.9
@@ -974,7 +974,7 @@ layer_color='blue'
 close_image=1   # 1- close all images, 2- open all images
 scale_mode=1   # 1-apply scale, 2- no scale
 pattern_mode=1   # 1- loading a pattern dxf file, 2-  normal dxf
-raspberry=0      # 1- using the raspberry pi, 2- using the laptop
+raspberry=1      # 1- using the raspberry pi, 2- using the laptop
 
 #### V9-LATEST VERSION
 #### V10-DATUM LINES ADDED in the form of scatter
