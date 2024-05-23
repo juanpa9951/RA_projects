@@ -391,7 +391,7 @@ def read_and_plot_layerv13(file_path,name,image_size,Left_centering,Top_centerin
     print('total layers = ',layer_qty)
 
 def read_and_plot_layerv14(file_path,name,image_size,Left_centering,Top_centering,Axis_Limit,scale_mode,Reduce_factor,background_color,layer_color,close_image,pattern_mode,raspberry,Destination_path):
-    ### VERSION USING LAYER NAMES, ITS IMPORTANT TO HAVE LAYER COLORS ASSIGNED IN THE DXF
+    ### NEW VERSION USING MULTIPLE Y-PATTERNS
     import ezdxf
     import pandas as pd
     import matplotlib.pyplot as plt
