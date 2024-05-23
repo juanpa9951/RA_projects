@@ -510,12 +510,13 @@ def read_and_plot_layerv14(file_path,name,image_size,Left_centering,Top_centerin
     # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
     if raspberry==1:
         X_table = pd.read_excel(excel_table_calib, sheet_name='X_axis_RP', header=0)
-        Y_table_15 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_15', header=0)
-        Y_table_30 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_30', header=0)
-        Y_table_45 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_45', header=0)
-        Y_table_60 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_60', header=0)
-        Y_table_75 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_75', header=0)
-        Y_table_90 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_90', header=0)
+        Y_table_13 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_13', header=0)
+        Y_table_26 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_26', header=0)
+        Y_table_39 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_39', header=0)
+        Y_table_52 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_52', header=0)
+        Y_table_65 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_65', header=0)
+        Y_table_78 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_78', header=0)
+        Y_table_91 = pd.read_excel(excel_table_calib, sheet_name='Y_axis_RP_91', header=0)
     else:
         X_table = pd.read_excel(excel_table_calib, sheet_name='X_axis', header=0)
         Y_table = pd.read_excel(excel_table_calib, sheet_name='Y_axis', header=0)
@@ -544,18 +545,20 @@ def read_and_plot_layerv14(file_path,name,image_size,Left_centering,Top_centerin
 
         for i in range(0,len(y)):
             target_value = y[i]
-            if x[i]<=1500:
-                df=Y_table_15
-            elif x[i]<=3000:
-                df = Y_table_30
-            elif x[i]<=4500:
-                df = Y_table_45
-            elif x[i]<=6000:
-                df = Y_table_60
-            elif x[i]<=7500:
-                df = Y_table_75
+            if x[i]<=1300:
+                df=Y_table_13
+            elif x[i]<=2600:
+                df = Y_table_26
+            elif x[i]<=3900:
+                df = Y_table_39
+            elif x[i]<=5200:
+                df = Y_table_52
+            elif x[i]<=6500:
+                df = Y_table_65
+            elif x[i]<=7800:
+                df = Y_table_78
             else:
-                df = Y_table_90
+                df = Y_table_91
             # Find indices of bracketing points
             idx = df['Real_Measure'].searchsorted(target_value)
 
