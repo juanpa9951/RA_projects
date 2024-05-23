@@ -853,8 +853,8 @@ def read_and_plot_layerv10(file_path,image_size,Left_centering,Top_centering,Axi
 
                 # Plotting the polygon
                 plt.figure(figsize=(image_size, image_size))
-                plt.plot(x_layer, y_layer, color=layer_color, linestyle='-', linewidth=0.1, marker='o', markersize=0.1) # 'bo-' means blue circles connected by lines
-                plt.fill(x_layer, y_layer,facecolor = layer_color ,alpha=1)  # Fill the polygon
+                plt.plot(x_layer, y_layer, color=layer_color, linestyle='-', linewidth=0.3, marker='o', markersize=0.1) # 'bo-' means blue circles connected by lines
+                #plt.fill(x_layer, y_layer,facecolor = layer_color ,alpha=1)  # Fill the polygon
                 title='Layer '+str(layer_qty)
                 plt.title(title)
                 #plt.grid(True, linestyle='--', linewidth=0.5)  # Set linewidth to 1.5
@@ -1759,8 +1759,8 @@ Reduce_factor=1  #  default = 1, if not it is used for scaling down the original
 background_color='white'
 layer_color='blue'
 close_image=1   # 1- close all images, 2- open all images
-scale_mode=1   # 1-apply scale, 2- no scale
-pattern_mode=0  # 1- loading a pattern dxf file, 2-  normal dxf
+scale_mode=0   # 1-apply scale, 2- no scale
+pattern_mode=1  # 1- loading a pattern dxf file, 2-  normal dxf
 raspberry=1      # 1- using the raspberry pi, 2- using the laptop
 
 
