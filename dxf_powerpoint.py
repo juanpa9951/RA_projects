@@ -1750,7 +1750,7 @@ def read_and_plot_layerv12(file_path,image_size,Left_centering,Top_centering,Axi
     print('total layers = ',layer_qty)
 
 
-file_path='patron_100mm_Y_full.dxf'     ####
+file_path='patron_100mm_Y.dxf'     ####
 image_size = 12.7  # in inches    12.7
 Left_centering = -1.55  # in inches   -1.55
 Top_centering = -4.9  # in inches   -4.9
