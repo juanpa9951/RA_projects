@@ -1359,7 +1359,6 @@ def read_and_plot_layerv11(file_path,image_size,Left_centering,Top_centering,Axi
 
 
     print('total layers = ',layer_qty)
-
 def read_and_plot_layerv12(file_path,image_size,Left_centering,Top_centering,Axis_Limit,scale_mode,Reduce_factor,background_color,layer_color,close_image,pattern_mode,raspberry):
     ### VERSION USING LAYER NAMES, ITS IMPORTANT TO HAVE LAYER COLORS ASSIGNED IN THE DXF
     import ezdxf
