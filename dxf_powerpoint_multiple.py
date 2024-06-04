@@ -390,7 +390,7 @@ def read_and_plot_layerv13(file_path,name,image_size,Left_centering,Top_centerin
 
     print('total layers = ',layer_qty)
 def read_and_plot_layerv17(file_path,name,image_size,Left_centering,Top_centering,Axis_Limit,scale_mode,Reduce_factor,background_color,layer_color,close_image,pattern_mode,raspberry,Destination_path):
-    ### VERSION USING LAYER NAMES (MUST HAVE COLOR ASSIGNED) AND DESFASE APPLIED
+    ### VERSION USING LAYER NAMES (MUST HAVE COLOR ASSIGNED) AND DESFASE APPLIED, not correctly applied because the desfase should occur before applying the scale (interpolation), not after
     import ezdxf
     import pandas as pd
     import matplotlib.pyplot as plt
@@ -837,9 +837,8 @@ def read_and_plot_layerv17(file_path,name,image_size,Left_centering,Top_centerin
 
 
     print('total layers = ',layer_qty)
-
 def read_and_plot_layerv18(file_path,name,image_size,Left_centering,Top_centering,Axis_Limit,scale_mode,Reduce_factor,background_color,layer_color,close_image,pattern_mode,raspberry,Destination_path):
-    ### VERSION USING LAYER NAMES (MUST HAVE COLOR ASSIGNED), DESFASE APPLIED, FULL DATUM LINE DRAWN
+    ### VERSION USING LAYER NAMES (MUST HAVE COLOR ASSIGNED), DESFASE APPLIED, FULL DATUM LINE DRAWN, still not working properly
     import ezdxf
     import pandas as pd
     import matplotlib.pyplot as plt
@@ -1248,12 +1247,12 @@ def read_and_plot_layerv18(file_path,name,image_size,Left_centering,Top_centerin
                 for i in range(0,len(x_datum)):
                     if i < len(x_datum)-1:
                         diff=abs(x_datum[i+1]-x_datum[i])
-                        if diff<=200:
+                        if diff<=1:
                             x_datum1.append(x_datum[i])
                             y_datum1.append(y_datum[i])
-                            k=i
-                x_datum2=x_datum[k+1:]
-                y_datum2=y_datum[k+1:]
+                            k=i+2
+                x_datum2=x_datum[k:]
+                y_datum2=y_datum[k:]
 
                 ##### PLOT THE FIRST DATUM LINE
                 Layer_Name_plot='DATUM LINE 1'
@@ -1338,8 +1337,8 @@ Origin_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Pyt
 Destination_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\LG projecting files\destiny'
 image_size = 12.7  # in inches    12.7
 Left_centering = -1.55  # in inches   -1.55
-Top_centering = -4.9  # in inches   -4.9
-Axis_Limit = 8740  # in MM    ##### 8000 original
+Top_centering = -5.0  # in inches   -4.9
+Axis_Limit = 8355  # in MM    ##### 8000 original  8740
 Reduce_factor = 1  # default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
 background_color = 'white'
 layer_color = 'blue'
@@ -1362,10 +1361,11 @@ for name in DXF_Names:
     dxf_file = f"{Origin_path}\{name}"
     #print(name)
     #print(dxf_file)
-    read_and_plot_layerv18(dxf_file,name, image_size, Left_centering, Top_centering, Axis_Limit, scale_mode, Reduce_factor,background_color, layer_color, close_image, pattern_mode, raspberry,Destination_path)
+    read_and_plot_layerv13(dxf_file,name, image_size, Left_centering, Top_centering, Axis_Limit, scale_mode, Reduce_factor,background_color, layer_color, close_image, pattern_mode, raspberry,Destination_path)
     print(name+' fully converted')
 print('All files converted')
 
 
-#### V13- LAST OFFICIAL
-#### V17- LAST OFFICIAL WITH DESFASE
+#### V17- DESFASE version not correct yet
+#### V18- full datum line, not working yet
+#### V13- LAST OFFICIAL, works fine
