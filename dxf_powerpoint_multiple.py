@@ -131,8 +131,8 @@ def read_and_plot_layerv13(file_path,name,image_size,Left_centering,Top_centerin
             idx = df['Real_Measure'].searchsorted(target_value)
 
             # Check if target is within data range
-            if idx == 0 or idx == len(x):
-                print("Target value outside data range for interpolation")
+            if idx == 0 or idx == len(df):
+                print("Target value outside data range for interpolation X ",target_value)
             else:
                 # Extract bracketed values
                 a_prev = df.loc[idx - 1, 'Real_Measure']
@@ -152,8 +152,8 @@ def read_and_plot_layerv13(file_path,name,image_size,Left_centering,Top_centerin
             idx = df['Real_Measure'].searchsorted(target_value)
 
             # Check if target is within data range
-            if idx == 0 or idx == len(y):
-                print("Target value outside data range for interpolation")
+            if idx == 0 or idx == len(df):
+                print("Target value outside data range for interpolation Y ",target_value)
             else:
                 # Extract bracketed values
                 a_prev = df.loc[idx - 1, 'Real_Measure']
@@ -174,8 +174,8 @@ def read_and_plot_layerv13(file_path,name,image_size,Left_centering,Top_centerin
                 idx = df['Real_Measure'].searchsorted(target_value)
 
                 # Check if target is within data range
-                if idx == 0 or idx == len(x_tag):
-                    print("Target value outside data range for interpolation")
+                if idx == 0 or idx == len(df):
+                    print("Target value outside data range for interpolation X_Tag ",target_value)
                 else:
                     # Extract bracketed values
                     a_prev = df.loc[idx - 1, 'Real_Measure']
@@ -195,8 +195,8 @@ def read_and_plot_layerv13(file_path,name,image_size,Left_centering,Top_centerin
                 idx = df['Real_Measure'].searchsorted(target_value)
 
                 # Check if target is within data range
-                if idx == 0 or idx == len(y_tag):
-                    print("Target value outside data range for interpolation")
+                if idx == 0 or idx == len(df):
+                    print("Target value outside data range for interpolation Y_tag ",target_value)
                 else:
                     # Extract bracketed values
                     a_prev = df.loc[idx - 1, 'Real_Measure']
@@ -217,8 +217,8 @@ def read_and_plot_layerv13(file_path,name,image_size,Left_centering,Top_centerin
                 idx = df['Real_Measure'].searchsorted(target_value)
 
                 # Check if target is within data range
-                if idx == 0 or idx == len(x_tag):
-                    print("Target value outside data range for interpolation")
+                if idx == 0 or idx == len(df):
+                    print("Target value outside data range for interpolation X_Datum ",target_value)
                 else:
                     # Extract bracketed values
                     a_prev = df.loc[idx - 1, 'Real_Measure']
@@ -238,8 +238,8 @@ def read_and_plot_layerv13(file_path,name,image_size,Left_centering,Top_centerin
                 idx = df['Real_Measure'].searchsorted(target_value)
 
                 # Check if target is within data range
-                if idx == 0 or idx == len(y_tag):
-                    print("Target value outside data range for interpolation")
+                if idx == 0 or idx == len(df):
+                    print("Target value outside data range for interpolation Y_Datum ",target_value)
                 else:
                     # Extract bracketed values
                     a_prev = df.loc[idx - 1, 'Real_Measure']
