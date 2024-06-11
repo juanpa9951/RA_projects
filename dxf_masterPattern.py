@@ -407,8 +407,8 @@ raspberry = 1  # 1- using the raspberry pi, 0- using the laptop
 
 
 
-dxf_file='MastP2.dxf'
-name='MastP'
+dxf_file='Master_Pattern.dxf'
+name='Master_Pattern'
 read_and_plot_layerv19(dxf_file, name, image_size, Left_centering, Top_centering, Axis_Limit, scale_mode,Reduce_factor, background_color, layer_color, close_image, pattern_mode, raspberry,Destination_path,Axis_Limit_Y)
 
 

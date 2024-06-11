@@ -18,7 +18,7 @@ x_layer_2.append(x_layer[0])
 
 
 for i in range(0,len(x_layer)-1):
-    point=x_layer[i]+spacing_X[i]*1.20
+    point=x_layer[i]+spacing_X[i]*1.5
     x_layer_2.append(point)
 
 plt.figure()
