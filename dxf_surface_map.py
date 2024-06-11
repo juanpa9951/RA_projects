@@ -24,7 +24,7 @@ def find_closest_tuple(tuples_list, input_tuple):
 
 # Example usage
 tuples_list = [(1, 1), (2, 1), (3, 1), (4, 1),(1,2), (2, 2), (3, 2), (4, 2),(1, 3), (2, 3), (3, 3), (4, 3),(1, 4), (2, 4), (3, 4), (4, 4)]
-input_tuple = (3.1647, 3.547)
+input_tuple = (1.358, 3.8)
 closest_tuple_low,closest_tuple_high = find_closest_tuple(tuples_list, input_tuple)
 print("The closest tuple Low to", input_tuple, "is", closest_tuple_low)
 print("The closest tuple High to", input_tuple, "is", closest_tuple_high)
