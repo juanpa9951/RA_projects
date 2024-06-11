@@ -1,13 +1,34 @@
+from dxfwrite import DXFEngine as dxf
+
+def create_dxf(file_path):
+    # Create a new DXF drawing
+    dwg = dxf.drawing(file_path)
+    # Add entities to the drawing
+    x_base=500
+    y_base=200
+    for i in range(1,15):
+        dwg.add(dxf.line((0, y_base), (x_base*i, y_base)))  # Add a line from (0, 0) to (10, 0)
+    # Save the DXF file
+    dwg.save()
+
+# Specify the file path where you want to save the DXF file
+file_path = 'example.dxf'
+
+# Create the DXF file
+create_dxf(file_path)
+
+
+
+
+#####  this works fine
 # from dxfwrite import DXFEngine as dxf
 #
 # def create_dxf(file_path):
 #     # Create a new DXF drawing
 #     dwg = dxf.drawing(file_path)
-#
 #     # Add entities to the drawing
-#     dwg.add(dxf.line((0, 0), (10, 0)))  # Add a line from (0, 0) to (10, 0)
+#     dwg.add(dxf.line((0, 50), (500*i, 50)))  # Add a line from (0, 0) to (10, 0)
 #     dwg.add(dxf.circle(center=(5, 5), radius=2.5))  # Add a circle at (5, 5) with radius 2.5
-#
 #     # Save the DXF file
 #     dwg.save()
 #
@@ -16,8 +37,6 @@
 #
 # # Create the DXF file
 # create_dxf(file_path)
-
-
 
 
 
