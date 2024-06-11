@@ -94,4 +94,10 @@ git push -u origin main
 git commit-am "description of the version"
 git push -u origin2 main 
 
+
+
+#..............to delete a file from the history of repositry..............
+
+git filter-repo --invert-paths --path "Name_of_the_file" --force                   # the name of the file must have the extension, eg  "master_pattern.dxf"
+
                                        
