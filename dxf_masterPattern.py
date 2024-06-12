@@ -14,15 +14,23 @@ def master_pattern(image_size,Left_centering,Top_centering,Axis_Limit,background
 
     Axis_Limit_x = Axis_Limit
     Axis_Limit_y = Axis_Limit_Y
-    x_base=500
-    y_base=200
+    x_base=500    #500
+    y_base=100    #200
 
-    for k in range(1,13):   # 12
-            for i in range(1,17):  # 17
-                        x_lenght=x_base*i
-                        y_lenght=y_base*k
-                        x_layer=[0,x_lenght]
-                        y_layer=[y_lenght,y_lenght]
+    for k in range(25,28):   ## 28-modo x    17-modo y
+            for i in range(1,17):  ## 17-modo x     28-modo y
+                        x_lenght=x_base*i                  ####modo x
+                        y_lenght=y_base*k                  ####modo x
+
+                        #x_lenght=x_base*k                    ####modo y
+                        #y_lenght=y_base*i                    ####modo y
+
+                        x_layer=[0,x_lenght]               ####modo x
+                        y_layer=[y_lenght,y_lenght]        ####modo x
+
+                        #x_layer=[x_lenght,x_lenght]          ####modo y
+                        #y_layer=[0,y_lenght]                 ####modo y
+
                         Layer_Name_plot='X='+str(x_lenght)+" Y="+str(y_lenght)
 
                         # Plotting the polygon
@@ -31,12 +39,12 @@ def master_pattern(image_size,Left_centering,Top_centering,Axis_Limit,background
                         title='pattern'
                         plt.title(title)
 
-                        x_ticks = np.arange(0, 8500, 500)  # From 0 to 6 with a step of 0.5
-                        y_ticks = np.arange(0, 8500, 8500)  # From 0 to 12 with a step of 1
-                        plt.xticks(x_ticks)
-                        plt.yticks(y_ticks)
+                        # x_ticks = np.arange(0, 8500, 500)  # From 0 to 6 with a step of 0.5
+                        # y_ticks = np.arange(0, 8500, 8500)  # From 0 to 12 with a step of 1
+                        # plt.xticks(x_ticks)
+                        # plt.yticks(y_ticks)
+                        # plt.grid(color='gray', linestyle='--', linewidth=0.5, alpha=0.7)
 
-                        plt.grid(color='gray', linestyle='--', linewidth=0.5, alpha=0.7)
                         plt.xlim(0, Axis_Limit_x)  # Set x-axis limit from 0 to 4
                         plt.ylim(0, Axis_Limit_y)  # Set y-axis limit from 0 to 4
                         plt.style.use('dark_background')
@@ -67,8 +75,8 @@ def master_pattern(image_size,Left_centering,Top_centering,Axis_Limit,background
 image_size = 12.7  # in inches    12.7
 Left_centering = -1.55  # in inches   -1.55
 Top_centering = -5.0  # in inches   -4.9
-Axis_Limit = 8355  # in MM    ##### 8000 original  8740,  8355,   (20mm-8335)
-Axis_Limit_Y=8355  # ONLY FOR V19,  8355
+Axis_Limit = 8355  # in MM    ##### 8000 original  8740,  LAST OFFICIAL-8355,   (20mm-8335)
+Axis_Limit_Y=8355  # ONLY FOR V19,  LAST OFFICIAL-8355
 Reduce_factor = 1  # default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
 background_color = 'white'
 layer_color = 'blue'

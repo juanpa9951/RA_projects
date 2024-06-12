@@ -2016,8 +2016,8 @@ Destination_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILE
 image_size = 12.7  # in inches    12.7
 Left_centering = -1.55  # in inches   -1.55
 Top_centering = -5.0  # in inches   -4.9
-Axis_Limit = 8335  # in MM    ##### 8000 original  8740,  8355,   (20mm-8335)
-Axis_Limit_Y=8355  # ONLY FOR V19,  8355
+Axis_Limit = 8335  # in MM    ##### 8000 original  8740,  last official-8355,   (20mm-8335)
+Axis_Limit_Y=8355  # ONLY FOR V19,  last official-8355
 Reduce_factor = 1  # default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
 background_color = 'white'
 layer_color = 'blue'
