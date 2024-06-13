@@ -1852,7 +1852,7 @@ def read_and_plot_layerv20(file_path,name,image_size,Left_centering,Top_centerin
             xy_tup,idx_low,idx_high,tup_low,tup_high = find_closest_tupleV2(tuples_list_real,tuples_list_autocad,input_tuple)
             x[i] = xy_tup[0]
             y[i] = xy_tup[1]
-            # print("Original ",input_tuple," Converted ",xy_tup," tup_low=",tup_low," idx low ",idx_low," tup_high=",tup_high, " idx high ",idx_high)
+            #print("Original ",input_tuple," Converted ",xy_tup," tup_low=",tup_low," idx low ",idx_low," tup_high=",tup_high, " idx high ",idx_high)
 
         if len(x_tag)>0:
             for i in range(0,len(x_tag)):
@@ -1894,7 +1894,7 @@ def read_and_plot_layerv20(file_path,name,image_size,Left_centering,Top_centerin
         layer_qty = layer_qty + 1
         # Plotting the polygon
         plt.figure(figsize=(image_size, image_size))
-        plt.scatter(x_layer, y_layer, marker='o', s=0.1, color='blue')  # 'bo-' means blue circles connected by lines
+        plt.scatter(x_layer, y_layer, marker='o', s=0.05, color='blue')  #  s=0.1  'bo-' means blue circles connected by lines
         plt.fill(x_layer, y_layer, facecolor=layer_color, alpha=1)  # Fill the polygon
         title = 'Layer '+str(layer_qty)
         plt.title(title)
@@ -2016,7 +2016,7 @@ Destination_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILE
 image_size = 12.7  # in inches    12.7
 Left_centering = -1.55  # in inches   -1.55
 Top_centering = -5.0  # in inches   -4.9
-Axis_Limit = 8335  # in MM    ##### 8000 original  8740,  last official-8355,   (20mm-8335)
+Axis_Limit = 8360  # in MM    last official-8355,   (20mm(-)-8335)   (5mm(+)-8360
 Axis_Limit_Y=8355  # ONLY FOR V19,  last official-8355
 Reduce_factor = 1  # default = 1, if not it is used for scaling down the original image by a factor, eg 10,100,1000
 background_color = 'white'
