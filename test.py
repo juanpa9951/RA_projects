@@ -18,12 +18,41 @@ x_layer_2.append(x_layer[0])
 
 
 for i in range(0,len(x_layer)-1):
-    point=x_layer[i]+spacing_X[i]*1.5
+    point=x_layer[i]+spacing_X[i]*2.5
     x_layer_2.append(point)
 
 plt.figure()
 plt.scatter(x_layer_2, y_layer, marker='o', s=0.1, color='blue')
 plt.show()
 
+
+
+##### new part
+def scale_polygon(x_coords, y_coords, scale_factor=1.2):
+    # Calculate the centroid of the polygon
+    centroid_x = sum(x_coords) / len(x_coords)
+    centroid_y = sum(y_coords) / len(y_coords)
+
+    # Scale the coordinates
+    scaled_x_coords = []
+    scaled_y_coords = []
+
+    for x, y in zip(x_coords, y_coords):
+        scaled_x = centroid_x + scale_factor * (x - centroid_x)
+        scaled_y = centroid_y + scale_factor * (y - centroid_y)
+        scaled_x_coords.append(scaled_x)
+        scaled_y_coords.append(scaled_y)
+
+    return scaled_x_coords, scaled_y_coords
+
+
+# Example usage:
+x_coords = [1, 4, 4, 1]
+y_coords = [1, 1, 4, 4]
+
+scaled_x, scaled_y = scale_polygon(x_coords, y_coords, scale_factor=1.2)
+
+print("Scaled X coordinates:", scaled_x)
+print("Scaled Y coordinates:", scaled_y)
 
 
