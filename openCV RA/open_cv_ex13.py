@@ -25,6 +25,7 @@ while True:
     for x in range(0,width,50):
      for y in range(0,height,30):  # 756 rows   1344 columns
       Text='( '+str(y)+','+str(x)+' )'
+      Text="o"
       cv2.putText(img,Text,(x,y),cv2.FONT_HERSHEY_PLAIN,0.5,(100,200,0),1)  # draw text
 
 
