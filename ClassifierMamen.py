@@ -418,7 +418,8 @@ def ClassifierFunction(PathSource,PathDestination,PathLost,Path_debug,Mode):
           Path1='nothing/'
           Path2='nothing/'
 
-       if Mode==0:   ###3 If debug mode active then print the paths it found
+       if Mode==0:   ### If debug mode active then print the paths it found
+           print('\n photo: ',Name)
            print(ExtractedText)
            print(Path0,'+',Path1,'+',Path2)
 

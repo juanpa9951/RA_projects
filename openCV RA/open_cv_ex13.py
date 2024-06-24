@@ -145,6 +145,7 @@ def run_camera4():  ### SINGLE PIXEL ACROSS IMAGE  (not live)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
+## EXECUTE THE FUNCTION
 run_camera2()
 
 

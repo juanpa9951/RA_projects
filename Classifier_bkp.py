@@ -4947,7 +4947,6 @@ def ClassifierFunctionV13(PathSource,PathDestination,PathLost):
     print("RESULTS: ",len(FinalLocations)-1-LostCount, "PHOTOS CLASSIFIED(",(len(FinalLocations)-1-LostCount)/len(PhotoNames)*100,"%) and ", LostCount, "PHOTOS LOST")
     return FinalLocations
 
-
 def ClassifierFunctionV14(PathSource,PathDestination,PathLost,Path_debug,Mode):
     from PIL import Image
     from google.cloud import vision
@@ -5368,7 +5367,8 @@ def ClassifierFunctionV14(PathSource,PathDestination,PathLost,Path_debug,Mode):
           Path1='nothing/'
           Path2='nothing/'
 
-       if Mode==0:   ###3 If debug mode active then print the paths it found
+       if Mode==0:   ### If debug mode active then print the paths it found
+           print('\n photo: ',Name)
            print(ExtractedText)
            print(Path0,'+',Path1,'+',Path2)
 
