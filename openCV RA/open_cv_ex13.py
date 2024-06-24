@@ -125,7 +125,7 @@ def run_camera4():  ### SINGLE PIXEL ACROSS IMAGE  (not live)
     import cv2
     import numpy as np
 
-    path = 'Feeder1.png'
+    path = 'Feeder3.png'
     img = cv2.imread(path)  # standard BGR format each from 0-255
 
     # hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV_FULL) # HSV ALTERNATIVE
@@ -145,7 +145,7 @@ def run_camera4():  ### SINGLE PIXEL ACROSS IMAGE  (not live)
     cv2.waitKey(0)
     cv2.destroyAllWindows()
 
-run_camera3()
+run_camera2()
 
 
 #  PIXELES VAN POR FILAS Y COLUMNAS, LO MISMO Q TIRA EL .SHAPE, EL IMG O EL HSV O EL GRAY TIRAN RESULTADO EN FILAS X COLUMNAS, PERO COORDENADAS ES INVERTIDO (COLUMNA-FILA) TOD O LO QUE SEA DIBUJAR SOBRE LA IMAGEN SERA EN COORDENADAS, PRIMERO LA COLUMNA Y LUEGO LA FILA

@@ -1,4 +1,4 @@
-def ClassifierFunction(PathSource,PathDestination,PathLost):
+def ClassifierFunction(PathSource,PathDestination,PathLost,Path_debug,Mode):
     from PIL import Image
     from google.cloud import vision
     import os
@@ -10,6 +10,9 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
     #PathSource=r"C:\Users\Juan Pablo Lopez\PhotoClassification\Original"
     #PathDestination=r"C:\Users\Juan Pablo Lopez\PhotoClassification\Destination"
     #PathLost=r"C:\Users\Juan Pablo Lopez\PhotoClassification\Destination\Lost"
+
+    if Mode==0:   ## check for debug mode
+        PathSource=Path_debug
     PhotoNames=os.listdir(PathSource) #this extracts the names of the files inside source folder
     for k1 in PhotoNames:  # this is for eliminating the files that are not photos
         if k1.endswith("jpg")== False:        #jpg   vs JPG
@@ -17,6 +20,7 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
          os.remove(Path2Remove)
     PhotoNames=os.listdir(PathSource) # this is to update the names after deleting
     print(" TOTAL OF ",len(PhotoNames)," PHOTOS UPLOADED")
+
     #nomenclatures for VESTAS
     WebShell=["mw","tw","shl","shw","rfl","rfw","insert","til","rf"]  #aqui retire el te
     WebShell2 = ["mw", "tw", "shl", "shw", "rfl", "rfw", "insert", "til", "rf","olm","wlm","lte","lamination"]
@@ -30,6 +34,7 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
     #sub nomenclatures for lamination
     OLM=["olm"]
     WLM=["wlm"]
+
     #nomenclatures for NORDEX
     PreformNordex=["prs","prp"]
     Stack=["scs","scp"]
@@ -52,10 +57,14 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
     N87_Overlamination=["xxxxxx"] #this hasnt been defined
     N87_Stack=["xxxxxx"] #this hasnt been defined
     N87_process=["xxxxxx"] #this hasnt been defined
+
     #tracker for folder name creation
     Tracker=["p10","p20","p30","p40","p50","p60","p70","p80","p90","p11","p12","p13","p14","p15","p16","p17","p18","p19","ps0","pso"]
+
     #..................................................
     FinalLocations=["Las fotos fueron guardadas en estas ubicaciones"]  #this to initialize the final locations list
+
+
     LostCount=0
     for Name in PhotoNames: # main loop for reading all the photos in the folder
        PathPhoto = f"{PathSource}\{Name}"
@@ -71,6 +80,8 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
        else:
            ExtractedText = ["not any photo"]
        trip=0 #the trip is for sending photos to Lost folder
+
+
        # Here I start the first classification based on PROJECT ####################################
        if "v136" in ExtractedText:
           Path0="004. V136"
@@ -137,6 +148,8 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
                  Path2="02. WLM"
               else:
                  trip=1
+
+
        # Continuation of classification based on PROJECT #########################################
        elif "v126" in ExtractedText:
           Path0="002. V126"
@@ -149,10 +162,6 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
           for Nomenclature in Preforms:
               if Nomenclature in ExtractedText:
                 c1=1
-          # for Nomenclature in Lamination:
-          #     if Nomenclature in ExtractedText:
-          #       c2=1
-          # Here I start the 2nd classification based on blade part (web,preform,lamination)
           if c0!=0:
               Path1="1. Web and Shell"
               c3=0
@@ -186,11 +195,10 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
           elif c1!=0:
               Path1="2. Preforms"
               Path2="None"  # 3rd classification for Preforms is non existent
-          # elif c2!=0:
-          #     Path1="4. Lamination"
-          #     Path2="None"  # 3rd classification for Preforms is non existent
           else:
               trip=1
+
+
        # Continuation of classification based on PROJECT #####################################################
        elif "v150" in ExtractedText:
           Path0="001. EV150"
@@ -203,10 +211,6 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
           for Nomenclature in Preforms:
               if Nomenclature in ExtractedText:
                 c1=1
-          # for Nomenclature in Lamination:
-          #     if Nomenclature in ExtractedText:
-          #       c2=1
-          # Here I start the 2nd classification based on blade part (web,preform,lamination)
           if c0!=0:
               Path1="1. Web and Shell"
               c3=0
@@ -246,11 +250,10 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
           elif c1!=0:
               Path1="2. Preformas"
               Path2="None"  # 3rd classification for Preforms is non existent
-          # elif c2!=0:
-          #     Path1="4. Lamination"
-          #     Path2="None"  # 3rd classification for Preforms is non existent
           else:
               trip=1
+
+
        # Continuation of classification based on PROJECT #####################################################
        elif "n81" in ExtractedText:
           if ("81.5-1" in ExtractedText) or ("5x" in ExtractedText) or ("81 5-1" in ExtractedText) or ("815-1" in ExtractedText) or ("81,5-1" in ExtractedText):
@@ -406,8 +409,19 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
               Path2="None"
           else:
               trip=1
+
+
+       ######  no project name detected
        else:
           trip=1
+          Path0 ='nothing/'
+          Path1='nothing/'
+          Path2='nothing/'
+
+       if Mode==0:   ###3 If debug mode active then print the paths it found
+           print(ExtractedText)
+           print(Path0,'+',Path1,'+',Path2)
+
        # Here is the final destination setting, depends on trip=0 and trip2=1 and the existence of Path2 (3rd classification)
        trip2=0  #this trip is for verifying the label has the info complete to create a folder
        if trip==0:   #Here is necessary to sort out the false P+number in order to extract the odf number (folder name)
@@ -423,6 +437,8 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
            FolderName = ExtractedText[Pos - 4:Pos]  # here I extract odf number which is the folder name
            FolderName = "".join(c for c in FolderName if c.isalnum())
            Prefix=ExtractedText[Pos+3:Pos+6]
+           if Prefix[0]!='s':     ### this is to correct the name when PXX is >=100   e.g p100, p110, p120
+               Prefix = ExtractedText[Pos + 4:Pos + 7]
            Prefix = "".join(c for c in Prefix if c.isalnum())  # this is to extract only alfa numeric values
            if Path2=="None":
               FolderPath = f"{PathDestination}\{Path0}\{Path1}\{FolderName}"
@@ -443,7 +459,8 @@ def ClassifierFunction(PathSource,PathDestination,PathLost):
        picture = picture.save(PathFinal)
        FinalLocations.append(PathFinal)
        print(round((len(FinalLocations)-1)/len(PhotoNames)*100,2),"% Progress, Photo classified to ",PathFinal.replace("Users\Maria del Carmen\OneDrive - Rewair A S\Inspección - Fotos",""))  # here I print the progress and final destinations
-       Path2Remove=f"{PathSource}\{Name}"  # here I empty the original folder
-       os.remove(Path2Remove)
+       if Mode==1:   ## if mode is normal then empty the source folder
+        Path2Remove=f"{PathSource}\{Name}"  # here I empty the original folder
+        os.remove(Path2Remove)
     print("RESULTS: ",len(FinalLocations)-1-LostCount, "PHOTOS CLASSIFIED(",(len(FinalLocations)-1-LostCount)/len(PhotoNames)*100,"%) and ", LostCount, "PHOTOS LOST")
     return FinalLocations
