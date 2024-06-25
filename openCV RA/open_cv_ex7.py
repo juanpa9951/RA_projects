@@ -16,7 +16,6 @@ for path in paths:
   # print(img)
   # print(img.shape)
 
-
   hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV_FULL) # better HSV format, Hue-Saturation-Value, Color is mainly HUE
   # print(hsv_img)
   # print(hsv_img.shape)

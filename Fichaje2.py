@@ -207,12 +207,6 @@ def wait_press_enter():  # this function presses Enter 2 seconds after typing an
     time.sleep(2)  # Wait for 2 seconds
     keyboard.send('enter')  # Press the Enter key
 
-def wait_press_enter():  # this function presses Enter 2 seconds after typing any number
-    time.sleep(2)  # Wait for 2 seconds
-    keyboard.send('enter')  # Press the Enter key
-
-
-
 def print_input(event=None): # this function executes the main code after the enter key press
     entered_text = entry.get()
     try:
