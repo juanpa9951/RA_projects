@@ -1,40 +1,28 @@
-# THIS CODE DISPLAYS PIXEL POSITION MAP ACROSS THE IMAGE
-
+import numpy as np
 import cv2
 
-path='im4.png'
-img=cv2.imread(path)   # standard BGR format each from 0-255
-img = cv2.resize(cv2.imread(path, 1), (0, 0), fx=0.7, fy=0.7) # scaling function fx an fy if necessary
-height, width, ch = img.shape
-#print(img)
-print(img.shape)
+img_ori = cv2.resize(cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Pictures\object detection\im5.png', -1), (0, 0), fx=1, fy=1)
 
+img = cv2.resize(cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Pictures\object detection\im5.png', 0), (0, 0), fx=1, fy=1)
+template = cv2.resize(cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Pictures\object detection\tem5.png', 0), (0, 0), fx=1, fy=1)
+h, w = template.shape
 
-hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV_FULL) # better HSV format, Hue-Saturation-Value, Color is mainly HUE
-print(hsv_img)
-print(hsv_img.shape)
+methods = [cv2.TM_CCOEFF, cv2.TM_CCOEFF_NORMED, cv2.TM_CCORR,
+            cv2.TM_CCORR_NORMED, cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]
 
-for x in range(0,width,50):
- for y in range(0,height,30):  # 756 rows   1344 columns
-  Text='( '+str(y)+','+str(x)+' )'
-  cv2.putText(img,Text,(x,y),cv2.FONT_HERSHEY_PLAIN,0.5,(100,200,0),1)  # draw text
+for method in methods:
+    img2 = img.copy()
 
-cv2.imshow('img',img)
-cv2.waitKey(0)
+    result = cv2.matchTemplate(img2, template, method)
+    min_val, max_val, min_loc, max_loc = cv2.minMaxLoc(result)
+    if method in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
+        location = min_loc
+    else:
+        location = max_loc
 
-
-#  PIXELES VAN POR FILAS Y COLUMNAS, LO MISMO Q TIRA EL .SHAPE, PERO COORDENADAS ES INVERTIDO (COLUMNA-FILA)
-
-#### CODES INDEX
-#### 1 THIS CODE FILTERS IMAGES ACCORDING TO A COLOR RANGE, CREATES A MASK SHOWING ONLY THE OBJECTS (PIXELS) WITH THAT COLOR
-#### 2 THIS CODE RECEIVES A TEMPLATE IMAGE AND IT TRIES TO FIND THE TEMPLATE INSIDE ANOTHER PICTURE USING DIFFERENT METHODS
-#### 3 THIS CODE DISPLAYS PIXEL POSITION MAP ACROSS THE IMAGE
-#### 4 THIS CODE FINDS OBJECTS IN A UNIFORM BACKGROUND AND MEASURES THEM INSIDE AN IMAGE
-#### 5 THIS CODE JOINS SEPARATE PICTURES INTO 1 PANOMARIC
-#### 6 THIS CODE DISPLAYS COLOR MAP VALUES ACROSS THE IMAGE
-#### 7 THIS CODE IS FOR DETECTING BORDERS OF OBJECTS USING CHANGES IN PIXELS AND MEASURES THEM
-#### 8 THIS CODE FINDS REAL TIME VIDEO OBJECTS IN A UNIFORM BACKGROUND AND MEASURES THEM
-#### 9 THIS CODE FINDS LIVE POSITIONS OF ITEMS IN UNIFORM BACKGROUND WITH REFERENCE POSITIONS
-#### 10 THIS CODE DISPLAYS LIVE COLOR MAP VALUES ACROSS THE IMAGE
-#### 11 THIS CODE DISPLAYS LIVE PIXEL POSITIONS ACROSS THE IMAGE
-#### 12 THIS CODE CALCULATES THE DISTANCE TRAVELLED BY A BLACK LINE (OR POINT) TRAVELLING ACROSS THE IMAGE ON A VIDEO
+    bottom_right = (location[0] + w, location[1] + h)
+    cv2.rectangle(img_ori, location, bottom_right, 155, 5)
+    cv2.imshow('Match', img_ori)
+    cv2.waitKey(0)
+    cv2.destroyAllWindows()
+# print(img[130][340])

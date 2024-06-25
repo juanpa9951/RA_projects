@@ -21,7 +21,7 @@ keyboard.add_hotkey('0', wait_press_enter)
 
 x=245     #### zero point  x-246  y-837    new   x-245      y-839
 y=839     #### zero point  x-246  y-837    new   x-245      y-839
-paso=1
+paso=10
 
 while True:
     img = cv2.imread(path)  # standard BGR format each from 0-255

@@ -63,34 +63,25 @@
 # plt.show()
 
 
-import keyboard
-import time
+import cv2
 
-def wait_press_enter():  # this function presses Enter 1 seconds after typing any number
-    time.sleep(0.01)  # Wait for 1 seconds
-    keyboard.send('enter')  # Press the Enter key
+# Callback function to capture mouse events
+def mouse_callback(event, x, y, flags, param):
+    if event == cv2.EVENT_MOUSEMOVE:
+        print(f"Mouse coordinates: ({x}, {y})")
 
-keyboard.add_hotkey('4', wait_press_enter)
-keyboard.add_hotkey('8', wait_press_enter)  # assign the key of number 2 to the wait_press_enter function
-keyboard.add_hotkey('6', wait_press_enter)  # assign the key of number 3 to the wait_press_enter function
-keyboard.add_hotkey('5', wait_press_enter)  # assign the key of number 4 to the wait_press_enter function
-keyboard.add_hotkey('esc', lambda: keyboard.unhook_all_hotkeys())
+# Load an image
+image = cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\F1.png')
 
-x=10
-y=10
+# Create a window and display the image
+cv2.namedWindow('Image')
+cv2.imshow('Image', image)
 
-while True:
-    v = input('write value: ')
-    v=int(v)
-    if v==4:
-        x=x-1
-    elif v==6:
-        x=x+1
-    elif v==8:
-        y=y+1
-    elif v==5:
-        y=y-1
-    else:
-        break
-    print('x= ',x)
-    print('y= ',y)
+# Set the mouse callback function to the window
+cv2.setMouseCallback('Image', mouse_callback)
+
+# Keep the window open until a key is pressed
+cv2.waitKey(0)
+
+# Destroy all windows
+cv2.destroyAllWindows()
