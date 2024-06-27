@@ -10,7 +10,7 @@ camera_url=0
 camera_url_der="rtsp://LP008:LP008ASM@192.168.2.82:554/stream1"
 camera_url_izq="rtsp://LP009:LP009ASM@192.168.2.84:554/stream1"
 
-cap = cv2.VideoCapture(camera_url)
+cap = cv2.VideoCapture(camera_url)   ##### <---- CHOOSE CAMERA
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 size_line=2

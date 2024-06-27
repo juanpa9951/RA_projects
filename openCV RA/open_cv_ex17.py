@@ -5,7 +5,8 @@ os.chdir(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\cap
 
 import cv2
 
-paths=['T1.png','T2.png','T3.png','T4.png']
+# paths=['T1.png','T2.png','T3.png','T4.png']
+paths=['TN1.png','TN2.png','TN3.png','TN4.png','TN5.png','TN6.png','TN7.png','TN8.png']
 
 for path in paths:
   img=cv2.imread(path)   # standard BGR format each from 0-255
@@ -13,31 +14,45 @@ for path in paths:
   # print(img)
   # print(img.shape)
 
-  # hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV_FULL) # better HSV format, Hue-Saturation-Value, Color is mainly HUE
-  hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # GRAYSCALE ALTERNATIVE
 
-  # print(hsv_img)
-  # print(hsv_img.shape)
 
   size_circle=5
   size_line=2
+  threshold_hsv=140      ## 200-GRAY     130-HSV
+  threshold_gray=200
+  offset=50          ## 60
+  mode=0   ### 1-HSV        0-GRAY
+
+  if mode==1:
+      hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV_FULL) # better HSV format, Hue-Saturation-Value, Color is mainly HUE
+      threshold=threshold_hsv
+  else:
+      hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # GRAYSCALE ALTERNATIVE
+      threshold=threshold_gray
+
+  # print(hsv_img)
+  # print(hsv_img.shape)
 
   #.............LEFT BORDER.........................................................
 
 
   col_left=800
   row_left=None
-  #row=195
   for row in range (195,829):
      sw = 1
      col = 245
      while sw==1:
        if col<1690:
-         # if hsv_img[row,col,0]>=130 and hsv_img[row,col+50,0]>=130 and col<col_left:    ### HSV
-         if hsv_img[row, col] >=200 and hsv_img[row, col + 50] >=200 and col < col_left:    ### GRAYSCALE
-              col_left=col
-              row_left=row
-              sw=0
+           if mode==1:
+                 if hsv_img[row,col,0]>=threshold and hsv_img[row,col+offset,0]>=threshold and col<col_left:    ### HSV
+                      col_left=col
+                      row_left=row
+                      sw=0
+           else:
+                 if hsv_img[row, col] >=threshold and hsv_img[row, col + offset] >=threshold and col < col_left:    ### GRAYSCALE
+                      col_left=col
+                      row_left=row
+                      sw=0
        else:
          sw=0
        col = col + 1
@@ -52,11 +67,17 @@ for path in paths:
      col = 1690
      while sw==1:
        if col>250:
-         # if hsv_img[row,col,0]>=130 and hsv_img[row,col+50,0]>=130 and col<col_left:    ### HSV
-         if hsv_img[row, col] >=200 and hsv_img[row, col - 50] >=200 and col > col_right:    ### GRAYSCALE
-              col_right=col
-              row_right=row
-              sw=0
+           if mode==1:
+                if hsv_img[row,col,0]>=threshold and hsv_img[row,col-offset,0]>=threshold and col>col_right:    ### HSV
+                     # if hsv_img[row, col] >=threshold and hsv_img[row, col - offset] >=threshold and col > col_right:    ### GRAYSCALE
+                          col_right=col
+                          row_right=row
+                          sw=0
+           else:
+                if hsv_img[row, col] >=threshold and hsv_img[row, col - offset] >=threshold and col > col_right:    ### GRAYSCALE
+                   col_right = col
+                   row_right = row
+                   sw = 0
        else:
          sw=0
        col = col - 1
