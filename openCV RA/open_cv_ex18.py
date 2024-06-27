@@ -1,4 +1,4 @@
-# THIS CODE DISPLAYS COLOR MAP VALUES ACROSS THE IMAGE
+# THIS CODE DISPLAYS COLOR MAP VALUES ACROSS THE FEEDER RIGHT IMAGE
 
 import os
 os.chdir(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas')
@@ -12,14 +12,16 @@ height, width, ch = img.shape
 print(img.shape)
 
 
-hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV_FULL) # better HSV format, Hue-Saturation-Value, Color is mainly HUE
+# hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV_FULL) # better HSV format, Hue-Saturation-Value, Color is mainly HUE
+hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)       # GRAYSCALE ALTERNATIVE
 #print(hsv_img)
 print(hsv_img.shape)
 
 
 for x in range(0,width,18):
  for y in range(0,height,10):  # 756 rows   1344 columns
-  Text=str(hsv_img[y,x,0])
+  # Text=str(hsv_img[y,x,0])    ## HSV
+  Text = str(hsv_img[y, x])   ### GRAY
   cv2.putText(img,Text,(x,y),cv2.FONT_HERSHEY_PLAIN,0.5,(100,200,0),1)  # draw text
 
 
@@ -28,7 +30,6 @@ cv2.waitKey(0)
 cv2.destroyAllWindows()
 
 
-#  PIXELES VAN POR FILAS Y COLUMNAS, LO MISMO Q TIRA EL .SHAPE, PERO COORDENADAS ES INVERTIDO (COLUMNA-FILA)
 
 
 # BLUE   118 176 204
@@ -36,6 +37,8 @@ cv2.destroyAllWindows()
 # GREEN  69 206 177
 # BLACK  0   0   0
 # WHITE  0   0   255
+
+#  PIXELES VAN POR FILAS Y COLUMNAS, LO MISMO Q TIRA EL .SHAPE, EL IMG O EL HSV O EL GRAY TIRAN RESULTADO EN FILAS X COLUMNAS, PERO COORDENADAS ES INVERTIDO (COLUMNA-FILA), TOD O LO QUE SEA DIBUJAR SOBRE LA IMAGEN SERA EN COORDENADAS, PRIMERO LA COLUMNA Y LUEGO LA FILA
 
 #### CODES INDEX
 #### 1 THIS CODE FILTERS IMAGES ACCORDING TO A COLOR RANGE, CREATES A MASK SHOWING ONLY THE OBJECTS (PIXELS) WITH THAT COLOR
@@ -50,3 +53,9 @@ cv2.destroyAllWindows()
 #### 10 THIS CODE DISPLAYS LIVE COLOR MAP VALUES ACROSS THE IMAGE
 #### 11 THIS CODE DISPLAYS LIVE PIXEL POSITIONS ACROSS THE IMAGE
 #### 12 THIS CODE CALCULATES THE DISTANCE TRAVELLED BY A BLACK LINE (OR POINT) TRAVELLING ACROSS THE IMAGE ON A VIDEO
+#### 13 THIS CODE IS FOR LIVE TESTING OF THE FEEDER CAMERA
+#### 14 This code shows single pixel position inside an image with dynamic positioning using the keys 4-left 8-up 6-right 5-down
+#### 15 This code shows live mouse pointer pixel position inside an image
+#### 16 THIS CODE CREATES A LIVE MESH MESH IN THE FEEDER RIGHT CAMERA
+#### 17 THIS CODE IS FOR DETECTING BORDERS OF LAYERS IN THE FEEDER RIGHT SIDE, NOT LIVE
+#### 18 THIS CODE DISPLAYS COLOR MAP VALUES ACROSS THE FEEDER RIGHT IMAGE

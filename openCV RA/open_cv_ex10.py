@@ -1,4 +1,4 @@
-# THIS CODE DISPLAYS LIVE COLOR MAP VALUES ACROSS THE IMAGE
+# THIS CODE DISPLAYS LIVE COLOR MAP VALUES ACROSS THE FEEDER RIGHT CAMERA
 
 import os
 os.chdir(r'C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP\openCV RA')
@@ -6,7 +6,12 @@ os.chdir(r'C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP\openCV RA')
 import cv2
 import numpy as np
 
-cap = cv2.VideoCapture(0)
+
+
+camera_url=0
+camera_url_der="rtsp://LP008:LP008ASM@192.168.2.82:554/stream1"
+camera_url_izq="rtsp://LP009:LP009ASM@192.168.2.84:554/stream1"
+cap = cv2.VideoCapture(camera_url_der)
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
@@ -49,3 +54,9 @@ cv2.destroyAllWindows()
 #### 10 THIS CODE DISPLAYS LIVE COLOR MAP VALUES ACROSS THE IMAGE
 #### 11 THIS CODE DISPLAYS LIVE PIXEL POSITIONS ACROSS THE IMAGE
 #### 12 THIS CODE CALCULATES THE DISTANCE TRAVELLED BY A BLACK LINE (OR POINT) TRAVELLING ACROSS THE IMAGE ON A VIDEO
+#### 13 THIS CODE IS FOR LIVE TESTING OF THE FEEDER CAMERA
+#### 14 This code shows single pixel position inside an image with dynamic positioning using the keys 4-left 8-up 6-right 5-down
+#### 15 This code shows live mouse pointer pixel position inside an image
+#### 16 THIS CODE CREATES A LIVE MESH MESH IN THE FEEDER RIGHT CAMERA
+#### 17 THIS CODE IS FOR DETECTING BORDERS OF LAYERS IN THE FEEDER RIGHT SIDE, NOT LIVE
+#### 18 THIS CODE DISPLAYS COLOR MAP VALUES ACROSS THE FEEDER RIGHT IMAGE
