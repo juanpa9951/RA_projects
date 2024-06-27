@@ -18,9 +18,9 @@ for path in paths:
 
   size_circle=5
   size_line=2
-  threshold_hsv=140      ## 200-GRAY     130-HSV
+  threshold_hsv=130      ## 200-GRAY     130-HSV
   threshold_gray=200
-  offset=50          ## 60
+  offset=60          ## 60
   mode=0   ### 1-HSV        0-GRAY
 
   if mode==1:
@@ -36,7 +36,7 @@ for path in paths:
   #.............LEFT BORDER.........................................................
 
 
-  col_left=800
+  col_left=1690   # 800
   row_left=None
   for row in range (195,829):
      sw = 1
@@ -44,7 +44,7 @@ for path in paths:
      while sw==1:
        if col<1690:
            if mode==1:
-                 if hsv_img[row,col,0]>=threshold and hsv_img[row,col+offset,0]>=threshold and col<col_left:    ### HSV
+                 if hsv_img[row,col,0]>=threshold and hsv_img[row,col+offset,0]>=threshold and col < col_left:    ### HSV
                       col_left=col
                       row_left=row
                       sw=0
@@ -62,52 +62,62 @@ for path in paths:
 
   col_right=250
   row_right=None
-  for row in range (195,829):
+  for row in range(195,829):
      sw = 1
      col = 1690
      while sw==1:
        if col>250:
            if mode==1:
-                if hsv_img[row,col,0]>=threshold and hsv_img[row,col-offset,0]>=threshold and col>col_right:    ### HSV
-                     # if hsv_img[row, col] >=threshold and hsv_img[row, col - offset] >=threshold and col > col_right:    ### GRAYSCALE
+                if hsv_img[row,col,0]>=threshold and hsv_img[row,col-offset,0]>=threshold and col > col_right:    ### HSV
                           col_right=col
                           row_right=row
                           sw=0
            else:
                 if hsv_img[row, col] >=threshold and hsv_img[row, col - offset] >=threshold and col > col_right:    ### GRAYSCALE
-                   col_right = col
-                   row_right = row
-                   sw = 0
+                          col_right = col
+                          row_right = row
+                          sw = 0
        else:
          sw=0
        col = col - 1
   cv2.circle(img, (col_right, row_right), size_circle, (255, 0, 0), -1)
 
 
-  # #.............TOP BORDER............................
-  # sw=1
-  # col=mid_w
-  # row=110
-  # while sw==1:
-  #   if hsv_img[row,col,0]>60:
-  #       if hsv_img[row+15,col,0]>60:
-  #         cv2.circle(img,(col,row),size_circle,(255,0,0),-1)
-  #         top_row=row
-  #         sw=0
-  #   row=row+1
-  #
-  # #.............BOTTOM BORDER....................
-  # sw=1
-  # col=mid_w
-  # row=530
-  # while sw==1:
-  #   if hsv_img[row,col,0]>160:
-  #       if hsv_img[row-15,col,0]>100:
-  #         print(hsv_img[row,col,0])
-  #         cv2.circle(img,(col,row),size_circle,(255,0,0),-1)
-  #         bottom_row=row
-  #         sw=0
-  #   row=row-1
+  ###..............TOP BORDER......................................
+  col_top=None
+  row_top=840
+  threshold=190
+  for col in range (250,1690):
+     sw = 1
+     row = 195
+     while sw==1:
+       if row<839:
+           if mode==1:
+                if hsv_img[row,col,0]>=threshold and hsv_img[row+offset,col,0]>=threshold and row < row_top:    ### HSV
+                          col_top=col
+                          row_top=row
+                          sw=0
+           else:
+                if hsv_img[row, col] >=threshold and hsv_img[row+offset, col] >=threshold and row < row_top:    ### GRAYSCALE
+                          col_top = col
+                          row_top = row
+                          sw = 0
+       else:
+         sw=0
+       row = row + 1
+  cv2.circle(img, (col_top, row_top), size_circle, (255, 0, 0), -1)
+
+
+
+
+
+  ######.............BOTTOM BORDER...................................
+
+
+
+
+
+
   # #............DRAW THE RECTANGLE.....................................
   #
   # cv2.rectangle(img,(col_left,top_row),(col_right,bottom_row),(0,0,255),size_line)
