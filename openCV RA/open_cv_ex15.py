@@ -7,7 +7,7 @@ def mouse_callback(event, x, y, flags, param):
         print(f"Mouse coordinates: ({x}, {y})")
 
 # Load an image
-image = cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\F9.png')
+image = cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\TB1.png')
 
 # Create a window and display the image
 cv2.namedWindow('Image')
