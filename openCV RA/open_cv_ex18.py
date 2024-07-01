@@ -5,22 +5,20 @@ os.chdir(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\cap
 
 import cv2
 
-path='TB9.png'
+path='N3.png'
 img=cv2.imread(path)   # standard BGR format each from 0-255
 height, width, ch = img.shape
 #print(img)
 print(img.shape)
 
-mode=0   #### 1-HSV     0--- GRAY
-if mode==1:
+mode=1   #### 1-HSV     0--- GRAY
+if mode==0:
    hsv_img0 = cv2.cvtColor(img, cv2.COLOR_BGR2HSV_FULL)  # better HSV format, Hue-Saturation-Value, Color is mainly HUE
    hsv_img0=hsv_img0[:,:,0]
    hsv_img = cv2.GaussianBlur(hsv_img0, (5, 5), 0)  ### additional transformation
 else:
    hsv_img0 = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)       # GRAYSCALE ALTERNATIVE
    hsv_img = cv2.GaussianBlur(hsv_img0, (5, 5), 0)   ### additional transformation
-
-
 
 
 #print(hsv_img)

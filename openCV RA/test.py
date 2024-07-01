@@ -68,7 +68,7 @@ def trident3(hsv_img, row, col, border, threshold_down,threshold_up, offset):
         c3 = (hsv_img[row + offset, col - offset_side] >= threshold_down) and (hsv_img[row + offset, col - offset_side] <= threshold_up)
         c4 = (hsv_img[row + 5, col-5] >= threshold_down) and (hsv_img[row + 5, col-5] <= threshold_up)
         c5 = (hsv_img[row + 5, col + 5] >= threshold_down) and (hsv_img[row + 5, col + 5] <= threshold_up)
-        check = c1 * c2# * c3* c4 * c5
+        check = c1 * c2 * c3# * c4 * c5
 
     if border == 'bottom':
         c1 = (hsv_img[row - offset, col] >= threshold_down) and (hsv_img[row - offset, col] <= threshold_up)
@@ -76,21 +76,21 @@ def trident3(hsv_img, row, col, border, threshold_down,threshold_up, offset):
         c3 = (hsv_img[row - offset, col - offset_side] >= threshold_down) and (hsv_img[row - offset, col - offset_side] <= threshold_up)
         c4 = (hsv_img[row - 5, col-5] >= threshold_down) and (hsv_img[row - 5, col-5] <= threshold_up)
         c5 = (hsv_img[row - 5, col + 5] >= threshold_down) and (hsv_img[row - 5, col + 5] <= threshold_up)
-        check = c1* c2 #* c3 # * c4 * c5
+        check = c1* c2 * c3 # * c4 * c5
 
     elif border == 'left':
         c1 = (hsv_img[row, col + offset] >= threshold_down) and (hsv_img[row, col + offset] <= threshold_up)
         c2 = (hsv_img[row + offset_side, col + offset] >= threshold_down) and (hsv_img[row + offset_side, col + offset] <= threshold_up)
         c3 = (hsv_img[row - offset_side, col + offset] >= threshold_down) and (hsv_img[row - offset_side, col + offset] <= threshold_up)
         c4 = (hsv_img[row, col + 5] >= threshold_down) and (hsv_img[row, col + 10] <= threshold_up)
-        check = c1 * c2# * c3*c4
+        check = c1 * c2 * c3# *c4
 
     elif border == 'right':
         c1 = (hsv_img[row, col - offset] >= threshold_down) and (hsv_img[row, col - offset] <= threshold_up)
         c2 = (hsv_img[row + offset_side, col - offset] >= threshold_down) and (hsv_img[row + offset_side, col - offset] <= threshold_up)
         c3 = (hsv_img[row - offset_side, col - offset] >= threshold_down) and (hsv_img[row - offset_side, col - offset] <= threshold_up)
         c4 = (hsv_img[row, col - 5] >= threshold_down) and (hsv_img[row, col - 10] <= threshold_up)
-        check = c1 * c2 #* c3*c4
+        check = c1 * c2 * c3 #*c4
 
 
     return check  ### this is 1 if true  or 0 if false
@@ -364,7 +364,6 @@ def border2():
       cv2.imshow('img',img)
       cv2.waitKey(0)
       cv2.destroyAllWindows()
-
 def border3():
     import os
     os.chdir(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas')
@@ -386,10 +385,10 @@ def border3():
       threshold_hsv=130      ## 200-GRAY     130-HSV
       threshold_gray=200
       offset=60          ## 60
-      mode=0   ### 1-HSV        0-GRAY
+      mode=1   ### 1-HSV        0-GRAY
 
-      threshold_up=200      ### 140
-      threshold_down=130    ### 120
+      threshold_up=180    ### 140
+      threshold_down=100    ### 120
 
       if mode==1:
           hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV_FULL) # better HSV format, Hue-Saturation-Value, Color is mainly HUE
@@ -451,12 +450,12 @@ def border3():
 
       ###..............TOP BORDER......................................
       col_top=None
-      row_top=840
+      row_top=790
       for col in range (250,1690):
          sw = 1
          row = 350
          while sw==1:
-           if row<839:
+           if row<790:
                     if hsv_img[row, col] >=threshold_down and hsv_img[row, col] <=threshold_up and row < row_top:    ### GRAYSCALE
                         check=trident3(hsv_img,row,col,'top',threshold_down,threshold_up,offset)
                         # check = 1
@@ -475,7 +474,7 @@ def border3():
       row_bottom=190
       for col in range (250,1690):
          sw = 1
-         row = 839
+         row = 790
          while sw==1:
            if row>350:
                     if hsv_img[row, col] >=threshold_down and hsv_img[row, col] <=threshold_up and row > row_bottom:    ### GRAYSCALE
