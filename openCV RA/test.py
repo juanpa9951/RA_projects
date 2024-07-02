@@ -58,39 +58,38 @@ def trident2(hsv_img, row, col, border, threshold_down,threshold_up, offset):
         #check = c1 * 1  # for debugging
 
     return check  ### this is 1 if true  or 0 if false
-
 def trident3(hsv_img, row, col, border, threshold_down,threshold_up, offset):
-    offset_side = int(offset / 2)
+    offset2 = 50
     check = 0  # initial state
+
     if border == 'top':
-        c1 = (hsv_img[row + offset, col] >= threshold_down) and (hsv_img[row + offset, col] <= threshold_up)
-        c2 = (hsv_img[row + offset, col + offset_side] >= threshold_down) and (hsv_img[row + offset, col + offset_side] <= threshold_up)
-        c3 = (hsv_img[row + offset, col - offset_side] >= threshold_down) and (hsv_img[row + offset, col - offset_side] <= threshold_up)
-        c4 = (hsv_img[row + 5, col-5] >= threshold_down) and (hsv_img[row + 5, col-5] <= threshold_up)
-        c5 = (hsv_img[row + 5, col + 5] >= threshold_down) and (hsv_img[row + 5, col + 5] <= threshold_up)
-        check = c1 * c2 * c3# * c4 * c5
+        c1 = (hsv_img[row, col + offset] >= threshold_down) and (hsv_img[row, col + offset] <= threshold_up)
+        c2 = (hsv_img[row, col - offset] >= threshold_down) and (hsv_img[row, col - offset] <= threshold_up)
+        c3 = (hsv_img[row + offset, col] >= threshold_down) and (hsv_img[row + offset, col] <= threshold_up)
+        c4 = (hsv_img[row - offset, col] >= threshold_down) and (hsv_img[row - offset, col] <= threshold_up)
+        check = c1 * c2 * c3 * c4
 
     if border == 'bottom':
-        c1 = (hsv_img[row - offset, col] >= threshold_down) and (hsv_img[row - offset, col] <= threshold_up)
-        c2 = (hsv_img[row - offset, col + offset_side] >= threshold_down) and (hsv_img[row - offset, col + offset_side] <= threshold_up)
-        c3 = (hsv_img[row - offset, col - offset_side] >= threshold_down) and (hsv_img[row - offset, col - offset_side] <= threshold_up)
-        c4 = (hsv_img[row - 5, col-5] >= threshold_down) and (hsv_img[row - 5, col-5] <= threshold_up)
-        c5 = (hsv_img[row - 5, col + 5] >= threshold_down) and (hsv_img[row - 5, col + 5] <= threshold_up)
-        check = c1* c2 * c3 # * c4 * c5
+        c1 = (hsv_img[row, col + offset] >= threshold_down) and (hsv_img[row, col + offset] <= threshold_up)
+        c2 = (hsv_img[row, col - offset] >= threshold_down) and (hsv_img[row, col - offset] <= threshold_up)
+        c3 = (hsv_img[row + offset, col] >= threshold_down) and (hsv_img[row + offset, col] <= threshold_up)
+        c4 = (hsv_img[row - offset, col] >= threshold_down) and (hsv_img[row - offset, col] <= threshold_up)
+        check = c1 * c2 * c3 * c4
 
     elif border == 'left':
         c1 = (hsv_img[row, col + offset] >= threshold_down) and (hsv_img[row, col + offset] <= threshold_up)
-        c2 = (hsv_img[row + offset_side, col + offset] >= threshold_down) and (hsv_img[row + offset_side, col + offset] <= threshold_up)
-        c3 = (hsv_img[row - offset_side, col + offset] >= threshold_down) and (hsv_img[row - offset_side, col + offset] <= threshold_up)
-        c4 = (hsv_img[row, col + 5] >= threshold_down) and (hsv_img[row, col + 10] <= threshold_up)
-        check = c1 * c2 * c3# *c4
+        c2 = (hsv_img[row, col - offset] >= threshold_down) and (hsv_img[row, col - offset] <= threshold_up)
+        c3 = (hsv_img[row + offset, col] >= threshold_down) and (hsv_img[row + offset, col] <= threshold_up)
+        c4 = (hsv_img[row - offset, col] >= threshold_down) and (hsv_img[row - offset, col] <= threshold_up)
+        c5 = (hsv_img[row, col + offset2] >= threshold_down) and (hsv_img[row, col + offset2] <= threshold_up)
+        check = c1 * c2 * c3 * c4*c5
 
     elif border == 'right':
-        c1 = (hsv_img[row, col - offset] >= threshold_down) and (hsv_img[row, col - offset] <= threshold_up)
-        c2 = (hsv_img[row + offset_side, col - offset] >= threshold_down) and (hsv_img[row + offset_side, col - offset] <= threshold_up)
-        c3 = (hsv_img[row - offset_side, col - offset] >= threshold_down) and (hsv_img[row - offset_side, col - offset] <= threshold_up)
-        c4 = (hsv_img[row, col - 5] >= threshold_down) and (hsv_img[row, col - 10] <= threshold_up)
-        check = c1 * c2 * c3 #*c4
+        c1 = (hsv_img[row, col + offset] >= threshold_down) and (hsv_img[row, col + offset] <= threshold_up)
+        c2 = (hsv_img[row, col - offset] >= threshold_down) and (hsv_img[row, col - offset] <= threshold_up)
+        c3 = (hsv_img[row + offset, col] >= threshold_down) and (hsv_img[row + offset, col] <= threshold_up)
+        c4 = (hsv_img[row - offset, col] >= threshold_down) and (hsv_img[row - offset, col] <= threshold_up)
+        check = c1 * c2 * c3 * c4
 
 
     return check  ### this is 1 if true  or 0 if false
@@ -373,6 +372,7 @@ def border3():
     # paths=['T1.png','T2.png','T3.png','T4.png']
     # paths=['TN1.png','TN2.png','TN3.png','TN4.png','TN5.png','TN6.png','TN7.png','TN8.png']
     paths = ['TB9.png', 'TB8.png', 'TB7.png', 'TB6.png', 'TB5.png', 'TB4.png', 'TB3.png']
+    # paths = ['N2.png', 'N3.png', 'N4.png']
 
     for path in paths:
       img=cv2.imread(path)   # standard BGR format each from 0-255
@@ -382,23 +382,21 @@ def border3():
 
       size_circle=5
       size_line=2
-      threshold_hsv=130      ## 200-GRAY     130-HSV
-      threshold_gray=200
-      offset=60          ## 60
-      mode=1   ### 1-HSV        0-GRAY
+      offset=15          ## 60
+      mode=0   ### 1-HSV        0-GRAY
 
-      threshold_up=180    ### 140
-      threshold_down=100    ### 120
+      threshold_up=260    ### 140
+      threshold_down=130    ### 120
 
       if mode==1:
           hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV_FULL) # better HSV format, Hue-Saturation-Value, Color is mainly HUE
           hsv_img = hsv_img[:,:,0]
           hsv_img = cv2.GaussianBlur(hsv_img, (5, 5), 0)  ### additional transformation
-          threshold=threshold_hsv
+
       else:
           hsv_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)  # GRAYSCALE ALTERNATIVE
           hsv_img = cv2.GaussianBlur(hsv_img, (5, 5), 0)
-          threshold=threshold_gray
+
 
 
       # print(hsv_img)

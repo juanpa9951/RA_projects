@@ -1052,7 +1052,11 @@ def read_and_plot_layerv23(file_path,name,image_size,Left_centering,Top_centerin
     x_lim=7040
     y_lim=2330
     cx=x_lim-max(x)
+    if cx<=0:       ####  check if layer is too large
+        cx=100
     cy=y_lim-max(y)
+    if cy<=0:        ####  check if layer is too large
+        cy=10
     x = [i + cx for i in x]  # apply offset desfase
     y = [i + cy for i in y]  # apply offset desfase
     x_tag = [i + cx for i in x_tag]  # apply offset desfase
@@ -1077,6 +1081,7 @@ def read_and_plot_layerv23(file_path,name,image_size,Left_centering,Top_centerin
     if scale_mode==1 and error_detection==0:
         for i in range(0,len(x)):
             input_tuple = (x[i],y[i])
+            # print(input_tuple)
             xy_tup,idx_low,idx_high,tup_low,tup_high = find_closest_tupleV2(tuples_list_real,tuples_list_autocad,input_tuple)
             x[i] = xy_tup[0]
             y[i] = xy_tup[1]

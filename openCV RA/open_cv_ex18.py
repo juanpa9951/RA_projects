@@ -5,7 +5,7 @@ os.chdir(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\cap
 
 import cv2
 
-path='N3.png'
+path='TB9.png'
 img=cv2.imread(path)   # standard BGR format each from 0-255
 height, width, ch = img.shape
 #print(img)
