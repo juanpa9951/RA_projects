@@ -11,7 +11,7 @@ height, width, ch = img.shape
 #print(img)
 print(img.shape)
 
-mode=1   #### 1-HSV     0--- GRAY
+mode=0   #### 1-HSV     0--- GRAY
 if mode==0:
    hsv_img0 = cv2.cvtColor(img, cv2.COLOR_BGR2HSV_FULL)  # better HSV format, Hue-Saturation-Value, Color is mainly HUE
    hsv_img0=hsv_img0[:,:,0]
