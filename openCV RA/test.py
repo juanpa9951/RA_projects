@@ -535,6 +535,7 @@ def border4():
       size_line=2
       offset=15          ## 60
       mode=1   ### 1-HSV        0-GRAY
+      paso=5   #### paso de exploracion de pixeles
 
       threshold_up=260    ### 260
       threshold_down=120    ### 130
@@ -571,7 +572,7 @@ def border4():
                           sw=0
            else:
              sw=0
-           col = col + 1
+           col = col + paso
       cv2.circle(img, (col_left, row_left), size_circle, (255, 0, 0), -1)
 
       # #...........RIGHT BORDER....................................................
@@ -592,7 +593,7 @@ def border4():
                               sw = 0
            else:
              sw=0
-           col = col - 1
+           col = col - paso
       cv2.circle(img, (col_right, row_right), size_circle, (255, 0, 0), -1)
 
 
@@ -613,7 +614,7 @@ def border4():
                               sw = 0
            else:
              sw=0
-           row = row + 1
+           row = row + paso
       cv2.circle(img, (col_top, row_top), size_circle, (255, 0, 0), -1)
 
 
@@ -634,12 +635,17 @@ def border4():
                               sw = 0
            else:
              sw=0
-           row = row - 1
+           row = row - paso
       cv2.circle(img, (col_bottom, row_bottom), size_circle, (255, 0, 0), -1)
 
 
 
       ####............DRAW THE RECTANGLE.....................................
+      # d=10
+      # col_left=col_left-d
+      # col_right=col_right+d
+      # row_top=row_top-d
+      # row_bottom=row_bottom+d
       cv2.rectangle(img,(col_left,row_top),(col_right,row_bottom),(0,0,255),size_line)
       #
       # #............WRITE THE WIDTH AND HEIGHT............................

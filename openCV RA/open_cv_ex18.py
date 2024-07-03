@@ -11,7 +11,7 @@ height, width, ch = img.shape
 #print(img)
 print(img.shape)
 
-mode=0   #### 1-HSV     0--- GRAY
+mode=1   #### 1-HSV     0--- GRAY
 if mode==0:
    hsv_img0 = cv2.cvtColor(img, cv2.COLOR_BGR2HSV_FULL)  # better HSV format, Hue-Saturation-Value, Color is mainly HUE
    hsv_img0=hsv_img0[:,:,0]
@@ -25,14 +25,22 @@ else:
 #print(hsv_img.shape)
 
 
+##### verificacion normal del valor del pixel
 for x in range(0,width,17):   ## 18
  for y in range(0,height,11): ## 10
-  # if mode==1:
-  #    Text=str(hsv_img[y,x,0])    ## HSV
-  # else:
-  #    Text = str(hsv_img[y, x])   ### GRAY
   Text = str(hsv_img[y, x])
   cv2.putText(img,Text,(x,y),cv2.FONT_HERSHEY_PLAIN,0.5,(100,200,0),1)  # draw text
+
+#### verificacion usando 1s y 0s
+# for x in range(0,width,17):   ## 18
+#  for y in range(0,height,11): ## 10
+#   if hsv_img[y, x]>= 120 and hsv_img[y, x]<=260:
+#       Text = str(1)
+#   else:
+#       Text = str(0)
+#   cv2.putText(img,Text,(x,y),cv2.FONT_HERSHEY_PLAIN,0.5,(100,200,0),1)  # draw text
+
+
 
 
 cv2.imshow('img',img)
