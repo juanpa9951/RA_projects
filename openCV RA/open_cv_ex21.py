@@ -58,7 +58,7 @@ def find_closest_tupleV2(tuples_list_real,tuples_list_autocad, input_tuple):
 # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
 import pandas as pd
 excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\feeder_right.xlsx'
-Surface_map = pd.read_excel(excel_table_calib, sheet_name='right_t', header=0)
+Surface_map = pd.read_excel(excel_table_calib, sheet_name='right_t1', header=0)
 tuples_list_real=[]
 tuples_list_pixel=[]
 for i in range(0,len(Surface_map)):

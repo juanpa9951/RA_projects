@@ -60,7 +60,7 @@ def find_closest_tupleV2(tuples_list_real,tuples_list_autocad, input_tuple):
 # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
 import pandas as pd
 excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\feeder_right.xlsx'
-Surface_map = pd.read_excel(excel_table_calib, sheet_name='right_t', header=0)
+Surface_map = pd.read_excel(excel_table_calib, sheet_name='right_t1', header=0)
 tuples_list_real=[]
 tuples_list_pixel=[]
 for i in range(0,len(Surface_map)):
@@ -101,7 +101,7 @@ button_pressed = False
 # Define button properties
 button_text = "Save Screenshot"
 button_color = (0, 255, 0)
-button_position = (10, 80)
+button_position = (50, 130)
 button_size = (150, 30)
 button_rect = (button_position[0], button_position[1], button_position[0] + button_size[0], button_position[1] + button_size[1])
 
@@ -132,7 +132,7 @@ def draw_lines(event, x, y, flags, param):
             lines.clear()
 
 # Load an image from a local file
-image_path = 'TB3.png'
+image_path = 'C2.png'
 original_img = cv2.imread(image_path)
 if original_img is None:
     print("Error: Could not open or find the image.")

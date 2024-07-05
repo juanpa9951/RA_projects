@@ -1,26 +1,42 @@
 ### this code shows live mouse pointer pixel position inside an image
 import cv2
-
+coordinates=[]
 # Callback function to capture mouse events
 def mouse_callback(event, x, y, flags, param):
     if event == cv2.EVENT_MOUSEMOVE:
         print(f"Mouse coordinates: ({x}, {y})")
 
+def click_event(event, x, y, flags, param):
+    if event == cv2.EVENT_LBUTTONDOWN:
+        coordinates.append((x, y))
+        print(f"Mouse clicked at: ({x}, {y})")
+
 # Load an image
-image = cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\TB9.png')
+image = cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\C9.png')
 
 # Create a window and display the image
 cv2.namedWindow('Image')
 cv2.imshow('Image', image)
 
-# Set the mouse callback function to the window
-cv2.setMouseCallback('Image', mouse_callback)
+#####     Set the mouse callback function to the window
 
-# Keep the window open until a key is pressed
+#cv2.setMouseCallback('Image', mouse_callback)    ##### to print all positions
+cv2.setMouseCallback('Image', click_event)         ##### to print only the clic
+
+##### Keep the window open until a key is pressed
 cv2.waitKey(0)
 
 # Destroy all windows
 cv2.destroyAllWindows()
+
+
+print("x")
+for tup in coordinates:
+    print(tup[0])
+
+print("y")
+for tup in coordinates:
+    print(tup[1])
 
 
 

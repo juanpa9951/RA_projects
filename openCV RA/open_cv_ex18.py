@@ -31,6 +31,7 @@ for x in range(0,width,17):   ## 18
   Text = str(hsv_img[y, x])
   cv2.putText(img,Text,(x,y),cv2.FONT_HERSHEY_PLAIN,0.5,(100,200,0),1)  # draw text
 
+
 #### verificacion usando 1s y 0s
 # for x in range(0,width,17):   ## 18
 #  for y in range(0,height,11): ## 10
@@ -39,8 +40,6 @@ for x in range(0,width,17):   ## 18
 #   else:
 #       Text = str(0)
 #   cv2.putText(img,Text,(x,y),cv2.FONT_HERSHEY_PLAIN,0.5,(100,200,0),1)  # draw text
-
-
 
 
 cv2.imshow('img',img)

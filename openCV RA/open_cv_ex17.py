@@ -37,6 +37,7 @@ def trident3(hsv_img, row, col, border, threshold_down,threshold_up, offset):
 
 
     return check  ### this is 1 if true  or 0 if false
+
 def border4():
     ### border 3 with dynamic columns and row
     import os
@@ -61,9 +62,10 @@ def border4():
       size_line=2
       offset=15          ## 60
       mode=1   ### 1-HSV        0-GRAY
+      paso=5   #### paso de exploracion de pixeles
 
-      threshold_up=260    ### 140
-      threshold_down=130    ### 120
+      threshold_up=260    ### 260
+      threshold_down=120    ### 130
 
       if mode==1:
           hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV_FULL) # better HSV format, Hue-Saturation-Value, Color is mainly HUE
@@ -81,13 +83,13 @@ def border4():
       #.............LEFT BORDER.........................................................
 
 
-      col_left=1690   # 800
+      col_left=1600   # 800
       row_left=None
-      for row in range (350,829):
+      for row in range (400,790):
          sw = 1
          col = 245
          while sw==1:
-           if col<1690:
+           if col<1600:
                      if hsv_img[row, col] >=threshold_down and hsv_img[row, col] <=threshold_up and col < col_left:    ### GRAYSCALE
                          check = trident3(hsv_img, row, col, 'left', threshold_down,threshold_up,offset)
                          # check=1
@@ -97,16 +99,16 @@ def border4():
                           sw=0
            else:
              sw=0
-           col = col + 1
+           col = col + paso
       cv2.circle(img, (col_left, row_left), size_circle, (255, 0, 0), -1)
 
       # #...........RIGHT BORDER....................................................
 
       col_right=col_left
       row_right=None
-      for row in range(350,829):
+      for row in range(400,790):
          sw = 1
-         col = 1690
+         col = 1600
          while sw==1:
            if col>250:
                     if hsv_img[row, col] >=threshold_down and hsv_img[row, col] <=threshold_up and col > col_right:    ### GRAYSCALE
@@ -118,7 +120,7 @@ def border4():
                               sw = 0
            else:
              sw=0
-           col = col - 1
+           col = col - paso
       cv2.circle(img, (col_right, row_right), size_circle, (255, 0, 0), -1)
 
 
@@ -127,7 +129,7 @@ def border4():
       row_top=790
       for col in range (col_left,col_right):
          sw = 1
-         row = 350
+         row = 400
          while sw==1:
            if row<790:
                     if hsv_img[row, col] >=threshold_down and hsv_img[row, col] <=threshold_up and row < row_top:    ### GRAYSCALE
@@ -139,7 +141,7 @@ def border4():
                               sw = 0
            else:
              sw=0
-           row = row + 1
+           row = row + paso
       cv2.circle(img, (col_top, row_top), size_circle, (255, 0, 0), -1)
 
 
@@ -150,7 +152,7 @@ def border4():
          sw = 1
          row = 790
          while sw==1:
-           if row>350:
+           if row>400:
                     if hsv_img[row, col] >=threshold_down and hsv_img[row, col] <=threshold_up and row > row_bottom:    ### GRAYSCALE
                         check=trident3(hsv_img,row,col,'bottom',threshold_down,threshold_up,offset)
                         # check = 1
@@ -160,12 +162,17 @@ def border4():
                               sw = 0
            else:
              sw=0
-           row = row - 1
+           row = row - paso
       cv2.circle(img, (col_bottom, row_bottom), size_circle, (255, 0, 0), -1)
 
 
 
       ####............DRAW THE RECTANGLE.....................................
+      # d=10
+      # col_left=col_left-d
+      # col_right=col_right+d
+      # row_top=row_top-d
+      # row_bottom=row_bottom+d
       cv2.rectangle(img,(col_left,row_top),(col_right,row_bottom),(0,0,255),size_line)
       #
       # #............WRITE THE WIDTH AND HEIGHT............................
