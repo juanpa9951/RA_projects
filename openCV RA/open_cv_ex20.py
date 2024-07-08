@@ -132,7 +132,7 @@ def draw_lines(event, x, y, flags, param):
             lines.clear()
 
 # Load an image from a local file
-image_path = 'C2.png'
+image_path = 'RT2.png'
 original_img = cv2.imread(image_path)
 if original_img is None:
     print("Error: Could not open or find the image.")
