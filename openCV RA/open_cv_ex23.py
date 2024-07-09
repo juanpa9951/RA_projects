@@ -228,31 +228,52 @@ def main(stack_name,Width_dtr,Length_dtr):
                 row1 = line[0][1]
                 row2 = line[1][1]
                 xt, yt, hyp = distance_real(col1, col2, row1, row2)
+                check_length= (xt>=Length_dtr-20) and (xt<=Length_dtr+20)
+                check_width= (yt>=Width_dtr-20) and (xt<=Width_dtr+20)
+                if check_length:
+                    L_text="OK"
+                else:
+                    L_text = "NOT-OK"
+
+                if check_width:
+                    W_text="OK"
+                else:
+                    W_text = "NOT-OK"
                 if i==0:    #### this is for assigning different colors
                     color_line=color_line1
                 else:
                     color_line = color_line2
-                cv2.putText(frame, f"dist x= {xt}, dist y= {yt}, hyp= {hyp}", (1000, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_line, 1, cv2.LINE_AA)
 
+                if i==0:
+                    cv2.putText(frame, f"LENGTH x= {xt} {L_text}, dist y= {yt}, hyp= {hyp}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_line, 1, cv2.LINE_AA)
+                else:
+                    cv2.putText(frame, f"WIDTH y= {yt} {W_text}, dist x= {xt}, hyp= {hyp}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_line, 1, cv2.LINE_AA)
 
         # Draw the button
         cv2.rectangle(frame, (button_rect[0], button_rect[1]), (button_rect[2], button_rect[3]), button_color, -1)
         cv2.putText(frame, button_text, (button_rect[0] + 5, button_rect[1] + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5,(0, 0, 0), 1, cv2.LINE_AA)
+
+        # draw name and mesaures from DTR
+        cv2.putText(frame, f"STACK {stack_name}, Length_DTR= {Length_dtr}, Width_DTR= {Width_dtr}", (500, 900), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 2, cv2.LINE_AA)
 
         # Display the combined frame
         cv2.imshow('Video Feed', frame)
 
         # Save screenshot if the button was pressed
         if button_pressed:
-            screenshot_filename = rf"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\screenshots\screenshot_{screenshot_count}.png"
+            screenshot_filename = rf"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\screenshots\{stack_name}_{screenshot_count}.png"
             cv2.imwrite(screenshot_filename, frame)
             print(f"Screenshot saved as {screenshot_filename}")
             button_pressed = False
             screenshot_count += 1
 
 
-        # Exit loop on 'q' key press
-        if cv2.waitKey(1) & 0xFF == ord('q'):
+        #### # Exit loop on 'q' key press
+        # if cv2.waitKey(1) & 0xFF == ord('q'):
+        #     break
+
+        #### # Exit loop on 'ESC' key press
+        if cv2.waitKey(1) & 0xFF == 27:  # ASCII value for ESC is 27
             break
 
     # Release the video capture object and close all OpenCV windows
@@ -275,6 +296,7 @@ while swm==0:
 #stack_name ="270_05_OVER"
 Width_dtr = DTR.at[stack_name, 'Width']
 Length_dtr = DTR.at[stack_name, 'Length']
+stack_name=DTR.at[stack_name, 'Name']
 #print("Width DTR is= ",Width_dtr)
 #print("Length DTR is= ",Length_dtr)
 
