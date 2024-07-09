@@ -94,7 +94,7 @@ button_pressed = False
 # Define button properties
 button_text = "Save Screenshot"
 button_color = (0, 255, 0)
-button_position = (10, 80)
+button_position = (10, 900)
 button_size = (150, 30)
 button_rect = (button_position[0], button_position[1], button_position[0] + button_size[0], button_position[1] + button_size[1])
 
@@ -157,7 +157,7 @@ def mouse_callback(event, x, y, flags, param):
 
 
 def main():
-    global mouse_x, mouse_y, points, lines_drawn
+    global mouse_x, mouse_y, points, lines_drawn,button_pressed
 
     # Open a connection to the webcam (0 is the default camera)
     cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")
@@ -171,6 +171,8 @@ def main():
 
     zoom_factor = 5.0  #    ### 5.0  Adjust zoom factor as needed
     zoom_size_ratio = 0.3   ### 0.3    # Size of the zoomed window relative to the original frame
+
+    screenshot_count = 0
 
     while True:
         # Read a frame from the video feed
@@ -196,8 +198,18 @@ def main():
 
 
         # Draw the lines and coordinates on the frame
+        color_line1 = (0, 255, 0)
+        color_line2 = (255, 150, 0)
+
+
+        ln=0    #### this is for assigning different colors
         for line in lines:
-            cv2.line(frame, line[0], line[1], (0, 255, 0), 2)
+            if ln == 0:
+                color_line = color_line1
+            else:
+                color_line = color_line2
+            cv2.line(frame, line[0], line[1], color_line, 2)
+            ln=ln+1
         for i, line in enumerate(lines):
             if i < 2:  # Only display the coordinates of the first two lines
                 col1 = line[0][0]
@@ -205,11 +217,28 @@ def main():
                 row1 = line[0][1]
                 row2 = line[1][1]
                 xt, yt, hyp = distance_real(col1, col2, row1, row2)
-                cv2.putText(frame, f"dist x= {xt}, dist y= {yt}, hyp= {hyp}", (1000, 30 + i * 30),
-                            cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 1, cv2.LINE_AA)
+                if i==0:    #### this is for assigning different colors
+                    color_line=color_line1
+                else:
+                    color_line = color_line2
+                cv2.putText(frame, f"dist x= {xt}, dist y= {yt}, hyp= {hyp}", (1000, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_line, 1, cv2.LINE_AA)
+
+
+        # Draw the button
+        cv2.rectangle(frame, (button_rect[0], button_rect[1]), (button_rect[2], button_rect[3]), button_color, -1)
+        cv2.putText(frame, button_text, (button_rect[0] + 5, button_rect[1] + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5,(0, 0, 0), 1, cv2.LINE_AA)
 
         # Display the combined frame
         cv2.imshow('Video Feed', frame)
+
+        # Save screenshot if the button was pressed
+        if button_pressed:
+            screenshot_filename = rf"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\screenshots\screenshot_{screenshot_count}.png"
+            cv2.imwrite(screenshot_filename, frame)
+            print(f"Screenshot saved as {screenshot_filename}")
+            button_pressed = False
+            screenshot_count += 1
+
 
         # Exit loop on 'q' key press
         if cv2.waitKey(1) & 0xFF == ord('q'):
