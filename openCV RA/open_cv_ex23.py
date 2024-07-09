@@ -1,4 +1,4 @@
-###### LAST OFFICIAL- LIVE FEED MEASUREMENT WITH ZOOM AND DIFFERENT COLORS
+###### USER INPUT- LIVE FEED MEASUREMENT WITH ZOOM AND DIFFERENT COLORS
 
 def euclidean_distance(point1, point2):
     import math
@@ -69,6 +69,15 @@ for i in range(0,len(Surface_map)):
     x_tup_real = Surface_map['X_real'][i]
     y_tup_real = Surface_map['Y_real'][i]
     tuples_list_real.append((x_tup_real,y_tup_real))
+
+
+excel_DTR = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\DTR.xlsx'
+DTR = pd.read_excel(excel_DTR, sheet_name='Sheet1', header=0)
+#DTR = DTR.set_index('Name2')
+########......................................................................................................................................
+
+
+
 def distance_real(col1,col2,row1,row2):
     import math
     start_point_pixel = (col1, row1)
@@ -158,7 +167,7 @@ def mouse_callback(event, x, y, flags, param):
             lines.clear()
 
 
-def main():
+def main(stack_name,Width_dtr,Length_dtr):
     global mouse_x, mouse_y, points, lines_drawn,button_pressed
 
     # Open a connection to the webcam (0 is the default camera)
@@ -251,5 +260,23 @@ def main():
     cv2.destroyAllWindows()
 
 
+######  START EXECUTION OF CODE HERE...............................
+swm=0
+while swm==0:
+    stack_name = input("\n NOMBRE DEL STACK ")
+    if stack_name in DTR["Name2"].tolist() :
+        DTR = DTR.set_index('Name2')
+        swm=1
+        print("\n Activando camara")
+
+    else:
+        print("\n",stack_name, "No existe, corregir nombre")
+
+#stack_name ="270_05_OVER"
+Width_dtr = DTR.at[stack_name, 'Width']
+Length_dtr = DTR.at[stack_name, 'Length']
+#print("Width DTR is= ",Width_dtr)
+#print("Length DTR is= ",Length_dtr)
+
 if __name__ == "__main__":
-    main()
+    main(stack_name,Width_dtr,Length_dtr)
