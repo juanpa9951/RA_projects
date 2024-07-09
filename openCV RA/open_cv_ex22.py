@@ -1,7 +1,20 @@
 import cv2
 
-# Global variables to store the mouse position
+# Global variables to store the mouse position and clicked points
 mouse_x, mouse_y = 0, 0
+points = []
+lines_drawn = 0
+lines = []
+line_count = 0
+drawing = False
+button_pressed = False
+
+# Define button properties
+button_text = "Save Screenshot"
+button_color = (0, 255, 0)
+button_position = (10, 80)
+button_size = (150, 30)
+button_rect = (button_position[0], button_position[1], button_position[0] + button_size[0], button_position[1] + button_size[1])
 
 
 def zoom_and_draw_circle(frame, zoom_factor, x, y):
@@ -35,13 +48,34 @@ def zoom_and_draw_circle(frame, zoom_factor, x, y):
 
 
 def mouse_callback(event, x, y, flags, param):
-    global mouse_x, mouse_y
+    global mouse_x, mouse_y, points, lines_drawn, points, lines, line_count, drawing, button_pressed
     if event == cv2.EVENT_MOUSEMOVE:
         mouse_x, mouse_y = x, y
+    if event == cv2.EVENT_LBUTTONDOWN:
+        if button_rect[0] <= x <= button_rect[2] and button_rect[1] <= y <= button_rect[3]:
+            button_pressed = True
+            return
+
+        points.append((x, y))
+        drawing = True
+
+        # Once we have two points, draw the line and store the line points
+        if len(points) == 2:
+            lines.append((points[0], points[1]))
+            print(f"Line from {points[0]} to {points[1]}")
+            points = []
+            line_count += 1
+            drawing = False
+
+        # Check if three lines are drawn
+        if line_count == 3:
+            print("Three lines drawn. Resetting the lines.")
+            line_count = 0
+            lines.clear()
 
 
 def main():
-    global mouse_x, mouse_y
+    global mouse_x, mouse_y, points, lines_drawn
 
     # Open a connection to the webcam (0 is the default camera)
     cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")
@@ -53,8 +87,8 @@ def main():
     cv2.namedWindow('Video Feed')
     cv2.setMouseCallback('Video Feed', mouse_callback)
 
-    zoom_factor = 5.0  # Adjust zoom factor as needed
-    zoom_size_ratio = 0.3  # Size of the zoomed window relative to the original frame
+    zoom_factor = 5.0  #    ### 5.0  Adjust zoom factor as needed
+    zoom_size_ratio = 0.3   ### 0.3    # Size of the zoomed window relative to the original frame
 
     while True:
         # Read a frame from the video feed
@@ -75,8 +109,13 @@ def main():
         zoomed_frame_small = cv2.resize(zoomed_frame, (zoomed_frame_width, zoomed_frame_height))
 
         # Overlay the zoomed frame onto the original frame
-        x_offset, y_offset = 1300, 10  # Position of the zoomed frame in the corner
+        x_offset, y_offset = 10, 10  # Position of the zoomed frame in the corner
         frame[y_offset:y_offset + zoomed_frame_height, x_offset:x_offset + zoomed_frame_width] = zoomed_frame_small
+
+        # Draw lines between clicked points
+        # Draw the lines and coordinates on the frame
+        for line in lines:
+            cv2.line(frame, line[0], line[1], (0, 255, 0), 2)
 
         # Display the combined frame
         cv2.imshow('Video Feed', frame)
