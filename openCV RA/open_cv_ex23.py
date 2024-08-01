@@ -263,9 +263,11 @@ def main(stack_name,Width_dtr,Length_dtr):
         if button_pressed:
             screenshot_filename = rf"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\screenshots\{stack_name}_{screenshot_count}.png"
             cv2.imwrite(screenshot_filename, frame)
-            print(f"Screenshot saved as {screenshot_filename}")
+            print(f"\n Foto guardada como  {stack_name}_{screenshot_count}.png")
+            print(f"\n FIN DE PROGRAMA")
             button_pressed = False
             screenshot_count += 1
+            break
 
 
         #### # Exit loop on 'q' key press

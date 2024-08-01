@@ -1,12 +1,12 @@
 # THIS CODE FINDS OBJECTS IN A UNIFORM BACKGROUND AND MEASURES THEM INSIDE AN IMAGE
 import os
-os.chdir(r'C:\Users\jplop\Documents\PythonScripts')
+os.chdir(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas')
 
 import cv2
 from object_detector import *
 import numpy as np
 
-img=cv2.imread('phone.jpg')
+img=cv2.imread("TN4.png")
 #img = cv2.resize(cv2.imread('phone.jpg', 1), (0, 0), fx=0.5, fy=0.5) # scaling function fx an fy if necessary
 detector= HomogeneousBgDetector()  #this works for objects in an uniform background
 contours=detector.detect_objects(img)   # find the objects and give the coordenates of the contours

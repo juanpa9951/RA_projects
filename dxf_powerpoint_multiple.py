@@ -1492,7 +1492,7 @@ def read_and_plot_layerv24(file_path,name,image_size,Left_centering,Top_centerin
 
                 # Plotting the polygon
                 plt.figure(figsize=(image_size, image_size))
-                plt.scatter(x_layer, y_layer,marker='x', s=2, color='blue') # 'bo-' means blue circles connected by lines
+                plt.scatter(x_layer, y_layer,marker='x', s=3, color='blue') # 'bo-' means blue circles connected by lines
                 title='Tagging'
                 plt.title(title)
                 plt.xlim(0, Axis_Limit_x)  # Set x-axis limit from 0 to 4
@@ -1530,7 +1530,7 @@ def read_and_plot_layerv24(file_path,name,image_size,Left_centering,Top_centerin
                     if i < len(x_datum)-1:
                         diff=abs(x_datum[i+1]-x_datum[i])
                         print(diff)
-                        if diff<=100:
+                        if diff<=100:  # 100
                             x_datum1.append(x_datum[i])
                             y_datum1.append(y_datum[i])
                             i=i+1
@@ -1538,8 +1538,12 @@ def read_and_plot_layerv24(file_path,name,image_size,Left_centering,Top_centerin
                             break
                     else:
                         break
-                x_datum2=x_datum[i+1:]
-                y_datum2=y_datum[i+1:]
+
+                x_datum2=x_datum[i+1:]     ### i-1   for 4 point datums
+                y_datum2=y_datum[i+1:]     ### i-1   for 4 point datums
+
+                if len(x_datum2)==1:
+                    print('WARNING DATUM LINE 2', name)
 
                 ##### PLOT THE FIRST DATUM LINE
                 Layer_Name_plot='DATUM LINES'

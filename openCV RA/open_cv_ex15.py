@@ -1,4 +1,4 @@
-### this code shows live mouse pointer pixel position inside an image
+### this code shows live CLIC mouse pointer pixel position inside an image and then prints the x and y coordenates
 import cv2
 coordinates=[]
 # Callback function to capture mouse events
@@ -12,7 +12,7 @@ def click_event(event, x, y, flags, param):
         print(f"Mouse clicked at: ({x}, {y})")
 
 # Load an image
-image = cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\C9.png')
+image = cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\CCHECK.png')
 
 # Create a window and display the image
 cv2.namedWindow('Image')

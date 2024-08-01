@@ -411,6 +411,37 @@ def ClassifierFunction(PathSource,PathDestination,PathLost,Path_debug,Mode):
               trip=1
 
 
+       #####  NEW PROJECT CLASSIFICATION  V236
+       elif ("v236" in ExtractedText) or ("chordwise" in ExtractedText) or ("ado/cfm/ups" in ExtractedText) or ("winded r" in ExtractedText):
+           Path00 = "006. V236"
+           Path000 = "02. Shell"
+           Path0 = f"{Path00}\{Path000}"
+
+           if "t01" in ExtractedText:
+               Path1 = "T_01"
+               Path2 = "None"
+           elif "t05" in ExtractedText:
+               Path1 = "T_05"
+               Path2 = "None"
+           elif "t06" in ExtractedText:
+               Path1 = "T_06"
+               Path2 = "None"
+           elif ("p08 lw" in ExtractedText) or ("p08 ww" in ExtractedText):
+               Path1 = "P_08"
+               Path2 = "None"
+           elif ("p09 lw" in ExtractedText) or ("p09 ww" in ExtractedText):
+               Path1 = "P_09"
+               Path2 = "None"
+           elif ("p10 lw" in ExtractedText) or ("p10 ww" in ExtractedText):
+               Path1 = "P_10"
+               Path2 = "None"
+           elif ("p11 lw" in ExtractedText) or ("p11 ww" in ExtractedText):
+               Path1 = "P_11"
+               Path2 = "None"
+           else:
+               trip = 1
+
+
        ######  no project name detected
        else:
           trip=1
