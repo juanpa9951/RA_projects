@@ -1539,8 +1539,9 @@ def read_and_plot_layerv24(file_path,name,image_size,Left_centering,Top_centerin
                     else:
                         break
 
-                x_datum2=x_datum[i+1:]     ### i-1   for 4 point datums
-                y_datum2=y_datum[i+1:]     ### i-1   for 4 point datums
+                ##########....................DATUM INFO......................................................
+                x_datum2=x_datum[i-1:]     ### i-1   for 4 point datums
+                y_datum2=y_datum[i-1:]     ### i-1   for 4 point datums
 
                 if len(x_datum2)==1:
                     print('WARNING DATUM LINE 2', name)
@@ -1637,5 +1638,5 @@ print('All files converted')
 #### V21 this is V20 with re-positioning
 #### V22 this is V21 with black screen overlay-not working yet
 #### V23 this is V21 with error detection  ---<  last official used
-#### V24 this is V23 with full datum lines
+#### V24 this is V23 with full datum lines     CHECK  DATUM LINE  INFO SECTION
 

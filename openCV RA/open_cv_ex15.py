@@ -12,7 +12,7 @@ def click_event(event, x, y, flags, param):
         print(f"Mouse clicked at: ({x}, {y})")
 
 # Load an image
-image = cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\CCHECK.png')
+image = cv2.imread(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\C1.png')
 
 # Create a window and display the image
 cv2.namedWindow('Image')
