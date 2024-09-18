@@ -6,5 +6,5 @@ y_name_offset=500
 letter_size=100
 
 #Laser_remote_v0()
-Laser_remote_v1(coordinates_name,x_name_offset,y_name_offset, letter_size)
+Laser_remote_v3(coordinates_name,x_name_offset,y_name_offset, letter_size)
 

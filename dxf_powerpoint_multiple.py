@@ -1636,7 +1636,7 @@ print('All files converted')
 
 #### V20 LAST OFFICIAL, this is V19 with Surface Map calibration
 #### V21 this is V20 with re-positioning
-#### V22 this is V21 with black screen overlay-not working yet
+#### V22 this is V21 with black screen overlay-Not working yet
 #### V23 this is V21 with error detection  ---<  last official used
 #### V24 this is V23 with full datum lines     CHECK  DATUM LINE  INFO SECTION
 
