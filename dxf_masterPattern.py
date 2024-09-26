@@ -14,11 +14,11 @@ def master_pattern_x(image_size,Left_centering,Top_centering,Axis_Limit,backgrou
 
     Axis_Limit_x = Axis_Limit
     Axis_Limit_y = Axis_Limit_Y
-    x_base=500    #500
-    y_base=100    #200
+    x_base=300    #500
+    y_base=300    #100
 
-    for k in range(1,3):   ## divisiones eje Y
-            for i in range(1,7):  ## divisiones eje X
+    for k in range(1,25):   ## divisiones eje Y
+            for i in range(1,32):  ## divisiones eje X
                         x_lenght=x_base*i                  ####modo x
                         y_lenght=y_base*k                  ####modo x
 
@@ -81,11 +81,11 @@ def master_pattern_y(image_size,Left_centering,Top_centering,Axis_Limit,backgrou
 
     Axis_Limit_x = Axis_Limit
     Axis_Limit_y = Axis_Limit_Y
-    x_base=500    #500
-    y_base=100    #200
+    x_base=300    #500
+    y_base=300    #100
 
-    for k in range(1,3):   ## divisiones eje x
-            for i in range(1,7):  ## divisiones eje y
+    for k in range(1,25):   ## divisiones eje x
+            for i in range(1,32):  ## divisiones eje y
                         # x_lenght=x_base*i                  ####modo x
                         # y_lenght=y_base*k                  ####modo x
 
@@ -138,14 +138,16 @@ def master_pattern_y(image_size,Left_centering,Top_centering,Axis_Limit,backgrou
 image_size = 12.7  # in inches    12.7
 Left_centering = -1.55  # in inches   -1.55
 Top_centering = -3.8  # in inches   -3.8
-Axis_Limit = 8000  # in MM    ##### 8000 original  8740,  LAST OFFICIAL-8355,   (20mm-8335)
-Axis_Limit_Y=8000  # ONLY FOR V19,  LAST OFFICIAL-8355
+Axis_Limit = 9300  # in MM    # 8000
+Axis_Limit_Y=9300  # ONLY FOR V19,  LAST OFFICIAL 8000
 
 background_color = 'white'
 layer_color = 'blue'
 close_image = 1  # 1- close all images, 2- open all images
 
 ####  CHOOSE EITHER X OR Y
+master_pattern_x(image_size,Left_centering,Top_centering,Axis_Limit,background_color,layer_color,close_image,Axis_Limit_Y)
+print("ready x files")
 master_pattern_y(image_size,Left_centering,Top_centering,Axis_Limit,background_color,layer_color,close_image,Axis_Limit_Y)
-
+print("ready y files")
 
