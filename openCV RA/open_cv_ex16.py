@@ -8,9 +8,9 @@ import numpy as np
 camera_url=0
 camera_url_der="rtsp://LP008:LP008ASM@192.168.2.82:554/stream1"
 camera_url_izq="rtsp://LP009:LP009ASM@192.168.2.84:554/stream1"
-cap = cv2.VideoCapture(camera_url_der)
-cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)  # 1280
-cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)  # 720
+cap = cv2.VideoCapture(camera_url_izq)
+#cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)  # 1280
+#cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)  # 720
 
 
 while True:
@@ -21,7 +21,7 @@ while True:
     # print(height,width)
 
 
-    for x in range(0,width,70):
+    for x in range(0,width,60):   #70
      for y in range(0,height,50):  # 756 rows   1344 columns
       font_type=cv2.FONT_HERSHEY_SIMPLEX
       Text="o"

@@ -90,7 +90,7 @@ def run_camera3():   ## SINGLE PIXEL LIVE POSITION ACROSS THE IMAGE
     camera_url=0
     camera_url_der="rtsp://LP008:LP008ASM@192.168.2.82:554/stream1"
     camera_url_izq="rtsp://LP009:LP009ASM@192.168.2.84:554/stream1"
-    cap = cv2.VideoCapture(camera_url_der)
+    cap = cv2.VideoCapture(camera_url_izq)
     cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)  # 1280
     cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)  # 720
 
@@ -146,7 +146,7 @@ def run_camera4():  ### SINGLE PIXEL ACROSS IMAGE  (not live)
     cv2.destroyAllWindows()
 
 ## EXECUTE THE FUNCTION
-run_camera4()
+run_camera3()
 
 
 #  PIXELES VAN POR FILAS Y COLUMNAS, LO MISMO Q TIRA EL .SHAPE, EL IMG O EL HSV O EL GRAY TIRAN RESULTADO EN FILAS X COLUMNAS, PERO COORDENADAS ES INVERTIDO (COLUMNA-FILA) TOD O LO QUE SEA DIBUJAR SOBRE LA IMAGEN SERA EN COORDENADAS, PRIMERO LA COLUMNA Y LUEGO LA FILA

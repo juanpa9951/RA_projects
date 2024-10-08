@@ -1,4 +1,5 @@
-###### USER INPUT- LIVE FEED MEASUREMENT WITH ZOOM AND DIFFERENT COLORS
+###### DTR USER INPUT- LIVE FEED MEASUREMENT WITH ZOOM AND DIFFERENT COLORS
+#### THIS WILL ASK FOR THE STACK NAME FIRST, THEN LOOKS UP THE CORRESPONDING LENGTH-WIDTH INSIDE THE DTR, THEN DISPLAYS IT
 
 def euclidean_distance(point1, point2):
     import math
@@ -58,7 +59,7 @@ def find_closest_tupleV2(tuples_list_real,tuples_list_autocad, input_tuple):
 
 # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
 import pandas as pd
-excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\feeder_right.xlsx'
+excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\feeder_right.xlsx'
 Surface_map = pd.read_excel(excel_table_calib, sheet_name='right_t1', header=0)
 tuples_list_real=[]
 tuples_list_pixel=[]

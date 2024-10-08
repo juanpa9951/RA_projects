@@ -100,8 +100,8 @@ def read_and_plot_PSv0(file_path,name,image_size,Left_centering,Top_centering,Ax
     ########..............................................................................................................
 
     # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
-    excel_table_calib = r'C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP\Table_Calib.xlsx'
-    Surface_map = pd.read_excel(excel_table_calib, sheet_name='Surface2', header=0)
+    excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Proyector OPTOMA\table_calib_optoma.xlsx'
+    Surface_map = pd.read_excel(excel_table_calib, sheet_name='Surface', header=0)
     tuples_list_real=[]
     tuples_list_autocad=[]
     for i in range(0,len(Surface_map)):
@@ -353,8 +353,8 @@ def read_and_plot_PSv1(file_path,name,image_size,Left_centering,Top_centering,Ax
     ########..............................................................................................................
 
     # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
-    excel_table_calib = r'C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP\Table_Calib.xlsx'
-    Surface_map = pd.read_excel(excel_table_calib, sheet_name='Surface2', header=0)
+    excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Proyector OPTOMA\table_calib_optoma.xlsx'
+    Surface_map = pd.read_excel(excel_table_calib, sheet_name='Surface', header=0)
     tuples_list_real=[]
     tuples_list_autocad=[]
     for i in range(0,len(Surface_map)):
@@ -593,8 +593,8 @@ def read_and_plot_PSv2(file_path,name,image_size,Left_centering,Top_centering,Ax
     ########..............................................................................................................
 
     # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
-    excel_table_calib = r'C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP\Table_Calib.xlsx'
-    Surface_map = pd.read_excel(excel_table_calib, sheet_name='Surface2', header=0)
+    excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Proyector OPTOMA\table_calib_optoma.xlsx'
+    Surface_map = pd.read_excel(excel_table_calib, sheet_name='Surface', header=0)
     tuples_list_real=[]
     tuples_list_autocad=[]
     for i in range(0,len(Surface_map)):
@@ -830,8 +830,8 @@ def read_and_plot_PSv3(file_path,name,image_size,Left_centering,Top_centering,Ax
     ########..............................................................................................................
 
     # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
-    excel_table_calib = r'C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP\Table_Calib.xlsx'
-    Surface_map = pd.read_excel(excel_table_calib, sheet_name='Surface2', header=0)
+    excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Proyector OPTOMA\table_calib_optoma.xlsx'
+    Surface_map = pd.read_excel(excel_table_calib, sheet_name='Surface', header=0)
     tuples_list_real=[]
     tuples_list_autocad=[]
     for i in range(0,len(Surface_map)):
@@ -918,6 +918,8 @@ def read_and_plot_PSv3(file_path,name,image_size,Left_centering,Top_centering,Ax
 
 def read_and_plot_PSv3_doubles(file_path,name,image_size,Left_centering,Top_centering,Axis_Limit,scale_mode,background_color,layer_color,close_image,Destination_path,Axis_Limit_Y,filling,reorder_points):
     ### this is for combining shapes into the same plot
+    ### this works looking for the Layers inside the dxf with names that end in "d1" and "d2", and it joins them into 1 single slide
+    ###  if it gives trouble try re-ordering the points
     import ezdxf
     import pandas as pd
     import matplotlib.pyplot as plt
@@ -1031,8 +1033,8 @@ def read_and_plot_PSv3_doubles(file_path,name,image_size,Left_centering,Top_cent
     ########..............................................................................................................
 
     # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
-    excel_table_calib = r'C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP\Table_Calib.xlsx'
-    Surface_map = pd.read_excel(excel_table_calib, sheet_name='Surface2', header=0)
+    excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Proyector OPTOMA\table_calib_optoma.xlsx'
+    Surface_map = pd.read_excel(excel_table_calib, sheet_name='Surface', header=0)
     tuples_list_real=[]
     tuples_list_autocad=[]
     for i in range(0,len(Surface_map)):
@@ -1079,6 +1081,15 @@ def read_and_plot_PSv3_doubles(file_path,name,image_size,Left_centering,Top_cent
             x_layer_2.append(x[i])
             y_layer_2.append(y[i])
             poly2.append((x[i], y[i]))
+
+    if (reorder_points == 1):   #### this if you need to re-order points
+        x_layer_1, y_layer_1 = polygon_sorter(x_layer_1, y_layer_1)
+        x_layer_2, y_layer_2 = polygon_sorter(x_layer_2, y_layer_2)
+        poly1=[]
+        poly2=[]
+        for i in range(0, len(x_layer_1)):
+            poly1.append((x_layer_1[i], y_layer_1[i]))
+            poly2.append((x_layer_2[i], y_layer_2[i]))
 
     Layer_Name_plot = layer_name
     layer_qty = layer_qty + 1
@@ -1130,11 +1141,11 @@ def read_and_plot_PSv3_doubles(file_path,name,image_size,Left_centering,Top_cent
 
 Origin_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\LG projecting files\origin'
 Destination_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\LG projecting files\destiny'
-image_size = 12.7  # in inches    12.7
-Left_centering = -1.55  # in inches   -1.55
-Top_centering = -3.8  # in inches     -3.8
-Axis_Limit = 9300  # in MM    8355,    (5mm(+)-8360-->last official)
-Axis_Limit_Y=9300  # ONLY FOR V19 and following,  last official-9300
+image_size = 12.9  # in inches    12.9
+Left_centering = -1.6  # in inches   -1.6
+Top_centering = -4.0  # in inches     -4.0
+Axis_Limit = 10000  # in MM    10000
+Axis_Limit_Y=10000  # ONLY FOR V19 and following,  10000
 background_color = 'white'
 layer_color = 'blue'
 close_image = 1  # 1- close all images, 0- open all images
@@ -1155,7 +1166,7 @@ print(" TOTAL OF ", len(DXF_Names), " DXF UPLOADED")
 for name in DXF_Names:
     dxf_file = f"{Origin_path}\{name}"
     #print(name)
-    #print(dxf_file)
+    #print(dxf_file)     ### LAST OFFICIAL  PSV3
     read_and_plot_PSv3_doubles(dxf_file, name, image_size, Left_centering, Top_centering, Axis_Limit, scale_mode, background_color, layer_color, close_image,Destination_path,Axis_Limit_Y,filling,reorder_points)
     print(name+' fully converted')
 print('All files converted')

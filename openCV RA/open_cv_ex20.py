@@ -1,4 +1,4 @@
-###### FIXED IMAGE VERSION
+###### FIXED IMAGE VERSION DIMENSION MEASUREMENT
 
 def euclidean_distance(point1, point2):
     import math
@@ -59,7 +59,7 @@ def find_closest_tupleV2(tuples_list_real,tuples_list_autocad, input_tuple):
 
 # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
 import pandas as pd
-excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\feeder_right.xlsx'
+excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\feeder_right.xlsx'
 Surface_map = pd.read_excel(excel_table_calib, sheet_name='right_t1', header=0)
 tuples_list_real=[]
 tuples_list_pixel=[]
@@ -89,7 +89,7 @@ def distance_real(col1,col2,row1,row2):
 
 import cv2
 import os
-os.chdir(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas')
+os.chdir(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas')
 
 # Global variables to store points, lines, and button state
 points = []
