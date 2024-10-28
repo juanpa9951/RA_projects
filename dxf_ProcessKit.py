@@ -716,7 +716,7 @@ def read_and_plot_PSv2(file_path,name,image_size,Left_centering,Top_centering,Ax
 
     print('total layers = ',layer_qty)
 
-def read_and_plot_PSv3(file_path,name,image_size,Left_centering,Top_centering,Axis_Limit,scale_mode,background_color,layer_color,close_image,Destination_path,Axis_Limit_Y,filling,reorder_points):
+def read_and_plot_PSv3(file_path,name,image_size,Left_centering,Top_centering,Axis_Limit,scale_mode,background_color,layer_color,close_image,Destination_path,Axis_Limit_Y,filling,reorder_points,d1,d2):
     ### Last official, this is PSV2 with entities filling X-Y as they appear in the drawing
     import ezdxf
     import pandas as pd
@@ -809,24 +809,23 @@ def read_and_plot_PSv3(file_path,name,image_size,Left_centering,Top_centering,Ax
     Layer_Names = [x for x in Layer_Names if not (x in seen or seen.add(x))]
 
     #####....................................SHIFT POSITION .............................
-    #### BRING TO THE ORIGIN
-    cx1=min(x)
-    cy1=min(y)
-    x = [i -cx1 for i in x]  # BRING X VALUES TO THE ORIGIN
-    y = [i -cy1 for i in y]  # BRING Y VALUES TO THE ORIGIN
-    x_omega = [i -cx1 for i in x_omega]  # BRING X VALUES TO THE ORIGIN
-    y_omega = [i -cy1 for i in y_omega]  # BRING Y VALUES TO THE ORIGIN
+    ###### be very careful if using this, all layers must have same origin of coordenates
+    # #### BRING TO THE ORIGIN
+    # cx1=min(x)
+    # cy1=min(y)
+    # x = [i -cx1 for i in x]  # BRING X VALUES TO THE ORIGIN
+    # y = [i -cy1 for i in y]  # BRING Y VALUES TO THE ORIGIN
+    #
+    #
+    #
+    # #### APPLY THE OFFSET (DESFASE)
+    # x_lim=10000
+    # y_lim=4400
+    # cx=x_lim-max(x)
+    # cy=y_lim-max(y)
+    # x = [i + cx for i in x]  # apply offset desfase
+    # y = [i + cy for i in y]  # apply offset desfase
 
-
-    #### APPLY THE OFFSET (DESFASE)
-    x_lim=9000
-    y_lim=4900
-    cx=x_lim-max(x)
-    cy=y_lim-max(y)
-    x = [i + cx for i in x]  # apply offset desfase
-    y = [i + cy for i in y]  # apply offset desfase
-    x_omega = [i + cx for i in x_omega]  # apply offset desfase
-    y_omega = [i + cy for i in y_omega]  # apply offset desfase
     ########..............................................................................................................
 
     # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
@@ -876,8 +875,9 @@ def read_and_plot_PSv3(file_path,name,image_size,Left_centering,Top_centering,Ax
         # Plotting the polygon
         plt.figure(figsize=(image_size, image_size))
         plt.scatter(x_layer, y_layer, marker='o', s=1, color='blue')  #  s=0.1  'bo-' means blue circles connected by lines
-        if ("Omega" not in Layer_i) and (filling ==1) :
-         plt.fill(x_layer, y_layer, facecolor=layer_color, alpha=1)  # Fill the polygon
+        # if ("Omega" not in Layer_i) and (filling ==1) :
+        #  plt.fill(x_layer, y_layer, facecolor=layer_color, alpha=1)  # Fill the polygon
+        plt.fill(x_layer, y_layer, facecolor=layer_color, alpha=1)  # Fill the polygon
         title = 'Layer '+str(layer_qty)
         plt.title(title)
         plt.xlim(0, Axis_Limit_x)  # Set x-axis limit from 0 to 4
@@ -916,8 +916,8 @@ def read_and_plot_PSv3(file_path,name,image_size,Left_centering,Top_centering,Ax
 
     print('total layers = ',layer_qty)
 
-def read_and_plot_PSv3_doubles(file_path,name,image_size,Left_centering,Top_centering,Axis_Limit,scale_mode,background_color,layer_color,close_image,Destination_path,Axis_Limit_Y,filling,reorder_points):
-    ### this is for combining shapes into the same plot
+def read_and_plot_PSv3_doubles(file_path,name,image_size,Left_centering,Top_centering,Axis_Limit,scale_mode,background_color,layer_color,close_image,Destination_path,Axis_Limit_Y,filling,reorder_points,d1,d2):
+    ### this is for combining shapes into the same plot WITH MIXED REORDERED AND NOT-REORDERED LAYERS
     ### this works looking for the Layers inside the dxf with names that end in "d1" and "d2", and it joins them into 1 single slide
     ###  if it gives trouble try re-ordering the points
     import ezdxf
@@ -1012,24 +1012,23 @@ def read_and_plot_PSv3_doubles(file_path,name,image_size,Left_centering,Top_cent
     Layer_Names = [x for x in Layer_Names if not (x in seen or seen.add(x))]
 
     #####....................................SHIFT POSITION .............................
+    ###### be very careful if using this, all layers must have same origin of coordenates
     #### BRING TO THE ORIGIN
-    cx1=min(x)
-    cy1=min(y)
-    x = [i -cx1 for i in x]  # BRING X VALUES TO THE ORIGIN
-    y = [i -cy1 for i in y]  # BRING Y VALUES TO THE ORIGIN
-    x_omega = [i -cx1 for i in x_omega]  # BRING X VALUES TO THE ORIGIN
-    y_omega = [i -cy1 for i in y_omega]  # BRING Y VALUES TO THE ORIGIN
+    # cx1=min(x)
+    # cy1=min(y)
+    # x = [i -cx1 for i in x]  # BRING X VALUES TO THE ORIGIN
+    # y = [i -cy1 for i in y]  # BRING Y VALUES TO THE ORIGIN
 
 
-    #### APPLY THE OFFSET (DESFASE)
-    x_lim=9000
-    y_lim=4900
-    cx=x_lim-max(x)
-    cy=y_lim-max(y)
-    x = [i + cx for i in x]  # apply offset desfase
-    y = [i + cy for i in y]  # apply offset desfase
-    x_omega = [i + cx for i in x_omega]  # apply offset desfase
-    y_omega = [i + cy for i in y_omega]  # apply offset desfase
+
+    # #### APPLY THE OFFSET (DESFASE)
+    # x_lim=9000
+    # y_lim=4900
+    # cx=x_lim-max(x)
+    # cy=y_lim-max(y)
+    # x = [i + cx for i in x]  # apply offset desfase
+    # y = [i + cy for i in y]  # apply offset desfase
+
     ########..............................................................................................................
 
     # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
@@ -1083,13 +1082,16 @@ def read_and_plot_PSv3_doubles(file_path,name,image_size,Left_centering,Top_cent
             poly2.append((x[i], y[i]))
 
     if (reorder_points == 1):   #### this if you need to re-order points
-        x_layer_1, y_layer_1 = polygon_sorter(x_layer_1, y_layer_1)
-        x_layer_2, y_layer_2 = polygon_sorter(x_layer_2, y_layer_2)
-        poly1=[]
-        poly2=[]
-        for i in range(0, len(x_layer_1)):
-            poly1.append((x_layer_1[i], y_layer_1[i]))
-            poly2.append((x_layer_2[i], y_layer_2[i]))
+        if d1==1:
+            x_layer_1, y_layer_1 = polygon_sorter(x_layer_1, y_layer_1)
+            poly1=[]
+            for i in range(0, len(x_layer_1)):
+                poly1.append((x_layer_1[i], y_layer_1[i]))
+        if d2==1:
+            x_layer_2, y_layer_2 = polygon_sorter(x_layer_2, y_layer_2)
+            poly2=[]
+            for i in range(0, len(x_layer_2)):
+                poly2.append((x_layer_2[i], y_layer_2[i]))
 
     Layer_Name_plot = layer_name
     layer_qty = layer_qty + 1
@@ -1149,9 +1151,11 @@ Axis_Limit_Y=10000  # ONLY FOR V19 and following,  10000
 background_color = 'white'
 layer_color = 'blue'
 close_image = 1  # 1- close all images, 0- open all images
-scale_mode = 0  # 1-apply scale, 0- no scale
+scale_mode = 1  # 1-apply scale, 0- no scale
 filling=1     # 1- fill the polygons      , 0 - just scatter plot
 reorder_points=1   # 1- reorder points to guess polygon,   0- no reorder
+d1=1    ### reorder layer d1 =1  ONLY FOR DOUBLES CODE
+d2=1    ### reorder layer d2 =1  ONLY FOR DOUBLES CODE
 
 
 import os
@@ -1167,6 +1171,6 @@ for name in DXF_Names:
     dxf_file = f"{Origin_path}\{name}"
     #print(name)
     #print(dxf_file)     ### LAST OFFICIAL  PSV3
-    read_and_plot_PSv3_doubles(dxf_file, name, image_size, Left_centering, Top_centering, Axis_Limit, scale_mode, background_color, layer_color, close_image,Destination_path,Axis_Limit_Y,filling,reorder_points)
+    read_and_plot_PSv3_doubles(dxf_file, name, image_size, Left_centering, Top_centering, Axis_Limit, scale_mode, background_color, layer_color, close_image,Destination_path,Axis_Limit_Y,filling,reorder_points,d1,d2)
     print(name+' fully converted')
 print('All files converted')

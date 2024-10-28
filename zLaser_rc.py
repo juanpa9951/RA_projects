@@ -5,6 +5,21 @@ def Laser_remote_v0():
 
     import sys
     import time
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     import zlp
     from thriftpy2.thrift import TException
 
@@ -536,10 +551,10 @@ def Laser_remote_v5(coordinates_name,x_name_offset,y_name_offset, letter_size):
 
             ans = input("\n SIGUIENTE?   y/n")
 
-            if ans=="e":
+            if ans=="e" or ans=="E":
                 previous_group_idx = current_group_idx
                 current_group_idx = (current_group_idx + 1) % len(top_level_groups)
-            elif ans=="d":
+            elif ans=="d" or ans=="D":
                 previous_group_idx = current_group_idx
                 current_group_idx = (current_group_idx - 1) % len(top_level_groups)
             elif ans == "n":
@@ -557,3 +572,12 @@ def Laser_remote_v5(coordinates_name,x_name_offset,y_name_offset, letter_size):
 
 
 
+def call_remote():
+    coordinates_name = "Table 1"
+    x_name_offset = 1000
+    y_name_offset = 500
+    letter_size = 30
+
+    # Laser_remote_v0()
+    ####  v3 last official
+    Laser_remote_v5(coordinates_name, x_name_offset, y_name_offset, letter_size)

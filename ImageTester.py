@@ -6,7 +6,7 @@ client = vision.ImageAnnotatorClient()
 PathSource=r"C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP\ImageTester"
 PhotoNames=os.listdir(PathSource)
 count=0
-FinalLocation=["Inicio"]
+Text_list=["Inicio"]
 for Name in PhotoNames:
    PathPhoto = f"{PathSource}\{Name}"
    # This is where the photo is processed with AI VISION to get the extracted text
@@ -20,7 +20,7 @@ for Name in PhotoNames:
    count=count+1
    print("Image number",count)
    print(ExtractedText)
-   FinalLocation.append(ExtractedText)
+   Text_list.append(ExtractedText)
 
 print("executed succesfully")
-print(FinalLocation)
+print(Text_list)
