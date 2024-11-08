@@ -1,4 +1,4 @@
-# THIS CODE DISPLAYS LIVE PIXEL POSITIONS ACROSS THE IMAGE
+# THIS CODE DISPLAYS LIVE PIXEL POSITIONS ACROSS THE video
 
 import os
 os.chdir(r'C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP\openCV RA')
