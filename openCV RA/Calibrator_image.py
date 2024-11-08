@@ -1,4 +1,4 @@
-### CALIBRATOR- this code shows live CLIC mouse pointer pixel position inside an image and then prints the x and y coordenates
+### CALIBRATOR- this code prints CLIC mouse pointer pixel position inside an image and then prints the x and y coordenates
 import cv2
 coordinates=[]
 # Callback function to capture mouse events

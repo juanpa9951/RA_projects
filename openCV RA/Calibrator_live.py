@@ -1,3 +1,5 @@
+### Displays live position coordenates of the mouse pointer in the video stream
+
 import cv2
 
 # Initialize a global variable to store mouse coordinates
