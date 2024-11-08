@@ -1,4 +1,4 @@
-###### FIXED IMAGE VERSION DIMENSION MEASUREMENT
+###### FIXED IMAGE VERSION DIMENSION MEASUREMENT ORIGINAL VERSION
 
 def euclidean_distance(point1, point2):
     import math
@@ -85,11 +85,7 @@ def distance_real(col1,col2,row1,row2):
     return distance_X, distance_Y,hyp
 
 
-
-
 import cv2
-import os
-os.chdir(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas')
 
 # Global variables to store points, lines, and button state
 points = []
@@ -132,8 +128,9 @@ def draw_lines(event, x, y, flags, param):
             lines.clear()
 
 # Load an image from a local file
-image_path = 'RT2.png'
-original_img = cv2.imread(image_path)
+photo_name="nt1.png"
+original_img = cv2.imread(fr'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\{photo_name}')
+
 if original_img is None:
     print("Error: Could not open or find the image.")
     exit()

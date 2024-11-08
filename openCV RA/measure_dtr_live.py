@@ -74,7 +74,7 @@ for i in range(0,len(Surface_map)):
 
 excel_DTR = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\DTR.xlsx'
 DTR = pd.read_excel(excel_DTR, sheet_name='Sheet1', header=0)
-#DTR = DTR.set_index('Name2')
+DTR = DTR.set_index('Name2')   #### this is to force the index to be column "Name2"
 ########......................................................................................................................................
 
 
@@ -212,9 +212,11 @@ def main(stack_name,Width_dtr,Length_dtr):
         # Draw the lines and coordinates on the frame
         color_line1 = (0, 255, 0)
         color_line2 = (255, 150, 0)
+        green_color=(0, 255, 0)
+        red_color=(0,0,255)
 
-
-        ln=0    #### this is for assigning different colors
+        #### Draw the lines with different colors
+        ln=0
         for line in lines:
             if ln == 0:
                 color_line = color_line1
@@ -222,6 +224,8 @@ def main(stack_name,Width_dtr,Length_dtr):
                 color_line = color_line2
             cv2.line(frame, line[0], line[1], color_line, 2)
             ln=ln+1
+
+        ###### calculate length and width and comparw with DTR
         for i, line in enumerate(lines):
             if i < 2:  # Only display the coordinates of the first two lines
                 col1 = line[0][0]
@@ -240,15 +244,24 @@ def main(stack_name,Width_dtr,Length_dtr):
                     W_text="OK"
                 else:
                     W_text = "NOT-OK"
-                if i==0:    #### this is for assigning different colors
-                    color_line=color_line1
-                else:
-                    color_line = color_line2
 
+                ### assign color to the text
                 if i==0:
-                    cv2.putText(frame, f"LENGTH x= {xt} {L_text}, dist y= {yt}, hyp= {hyp}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_line, 1, cv2.LINE_AA)
+                    if L_text=="OK":
+                      color_text=green_color
+                    else:
+                      color_text = red_color
                 else:
-                    cv2.putText(frame, f"WIDTH y= {yt} {W_text}, dist x= {xt}, hyp= {hyp}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_line, 1, cv2.LINE_AA)
+                    if W_text=="OK":
+                      color_text=green_color
+                    else:
+                      color_text = red_color
+
+                ### write the text after drawing the 2 lines already
+                if i==0:
+                    cv2.putText(frame, f"LENGTH x= {xt} {L_text}, dist y= {yt}, hyp= {hyp}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
+                else:
+                    cv2.putText(frame, f"WIDTH y= {yt} {W_text}, dist x= {xt}, hyp= {hyp}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
 
         # Draw the button
         cv2.rectangle(frame, (button_rect[0], button_rect[1]), (button_rect[2], button_rect[3]), button_color, -1)
@@ -288,13 +301,13 @@ def main(stack_name,Width_dtr,Length_dtr):
 swm=0
 while swm==0:
     stack_name = input("\n NOMBRE DEL STACK ")
-    if stack_name in DTR["Name2"].tolist() :
-        DTR = DTR.set_index('Name2')
+    stack_check = (DTR.index == stack_name).any()   ### im using stack names as the index of the DTR, here I check if it exists
+    if stack_check:
         swm=1
         print("\n Activando camara")
 
     else:
-        print("\n",stack_name, "No existe, corregir nombre")
+        print("\n",stack_name, "No existe el stack, corregir nombre")
 
 #stack_name ="270_05_OVER"
 Width_dtr = DTR.at[stack_name, 'Width']

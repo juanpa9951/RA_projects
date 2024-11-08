@@ -4,7 +4,12 @@ import time
 import cv2
 import numpy as np
 
-path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\F1.png'
+
+path = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\F1.png'
+
+
+
+
 def wait_press_enter():  # this function presses Enter 1 seconds after typing any number
     time.sleep(0.01)  # Wait for 1 seconds
     keyboard.send('enter')  # Press the Enter key

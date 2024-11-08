@@ -1,5 +1,4 @@
-###### DTR USER INPUT- LIVE FEED MEASUREMENT WITH ZOOM AND DIFFERENT COLORS
-#### THIS WILL ASK FOR THE STACK NAME FIRST, THEN LOOKS UP THE CORRESPONDING LENGTH-WIDTH INSIDE THE DTR, THEN DISPLAYS IT
+###### LIVE FEED MEASUREMENT WITH ZOOM AND DIFFERENT COLORS
 
 def euclidean_distance(point1, point2):
     import math
@@ -70,15 +69,6 @@ for i in range(0,len(Surface_map)):
     x_tup_real = Surface_map['X_real'][i]
     y_tup_real = Surface_map['Y_real'][i]
     tuples_list_real.append((x_tup_real,y_tup_real))
-
-
-excel_DTR = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\DTR.xlsx'
-DTR = pd.read_excel(excel_DTR, sheet_name='Sheet1', header=0)
-#DTR = DTR.set_index('Name2')
-########......................................................................................................................................
-
-
-
 def distance_real(col1,col2,row1,row2):
     import math
     start_point_pixel = (col1, row1)
@@ -168,7 +158,7 @@ def mouse_callback(event, x, y, flags, param):
             lines.clear()
 
 
-def main(stack_name,Width_dtr,Length_dtr):
+def main():
     global mouse_x, mouse_y, points, lines_drawn,button_pressed
 
     # Open a connection to the webcam (0 is the default camera)
@@ -195,6 +185,7 @@ def main(stack_name,Width_dtr,Length_dtr):
             break
 
         height, width = frame.shape[:2]
+        #print("height ",height," width ", width)
 
         # Apply zoom and draw circle to the frame based on the mouse position
         zoomed_frame = zoom_and_draw_circle(frame, zoom_factor, mouse_x, mouse_y)
@@ -229,54 +220,31 @@ def main(stack_name,Width_dtr,Length_dtr):
                 row1 = line[0][1]
                 row2 = line[1][1]
                 xt, yt, hyp = distance_real(col1, col2, row1, row2)
-                check_length= (xt>=Length_dtr-20) and (xt<=Length_dtr+20)
-                check_width= (yt>=Width_dtr-20) and (xt<=Width_dtr+20)
-                if check_length:
-                    L_text="OK"
-                else:
-                    L_text = "NOT-OK"
-
-                if check_width:
-                    W_text="OK"
-                else:
-                    W_text = "NOT-OK"
                 if i==0:    #### this is for assigning different colors
                     color_line=color_line1
                 else:
                     color_line = color_line2
+                cv2.putText(frame, f"dist x= {xt}, dist y= {yt}, hyp= {hyp}", (1000, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_line, 1, cv2.LINE_AA)
 
-                if i==0:
-                    cv2.putText(frame, f"LENGTH x= {xt} {L_text}, dist y= {yt}, hyp= {hyp}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_line, 1, cv2.LINE_AA)
-                else:
-                    cv2.putText(frame, f"WIDTH y= {yt} {W_text}, dist x= {xt}, hyp= {hyp}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_line, 1, cv2.LINE_AA)
 
         # Draw the button
         cv2.rectangle(frame, (button_rect[0], button_rect[1]), (button_rect[2], button_rect[3]), button_color, -1)
         cv2.putText(frame, button_text, (button_rect[0] + 5, button_rect[1] + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5,(0, 0, 0), 1, cv2.LINE_AA)
-
-        # draw name and mesaures from DTR
-        cv2.putText(frame, f"STACK {stack_name}, Length_DTR= {Length_dtr}, Width_DTR= {Width_dtr}", (500, 900), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 2, cv2.LINE_AA)
 
         # Display the combined frame
         cv2.imshow('Video Feed', frame)
 
         # Save screenshot if the button was pressed
         if button_pressed:
-            screenshot_filename = rf"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\screenshots\{stack_name}_{screenshot_count}.png"
+            screenshot_filename = rf"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\screenshots\screenshot_{screenshot_count}.png"
             cv2.imwrite(screenshot_filename, frame)
-            print(f"\n Foto guardada como  {stack_name}_{screenshot_count}.png")
-            print(f"\n FIN DE PROGRAMA")
+            print(f"Screenshot saved as {screenshot_filename}")
             button_pressed = False
             screenshot_count += 1
-            break
 
 
-        #### # Exit loop on 'q' key press
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     break
-
-        #### # Exit loop on 'ESC' key press
-        if cv2.waitKey(1) & 0xFF == 27:  # ASCII value for ESC is 27
+        # Exit loop on 'q' key press
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
     # Release the video capture object and close all OpenCV windows
@@ -284,24 +252,5 @@ def main(stack_name,Width_dtr,Length_dtr):
     cv2.destroyAllWindows()
 
 
-######  START EXECUTION OF CODE HERE...............................
-swm=0
-while swm==0:
-    stack_name = input("\n NOMBRE DEL STACK ")
-    if stack_name in DTR["Name2"].tolist() :
-        DTR = DTR.set_index('Name2')
-        swm=1
-        print("\n Activando camara")
-
-    else:
-        print("\n",stack_name, "No existe, corregir nombre")
-
-#stack_name ="270_05_OVER"
-Width_dtr = DTR.at[stack_name, 'Width']
-Length_dtr = DTR.at[stack_name, 'Length']
-stack_name=DTR.at[stack_name, 'Name']
-#print("Width DTR is= ",Width_dtr)
-#print("Length DTR is= ",Length_dtr)
-
 if __name__ == "__main__":
-    main(stack_name,Width_dtr,Length_dtr)
+    main()

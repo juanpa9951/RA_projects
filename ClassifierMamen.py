@@ -474,11 +474,17 @@ def ClassifierFunction(PathSource,PathDestination,PathLost,Path_debug,Mode):
                Prefix = ExtractedText[Pos + 4:Pos + 7]
            Prefix = "".join(c for c in Prefix if c.isalnum())  # this is to extract only alfa numeric values
            if Path2=="None":
-              FolderPath = f"{PathDestination}\{Path0}\{Path1}\{FolderName}"
-              if not os.path.exists(FolderPath):
-                  os.mkdir(FolderPath)
-              Name2=Prefix+"_"+Name
-              PathFinal= f"{FolderPath}\{Name2}"
+              if "V236" in Path0:    ### this is because V236 has different internal structure
+                  FolderPath = f"{PathDestination}\{Path0}\{FolderName}\{Path1}"
+                  os.makedirs(FolderPath, exist_ok=True)
+                  Name2=Prefix+"_"+Name
+                  PathFinal= f"{FolderPath}\{Name2}"
+              else:
+                  FolderPath = f"{PathDestination}\{Path0}\{Path1}\{FolderName}"
+                  if not os.path.exists(FolderPath):
+                      os.makedirs(FolderPath, exist_ok=True)
+                  Name2=Prefix+"_"+Name
+                  PathFinal= f"{FolderPath}\{Name2}"
            else:
               FolderPath = f"{PathDestination}\{Path0}\{Path1}\{Path2}\{FolderName}"
               if not os.path.exists(FolderPath):

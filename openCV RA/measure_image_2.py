@@ -1,4 +1,4 @@
-###### LIVE FEED MEASUREMENT WITH ZOOM AND DIFFERENT COLORS
+###### FIXED IMAGE VERSION DIMENSION MEASUREMENT ADAPTED FROM THE LIVE VIDEO MEASUREMENT CODE
 
 def euclidean_distance(point1, point2):
     import math
@@ -162,11 +162,10 @@ def main():
     global mouse_x, mouse_y, points, lines_drawn,button_pressed
 
     # Open a connection to the webcam (0 is the default camera)
-    cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")
+    #cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")
+    photo_name = "nt1.png"
+    cap = cv2.imread(fr'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\{photo_name}')
 
-    if not cap.isOpened():
-        print("Error: Could not open video.")
-        return
 
     cv2.namedWindow('Video Feed')
     cv2.setMouseCallback('Video Feed', mouse_callback)
@@ -178,13 +177,12 @@ def main():
 
     while True:
         # Read a frame from the video feed
-        ret, frame = cap.read()
+        frame = cap
 
-        if not ret:
-            print("Error: Could not read frame.")
-            break
+
 
         height, width = frame.shape[:2]
+        #print("height ",height," width ", width)
 
         # Apply zoom and draw circle to the frame based on the mouse position
         zoomed_frame = zoom_and_draw_circle(frame, zoom_factor, mouse_x, mouse_y)
