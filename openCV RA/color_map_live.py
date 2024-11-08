@@ -1,59 +1,43 @@
-# THIS CODE DISPLAYS COLOR MAP VALUES ACROSS THE FEEDER RIGHT IMAGE
+# THIS CODE DISPLAYS LIVE COLOR MAP VALUES ACROSS THE FEEDER RIGHT CAMERA
 
 import os
-os.chdir(r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas')
+os.chdir(r'C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP\openCV RA')
 
 import cv2
-
-path='TB9.png'
-img=cv2.imread(path)   # standard BGR format each from 0-255
-height, width, ch = img.shape
-#print(img)
-print(img.shape)
-
-mode=1   #### 1-HSV     0--- GRAY
-if mode==0:
-   hsv_img0 = cv2.cvtColor(img, cv2.COLOR_BGR2HSV_FULL)  # better HSV format, Hue-Saturation-Value, Color is mainly HUE
-   hsv_img0=hsv_img0[:,:,0]
-   hsv_img = cv2.GaussianBlur(hsv_img0, (5, 5), 0)  ### additional transformation
-else:
-   hsv_img0 = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)       # GRAYSCALE ALTERNATIVE
-   hsv_img = cv2.GaussianBlur(hsv_img0, (5, 5), 0)   ### additional transformation
+import numpy as np
 
 
-#print(hsv_img)
-#print(hsv_img.shape)
+
+camera_url=0
+camera_url_der="rtsp://LP008:LP008ASM@192.168.2.82:554/stream1"
+camera_url_izq="rtsp://LP009:LP009ASM@192.168.2.84:554/stream1"
+cap = cv2.VideoCapture(camera_url_der)
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)
 
 
-##### verificacion normal del valor del pixel
-for x in range(0,width,17):   ## 18
- for y in range(0,height,11): ## 10
-  Text = str(hsv_img[y, x])
-  cv2.putText(img,Text,(x,y),cv2.FONT_HERSHEY_PLAIN,0.5,(100,200,0),1)  # draw text
+while True:
+    _, img = cap.read()
+    # hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2HSV_FULL) # HSV ALTERNATIVE
+    hsv_img = cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)       # GRAYSCALE ALTERNATIVE
+    height, width, ch = img.shape
 
 
-#### verificacion usando 1s y 0s
-# for x in range(0,width,17):   ## 18
-#  for y in range(0,height,11): ## 10
-#   if hsv_img[y, x]>= 120 and hsv_img[y, x]<=260:
-#       Text = str(1)
-#   else:
-#       Text = str(0)
-#   cv2.putText(img,Text,(x,y),cv2.FONT_HERSHEY_PLAIN,0.5,(100,200,0),1)  # draw text
+    for x in range(0,width,18):
+        for y in range(0,height,10):  # 756 rows   1344 columns
+            # Text=str(hsv_img[y,x,0]) # for HSV
+            Text=str(hsv_img[y,x]) # for GRAY
+            cv2.putText(img,Text,(x,y),cv2.FONT_HERSHEY_PLAIN,0.5,(100,200,0),1)  # draw text
 
 
-cv2.imshow('img',img)
-cv2.waitKey(0)
+    cv2.imshow("Image", img)
+    key = cv2.waitKey(1)
+    if key == 27:  # ESCAPE KEY to kill the camera
+     break
+
+cap.release()
 cv2.destroyAllWindows()
 
-
-
-
-# BLUE   118 176 204
-# RED    179 225 237
-# GREEN  69 206 177
-# BLACK  0   0   0
-# WHITE  0   0   255
 
 #  PIXELES VAN POR FILAS Y COLUMNAS, LO MISMO Q TIRA EL .SHAPE, EL IMG O EL HSV O EL GRAY TIRAN RESULTADO EN FILAS X COLUMNAS, PERO COORDENADAS ES INVERTIDO (COLUMNA-FILA), TOD O LO QUE SEA DIBUJAR SOBRE LA IMAGEN SERA EN COORDENADAS, PRIMERO LA COLUMNA Y LUEGO LA FILA
 
