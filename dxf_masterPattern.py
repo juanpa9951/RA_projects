@@ -1,3 +1,5 @@
+#####  THIS FOR ORIGINAL CALIBRATION METHOD
+
 def master_pattern_x(image_size,Left_centering,Top_centering,Axis_Limit,background_color,layer_color,close_image,Axis_Limit_Y):
 
     import matplotlib.pyplot as plt
@@ -22,20 +24,15 @@ def master_pattern_x(image_size,Left_centering,Top_centering,Axis_Limit,backgrou
                         x_lenght=x_base*i                  ####modo x
                         y_lenght=y_base*k                  ####modo x
 
-                        #x_lenght=x_base*k                    ####modo y
-                        #y_lenght=y_base*i                    ####modo y
-
                         x_layer=[0,x_lenght]               ####modo x
                         y_layer=[y_lenght,y_lenght]        ####modo x
 
-                        #x_layer=[x_lenght,x_lenght]          ####modo y
-                        #y_layer=[0,y_lenght]                 ####modo y
 
                         Layer_Name_plot='X='+str(x_lenght)+" Y="+str(y_lenght)
 
                         # Plotting the polygon
                         plt.figure(figsize=(image_size, image_size))
-                        plt.plot(x_layer, y_layer,color='blue', linestyle='-', linewidth=0.3, marker='x',markersize=0.3) # 'bo-' means blue circles connected by lines
+                        plt.plot(x_layer, y_layer,color='blue', linestyle='-', linewidth=0.3, marker='x',markersize=0.2) # 'bo-' means blue circles connected by lines
                         title='pattern'
                         plt.title(title)
 
@@ -97,7 +94,7 @@ def master_pattern_y(image_size,Left_centering,Top_centering,Axis_Limit,backgrou
 
                         # Plotting the polygon
                         plt.figure(figsize=(image_size, image_size))
-                        plt.plot(x_layer, y_layer,color='blue', linestyle='-', linewidth=0.3, marker='x',markersize=0.3) # 'bo-' means blue circles connected by lines
+                        plt.plot(x_layer, y_layer,color='blue', linestyle='-', linewidth=0.3, marker='x',markersize=0.2) # 'bo-' means blue circles connected by lines
                         title='pattern'
                         plt.title(title)
 
