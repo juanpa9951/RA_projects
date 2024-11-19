@@ -8,10 +8,17 @@ se debe bucar el archivo  pyinstaller.exe y pegarlo en la carpeta donde esta el 
 
 cerrar el cmd y volver a abrir, luego
 
+navegar al directorio donde esta el archivo python y el pyinstaller.exe.  
+
 >>>cd C:\Users\Juan Pablo Lopez\PycharmProjects\ProjectJP
+
+
+  (esto tambien  se puede desde el explorador de archivos, clic al path y escribir cmd, luego enter)
+
+
 >>>pyinstaller fichaje_app.py --onefile --icon=icono.ico --windowed --add-data "foto.jpg:."
 
-el argumento principal es "pyinstaller fichaje_app.py --onefile", lo demas es para agregarle fotos, iconos, etc)
+  el argumento principal es "pyinstaller fichaje_app.py --onefile", lo demas es para agregarle fotos, iconos, etc)
 
 
 

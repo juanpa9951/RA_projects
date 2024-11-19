@@ -1,3 +1,4 @@
+### this code extracts all the text inside an image
 from google.cloud import vision
 import os
 import io
