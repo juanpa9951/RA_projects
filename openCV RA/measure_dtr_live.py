@@ -1,6 +1,31 @@
 ###### DTR USER INPUT- LIVE FEED MEASUREMENT WITH ZOOM AND DIFFERENT COLORS
 #### THIS WILL ASK FOR THE STACK NAME FIRST, THEN LOOKS UP THE CORRESPONDING LENGTH-WIDTH INSIDE THE DTR, THEN DISPLAYS IT
 
+
+##.....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
+import pandas as pd
+excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\feeder_right.xlsx'
+Surface_map = pd.read_excel(excel_table_calib, sheet_name='lona', header=0)
+tuples_list_real=[]
+tuples_list_pixel=[]
+for i in range(0,len(Surface_map)):
+    x_tup_pixel = Surface_map['X_pixel'][i]
+    y_tup_pixel = Surface_map['Y_pixel'][i]
+    tuples_list_pixel.append((x_tup_pixel,y_tup_pixel))
+    x_tup_real = Surface_map['X_real'][i]
+    y_tup_real = Surface_map['Y_real'][i]
+    tuples_list_real.append((x_tup_real,y_tup_real))
+
+##........ LOAD DTR DATA...........................................................
+excel_DTR = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\DTR.xlsx'
+DTR = pd.read_excel(excel_DTR, sheet_name='Sheet1', header=0)
+DTR = DTR.set_index('Name2')   #### this is to force the index to be column "Name2"
+
+#####...........LOAD PHOTOS PATH.............................
+saved_images_path=r"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\screenshots"
+########......................................................................................................................................
+
+
 def euclidean_distance(point1, point2):
     import math
     return math.sqrt((point1[0] - point2[0]) ** 2 + (point1[1] - point2[1]) ** 2)
@@ -57,27 +82,6 @@ def find_closest_tupleV2(tuples_list_real,tuples_list_autocad, input_tuple):
 
     return xy_tup,idx_low,idx_high,closest_tuple_low,closest_tuple_high
 
-# .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
-import pandas as pd
-excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\feeder_right.xlsx'
-Surface_map = pd.read_excel(excel_table_calib, sheet_name='right_t1', header=0)
-tuples_list_real=[]
-tuples_list_pixel=[]
-for i in range(0,len(Surface_map)):
-    x_tup_pixel = Surface_map['X_pixel'][i]
-    y_tup_pixel = Surface_map['Y_pixel'][i]
-    tuples_list_pixel.append((x_tup_pixel,y_tup_pixel))
-    x_tup_real = Surface_map['X_real'][i]
-    y_tup_real = Surface_map['Y_real'][i]
-    tuples_list_real.append((x_tup_real,y_tup_real))
-
-
-excel_DTR = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\DTR.xlsx'
-DTR = pd.read_excel(excel_DTR, sheet_name='Sheet1', header=0)
-DTR = DTR.set_index('Name2')   #### this is to force the index to be column "Name2"
-########......................................................................................................................................
-
-
 
 def distance_real(col1,col2,row1,row2):
     import math
@@ -133,7 +137,7 @@ def zoom_and_draw_circle(frame, zoom_factor, x, y):
 
     # Draw a small blue circle in the middle of the zoomed frame
     center_x, center_y = width // 2, height // 2
-    radius = 10
+    radius = 7
     color = (255, 0, 0)  # Blue color in BGR
     thickness = -1  # Filled circle
     cv2.circle(zoomed_frame, (center_x, center_y), radius, color, thickness)
@@ -222,7 +226,7 @@ def main(stack_name,Width_dtr,Length_dtr):
                 color_line = color_line1
             else:
                 color_line = color_line2
-            cv2.line(frame, line[0], line[1], color_line, 2)
+            cv2.line(frame, line[0], line[1], color_line, 1)
             ln=ln+1
 
         ###### calculate length and width and comparw with DTR
@@ -233,8 +237,8 @@ def main(stack_name,Width_dtr,Length_dtr):
                 row1 = line[0][1]
                 row2 = line[1][1]
                 xt, yt, hyp = distance_real(col1, col2, row1, row2)
-                check_length= (xt>=Length_dtr-20) and (xt<=Length_dtr+20)
-                check_width= (yt>=Width_dtr-20) and (xt<=Width_dtr+20)
+                check_length= (hyp>=Length_dtr-20) and (hyp<=Length_dtr+20)
+                check_width= (hyp>=Width_dtr-20) and (hyp<=Width_dtr+20)
                 if check_length:
                     L_text="OK"
                 else:
@@ -259,9 +263,9 @@ def main(stack_name,Width_dtr,Length_dtr):
 
                 ### write the text after drawing the 2 lines already
                 if i==0:
-                    cv2.putText(frame, f"LENGTH x= {xt} {L_text}, dist y= {yt}, hyp= {hyp}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
+                    cv2.putText(frame, f"LENGTH = {hyp} {L_text}, dist x= {xt}, dist y= {yt}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
                 else:
-                    cv2.putText(frame, f"WIDTH y= {yt} {W_text}, dist x= {xt}, hyp= {hyp}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
+                    cv2.putText(frame, f"WIDTH = {hyp} {W_text}, dist x= {xt}, dist y= {yt}", (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
 
         # Draw the button
         cv2.rectangle(frame, (button_rect[0], button_rect[1]), (button_rect[2], button_rect[3]), button_color, -1)
@@ -275,22 +279,26 @@ def main(stack_name,Width_dtr,Length_dtr):
 
         # Save screenshot if the button was pressed
         if button_pressed:
-            screenshot_filename = rf"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\screenshots\{stack_name}_{screenshot_count}.png"
+            # screenshot_filename = rf"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\screenshots\{stack_name}_{screenshot_count}.png"
+            screenshot_filename = rf"{saved_images_path}\{stack_name}.png"
             cv2.imwrite(screenshot_filename, frame)
-            print(f"\n Foto guardada como  {stack_name}_{screenshot_count}.png")
+            print(f"\n Foto guardada como  {stack_name}.png")
             print(f"\n FIN DE PROGRAMA")
             button_pressed = False
-            screenshot_count += 1
             break
 
 
-        #### # Exit loop on 'q' key press
-        # if cv2.waitKey(1) & 0xFF == ord('q'):
-        #     break
 
         #### # Exit loop on 'ESC' key press
         if cv2.waitKey(1) & 0xFF == 27:  # ASCII value for ESC is 27
             break
+
+        # Break the loop if 'q' key, 'Escape' key is pressed, or if the window is closed
+        # key = cv2.waitKey(1) & 0xFF
+        # if key == ord('q') or key == 27 or cv2.getWindowProperty("Live Stream", cv2.WND_PROP_VISIBLE) < 1:
+        #     print("Exiting...")
+        #     break
+
 
     # Release the video capture object and close all OpenCV windows
     cap.release()

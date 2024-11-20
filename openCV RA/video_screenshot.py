@@ -8,8 +8,7 @@ import time
 save_dir = r"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\screenshots"
 os.makedirs(save_dir, exist_ok=True)  # Create the directory if it doesn't exist
 
-# Initialize the webcam
-cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")
+####   Initialize the webcam
 
 # cap = cv2.VideoCapture("rtsp://LP003:LP003ASM@192.168.2.76:554/stream1")  ### asm001
 # cap = cv2.VideoCapture("rtsp://LP002:LP002ASM@192.168.2.72:554/stream1")  ### asm005

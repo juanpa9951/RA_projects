@@ -1,4 +1,30 @@
-###### LIVE FEED MEASUREMENT WITH ZOOM AND DIFFERENT COLORS
+###### DTR USER INPUT- LIVE FEED MEASUREMENT WITH ZOOM AND DIFFERENT COLORS
+#### THIS WILL ASK FOR THE STACK NAME FIRST, THEN LOOKS UP THE CORRESPONDING LENGTH-WIDTH INSIDE THE DTR, THEN DISPLAYS IT
+
+
+##.....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
+import pandas as pd
+excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\feeder_right.xlsx'
+Surface_map = pd.read_excel(excel_table_calib, sheet_name='lona', header=0)
+tuples_list_real=[]
+tuples_list_pixel=[]
+for i in range(0,len(Surface_map)):
+    x_tup_pixel = Surface_map['X_pixel'][i]
+    y_tup_pixel = Surface_map['Y_pixel'][i]
+    tuples_list_pixel.append((x_tup_pixel,y_tup_pixel))
+    x_tup_real = Surface_map['X_real'][i]
+    y_tup_real = Surface_map['Y_real'][i]
+    tuples_list_real.append((x_tup_real,y_tup_real))
+
+##........ LOAD DTR DATA...........................................................
+excel_DTR = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\DTR.xlsx'
+DTR = pd.read_excel(excel_DTR, sheet_name='Sheet1', header=0)
+DTR = DTR.set_index('Name2')   #### this is to force the index to be column "Name2"
+
+#####...........LOAD PHOTOS PATH.............................
+saved_images_path=r"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\screenshots"
+########......................................................................................................................................
+
 
 def euclidean_distance(point1, point2):
     import math
@@ -56,19 +82,7 @@ def find_closest_tupleV2(tuples_list_real,tuples_list_autocad, input_tuple):
 
     return xy_tup,idx_low,idx_high,closest_tuple_low,closest_tuple_high
 
-# .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
-import pandas as pd
-excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\feeder_right.xlsx'
-Surface_map = pd.read_excel(excel_table_calib, sheet_name='lona', header=0)
-tuples_list_real=[]
-tuples_list_pixel=[]
-for i in range(0,len(Surface_map)):
-    x_tup_pixel = Surface_map['X_pixel'][i]
-    y_tup_pixel = Surface_map['Y_pixel'][i]
-    tuples_list_pixel.append((x_tup_pixel,y_tup_pixel))
-    x_tup_real = Surface_map['X_real'][i]
-    y_tup_real = Surface_map['Y_real'][i]
-    tuples_list_real.append((x_tup_real,y_tup_real))
+
 def distance_real(col1,col2,row1,row2):
     import math
     start_point_pixel = (col1, row1)
@@ -158,20 +172,11 @@ def mouse_callback(event, x, y, flags, param):
             lines.clear()
 
 
-def main():
+def main(stack_name,Width_dtr,Length_dtr):
     global mouse_x, mouse_y, points, lines_drawn,button_pressed
 
-    #### Open a connection to the webcam (0 is the default camera)
-    # cap = cv2.VideoCapture("rtsp://LP003:LP003ASM@192.168.2.76:554/stream1")  ### asm001
-    # cap = cv2.VideoCapture("rtsp://LP002:LP002ASM@192.168.2.72:554/stream1")  ### asm005
-    # cap = cv2.VideoCapture("rtsp://MSM005:LP005ASM@172.16.58.15:554/stream1")  ### ud tapes
-    # cap = cv2.VideoCapture("rtsp://LP006:LP006ASM@192.168.2.79:554/stream1")  ### asm003 der
-    # cap = cv2.VideoCapture("rtsp://LP005:LP005ASM@192.168.2.75:554/stream1")  ### asm003 izq
-    # cap = cv2.VideoCapture("rtsp://LP001:LP001ASM@192.168.2.71:554/stream1")  ### asm002 izq
-    # cap = cv2.VideoCapture("rtsp://LP004:LP004ASM@192.168.2.78:554/stream1")  ### asm002 der
-    cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")  ### asm004 der
-    # cap = cv2.VideoCapture("rtsp://LP009:LP009ASM@192.168.2.84:554/stream1") ### asm004 izq
-    # cap = cv2.VideoCapture("rtsp://RA-camara3:RewAir2023@172.16.58.16:554/stream1")  ## tagging 1
+    # Open a connection to the webcam (0 is the default camera)
+    cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")
 
     if not cap.isOpened():
         print("Error: Could not open video.")
@@ -184,7 +189,7 @@ def main():
     zoom_size_ratio = 0.3   ### 0.3    # Size of the zoomed window relative to the original frame
 
     screenshot_count = 0
-
+    #cam_sw=1
     while True:
         # Read a frame from the video feed
         ret, frame = cap.read()
@@ -194,7 +199,6 @@ def main():
             break
 
         height, width = frame.shape[:2]
-        #print("height ",height," width ", width)
 
         # Apply zoom and draw circle to the frame based on the mouse position
         zoomed_frame = zoom_and_draw_circle(frame, zoom_factor, mouse_x, mouse_y)
@@ -212,9 +216,11 @@ def main():
         # Draw the lines and coordinates on the frame
         color_line1 = (0, 255, 0)
         color_line2 = (255, 150, 0)
+        green_color=(0, 255, 0)
+        red_color=(0,0,255)
 
-
-        ln=0    #### this is for assigning different colors
+        #### Draw the lines with different colors
+        ln=0
         for line in lines:
             if ln == 0:
                 color_line = color_line1
@@ -222,6 +228,8 @@ def main():
                 color_line = color_line2
             cv2.line(frame, line[0], line[1], color_line, 1)
             ln=ln+1
+
+        ###### calculate length and width and comparw with DTR
         for i, line in enumerate(lines):
             if i < 2:  # Only display the coordinates of the first two lines
                 col1 = line[0][0]
@@ -229,37 +237,94 @@ def main():
                 row1 = line[0][1]
                 row2 = line[1][1]
                 xt, yt, hyp = distance_real(col1, col2, row1, row2)
-                if i==0:    #### this is for assigning different colors
-                    color_line=color_line1
+                check_length= (hyp>=Length_dtr-20) and (hyp<=Length_dtr+20)
+                check_width= (hyp>=Width_dtr-20) and (hyp<=Width_dtr+20)
+                if check_length:
+                    L_text="OK"
                 else:
-                    color_line = color_line2
-                cv2.putText(frame, f"dist x= {xt}, dist y= {yt}, hyp= {hyp}", (1000, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_line, 1, cv2.LINE_AA)
+                    L_text = "NOT-OK"
 
+                if check_width:
+                    W_text="OK"
+                else:
+                    W_text = "NOT-OK"
+
+                ### assign color to the text
+                if i==0:
+                    if L_text=="OK":
+                      color_text=green_color
+                    else:
+                      color_text = red_color
+                else:
+                    if W_text=="OK":
+                      color_text=green_color
+                    else:
+                      color_text = red_color
+
+                ### write the text after drawing the 2 lines already
+                if i==0:
+                    text1=f"LENGTH = {hyp} {L_text}, dist x= {xt}, dist y= {yt}"
+                    cv2.putText(frame,text1, (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
+                else:
+                    text2=f"WIDTH = {hyp} {W_text}, dist x= {xt}, dist y= {yt}"
+                    cv2.putText(frame,text2, (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
 
         # Draw the button
         cv2.rectangle(frame, (button_rect[0], button_rect[1]), (button_rect[2], button_rect[3]), button_color, -1)
         cv2.putText(frame, button_text, (button_rect[0] + 5, button_rect[1] + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5,(0, 0, 0), 1, cv2.LINE_AA)
+
+        # draw name and mesaures from DTR
+        cv2.putText(frame, f"STACK {stack_name}, Length_DTR= {Length_dtr}, Width_DTR= {Width_dtr}", (500, 900), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 2, cv2.LINE_AA)
 
         # Display the combined frame
         cv2.imshow('Video Feed', frame)
 
         # Save screenshot if the button was pressed
         if button_pressed:
-            screenshot_filename = rf"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras\capturas\screenshots\screenshot_{screenshot_count}.png"
+            # screenshot_filename = rf"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\screenshots\{stack_name}_{screenshot_count}.png"
+            screenshot_filename = rf"{saved_images_path}\{stack_name}.png"
             cv2.imwrite(screenshot_filename, frame)
-            print(f"Screenshot saved as {screenshot_filename}")
+            print(f"\n Foto guardada como  {stack_name}.png")
             button_pressed = False
-            screenshot_count += 1
-
-
-        # Exit loop on 'q' key press
-        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
+
+
+
+
+        #### # Exit loop on 'ESC' key press
+        if cv2.waitKey(1) & 0xFF == 27:  # ASCII value for ESC is 27
+            break
+
+        # Break the loop if 'q' key, 'Escape' key is pressed, or if the window is closed
+        # key = cv2.waitKey(1) & 0xFF
+        # if key == ord('q') or key == 27 or cv2.getWindowProperty("Live Stream", cv2.WND_PROP_VISIBLE) < 1:
+        #     print("Exiting...")
+        #     break
+
 
     # Release the video capture object and close all OpenCV windows
     cap.release()
     cv2.destroyAllWindows()
+    return text1,text2
 
 
-if __name__ == "__main__":
-    main()
+######  START EXECUTION OF CODE HERE...............................
+
+print("\nCAMARAS DE MEDICION - DTR")
+odf=input("\n Numero de ODF: ")
+
+while True:
+    stack_name = input("\n NOMBRE DEL STACK: ")
+    stack_check = (DTR.index == stack_name).any()   ### im using stack names as the index of the DTR, here I check if it exists
+    if stack_check:
+        print("\n Activando camara")
+        Width_dtr = DTR.at[stack_name, 'Width']
+        Length_dtr = DTR.at[stack_name, 'Length']
+        stack_name = DTR.at[stack_name, 'Name']
+        text1,text2=main(stack_name, Width_dtr, Length_dtr)
+        print(text1," AND ",text2)
+        print(f"\n Siguiente Stack")
+    else:
+        print("\n",stack_name, "No existe el stack, corregir nombre")
+
+#stack_name ="270_05_OVER"

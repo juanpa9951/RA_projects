@@ -163,7 +163,7 @@ def main():
 
     # Open a connection to the webcam (0 is the default camera)
     #cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")
-    photo_name = "nt1.png"
+    photo_name = "vtt5.png"
     cap = cv2.imread(fr'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\{photo_name}')
 
 
