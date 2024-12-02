@@ -12,7 +12,7 @@ def click_event(event, x, y, flags, param):
         print(f"Mouse clicked at: ({x}, {y})")
 
 # Load an image
-photo_name="Lona1_vlc.png"
+photo_name="Lona2_vlc.png"
 #photo_name="Lona1_opencv.png"
 image = cv2.imread(fr'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\{photo_name}')
 

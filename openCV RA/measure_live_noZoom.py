@@ -125,9 +125,9 @@ def draw_lines(event, x, y, flags, param):
             lines.clear()
 
 # Initialize the webcam
-camera_url_der="rtsp://LP008:LP008ASM@192.168.2.82:554/stream1"
-camera_url_izq="rtsp://LP009:LP009ASM@192.168.2.84:554/stream1"
-cap = cv2.VideoCapture(camera_url_der)
+# camera_url_der="rtsp://LP008:LP008ASM@192.168.2.82:554/stream1"
+# camera_url_izq="rtsp://LP009:LP009ASM@192.168.2.84:554/stream1"
+# cap = cv2.VideoCapture(camera_url_der)
 
 # cap = cv2.VideoCapture("rtsp://LP003:LP003ASM@192.168.2.76:554/stream1")  ### asm001
 # cap = cv2.VideoCapture("rtsp://LP002:LP002ASM@192.168.2.72:554/stream1")  ### asm005
@@ -137,7 +137,7 @@ cap = cv2.VideoCapture(camera_url_der)
 # cap = cv2.VideoCapture("rtsp://LP001:LP001ASM@192.168.2.71:554/stream1")  ### asm002 izq
 # cap = cv2.VideoCapture("rtsp://LP004:LP004ASM@192.168.2.78:554/stream1")  ### asm002 der
 # cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")  ### asm004 der
-# cap = cv2.VideoCapture("rtsp://LP009:LP009ASM@192.168.2.84:554/stream1") ### asm004 izq
+cap = cv2.VideoCapture("rtsp://LP009:LP009ASM@192.168.2.84:554/stream1") ### asm004 izq
 # cap = cv2.VideoCapture("rtsp://RA-camara3:RewAir2023@172.16.58.16:554/stream1")  ## tagging 1
 
 

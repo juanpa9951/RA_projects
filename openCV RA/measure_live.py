@@ -169,8 +169,8 @@ def main():
     # cap = cv2.VideoCapture("rtsp://LP005:LP005ASM@192.168.2.75:554/stream1")  ### asm003 izq
     # cap = cv2.VideoCapture("rtsp://LP001:LP001ASM@192.168.2.71:554/stream1")  ### asm002 izq
     # cap = cv2.VideoCapture("rtsp://LP004:LP004ASM@192.168.2.78:554/stream1")  ### asm002 der
-    cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")  ### asm004 der
-    # cap = cv2.VideoCapture("rtsp://LP009:LP009ASM@192.168.2.84:554/stream1") ### asm004 izq
+    # cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")  ### asm004 der
+    cap = cv2.VideoCapture("rtsp://LP009:LP009ASM@192.168.2.84:554/stream1") ### asm004 izq
     # cap = cv2.VideoCapture("rtsp://RA-camara3:RewAir2023@172.16.58.16:554/stream1")  ## tagging 1
 
     if not cap.isOpened():
@@ -178,6 +178,7 @@ def main():
         return
 
     cv2.namedWindow('Video Feed')
+    # cv2.namedWindow("Video Feed", cv2.WINDOW_NORMAL)
     cv2.setMouseCallback('Video Feed', mouse_callback)
 
     zoom_factor = 5.0  #    ### 5.0  Adjust zoom factor as needed

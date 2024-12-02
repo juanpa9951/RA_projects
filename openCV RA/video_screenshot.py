@@ -17,9 +17,14 @@ os.makedirs(save_dir, exist_ok=True)  # Create the directory if it doesn't exist
 # cap = cv2.VideoCapture("rtsp://LP005:LP005ASM@192.168.2.75:554/stream1")  ### asm003 izq
 # cap = cv2.VideoCapture("rtsp://LP001:LP001ASM@192.168.2.71:554/stream1")  ### asm002 izq
 # cap = cv2.VideoCapture("rtsp://LP004:LP004ASM@192.168.2.78:554/stream1")  ### asm002 der
-cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")  ### asm004 der
-#cap = cv2.VideoCapture("rtsp://LP009:LP009ASM@192.168.2.84:554/stream1") ### asm004 izq
+# cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")  ### asm004 der
+cap = cv2.VideoCapture("rtsp://LP009:LP009ASM@192.168.2.84:554/stream1") ### asm004 izq
 # cap = cv2.VideoCapture("rtsp://RA-camara3:RewAir2023@172.16.58.16:554/stream1")  ## tagging 1
+
+# Get original resolution
+height = cap.get(cv2.CAP_PROP_FRAME_HEIGHT)
+width = cap.get(cv2.CAP_PROP_FRAME_WIDTH)
+print(height,width)
 
 # Check if the webcam opened successfully
 if not cap.isOpened():
@@ -55,11 +60,13 @@ def on_mouse(event, x, y, flags, param):
 
 # Set the mouse callback function
 cv2.namedWindow("Live Stream")
+#cv2.namedWindow("Live Stream", cv2.WINDOW_NORMAL)
 cv2.setMouseCallback("Live Stream", on_mouse)
 
 while True:
     # Capture frame-by-frame
     ret, frame = cap.read()
+    print(frame.shape)
 
     # If frame capture failed, break the loop
     if not ret:

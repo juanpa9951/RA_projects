@@ -570,8 +570,6 @@ def Laser_remote_v5(coordinates_name,x_name_offset,y_name_offset, letter_size):
         print(f"An error has occurred: {exception.message}")
 
 
-
-
 def call_remote():
     coordinates_name = "Table 1"
     x_name_offset = 1000

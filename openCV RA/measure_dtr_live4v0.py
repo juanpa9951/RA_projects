@@ -1,11 +1,11 @@
 ###### DTR USER INPUT- LIVE FEED MEASUREMENT WITH ZOOM AND DIFFERENT COLORS
-#### THIS WILL ASK FOR THE STACK NAME FIRST, THEN LOOKS UP THE CORRESPONDING LENGTH-WIDTH INSIDE THE DTR, THEN DISPLAYS IT
+#### GUI INTERFACE v1
 
 
 ##.....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
 import pandas as pd
 excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\feeder_right.xlsx'
-Surface_map = pd.read_excel(excel_table_calib, sheet_name='lona', header=0)
+Surface_map = pd.read_excel(excel_table_calib, sheet_name='lona_izq', header=0)
 tuples_list_real=[]
 tuples_list_pixel=[]
 for i in range(0,len(Surface_map)):
@@ -18,13 +18,16 @@ for i in range(0,len(Surface_map)):
 
 ##........ LOAD DTR DATA...........................................................
 excel_DTR = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\DTR.xlsx'
-DTR = pd.read_excel(excel_DTR, sheet_name='Sheet1', header=0)
-DTR = DTR.set_index('Name2')   #### this is to force the index to be column "Name2"
+DTR = pd.read_excel(excel_DTR, sheet_name='DTR_sheet', header=0)
+stack_list = DTR.iloc[:, 0].tolist()
+DTR = DTR.set_index('Name')   #### this is to force the index to be column "Name"
 
 #####...........LOAD PHOTOS PATH.............................
 saved_images_path=r"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\screenshots"
-########......................................................................................................................................
-
+########.........LOAD DTR REGISTER.............................................................................................................................
+dtr_register_path=r"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\screenshots"
+########.........CAMERA LOG PATH.....................
+log_file_path=r"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\screenshots\LOG.txt"
 
 def euclidean_distance(point1, point2):
     import math
@@ -82,7 +85,6 @@ def find_closest_tupleV2(tuples_list_real,tuples_list_autocad, input_tuple):
 
     return xy_tup,idx_low,idx_high,closest_tuple_low,closest_tuple_high
 
-
 def distance_real(col1,col2,row1,row2):
     import math
     start_point_pixel = (col1, row1)
@@ -94,10 +96,54 @@ def distance_real(col1,col2,row1,row2):
     hyp=round(math.sqrt(distance_X**2+distance_Y**2),2)
     return distance_X, distance_Y,hyp
 
+def guardar_registro_dtr(dtr_register_path,stack_name,Width_dtr,Length_dtr,l_real,w_real,L_text,W_text,batch,turno,maquina,quality1,quality2,quality3,quality4,quality5,quality6,item_nr):
+    from openpyxl import load_workbook
+    from datetime import datetime
+    from openpyxl.worksheet.table import Table
+
+    now = datetime.now()
+    date=now.date()
+    time_now=now.time()
+
+    # Load the workbook and select the worksheet
+    file_name_xl='DTR_REGISTER.xlsx'
+    file_path = rf"{dtr_register_path}\{file_name_xl}"
+    wb = load_workbook(file_path)
+    ws = wb.active  # Assuming the table is in the active sheet
+
+    # Find the table by name
+    table_name = 'Table1'  # Replace with your table's name
+    excel_table = ws.tables[table_name]
+
+    # Get the current table range
+    current_range = excel_table.ref  # e.g., "A1:B5"
+    start_row = int(current_range.split(':')[1][1:]) + 1  # First empty row below the table
+    start_col = current_range.split(':')[0][0]  # First column of the table
+    end_col = current_range.split(':')[1][0]  # Last column of the table
+
+    # New data to add
+    new_data = [
+        [stack_name,Length_dtr,l_real,L_text,Width_dtr,w_real,W_text,quality1,quality2,quality3,quality4,quality5,quality6,batch,turno,maquina,item_nr,time_now,date]
+    ]
+
+    # Add new rows to the worksheet
+    for i, row_data in enumerate(new_data, start=start_row):
+        for j, value in enumerate(row_data, start=1):
+            ws.cell(row=i, column=j, value=value)
+
+    # Update the table's range to include the new rows
+    end_row = start_row + len(new_data) - 1
+    excel_table.ref = f"{current_range.split(':')[0]}:{end_col}{end_row}"
+
+    # Save the workbook
+    wb.save(file_path)
+    print(f"Data added to table '{table_name}' in {file_path}")
+
+
 
 
 import cv2
-import datetime
+from datetime import datetime
 
 # Global variables to store the mouse position and clicked points
 mouse_x, mouse_y = 0, 0
@@ -176,8 +222,20 @@ def mouse_callback(event, x, y, flags, param):
 def main(stack_name,Width_dtr,Length_dtr):
     global mouse_x, mouse_y, points, lines_drawn,button_pressed
 
-    # Open a connection to the webcam (0 is the default camera)
-    cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1")
+    ###### Open a connection to the webcam (0 is the default camera)
+    # cap = cv2.VideoCapture("rtsp://LP003:LP003ASM@192.168.2.76:554/stream1")  ### asm001
+    # cap = cv2.VideoCapture("rtsp://LP002:LP002ASM@192.168.2.72:554/stream1")  ### asm005
+    # cap = cv2.VideoCapture("rtsp://MSM005:LP005ASM@172.16.58.15:554/stream1")  ### ud tapes
+    # cap = cv2.VideoCapture("rtsp://LP006:LP006ASM@192.168.2.79:554/stream1")  ### asm003 der
+    # cap = cv2.VideoCapture("rtsp://LP005:LP005ASM@192.168.2.75:554/stream1")  ### asm003 izq
+    # cap = cv2.VideoCapture("rtsp://LP001:LP001ASM@192.168.2.71:554/stream1")  ### asm002 izq
+    # cap = cv2.VideoCapture("rtsp://LP004:LP004ASM@192.168.2.78:554/stream1")  ### asm002 der
+    # cap = cv2.VideoCapture("rtsp://LP008:LP008ASM@192.168.2.82:554/stream1") ### asm004 der
+    cap = cv2.VideoCapture("rtsp://LP009:LP009ASM@192.168.2.84:554/stream1") ### asm004 izq
+    # cap = cv2.VideoCapture("rtsp://RA-camara3:RewAir2023@172.16.58.16:554/stream1")  ## tagging 1
+    # cap = cv2.VideoCapture("rtsp://RA-camaras:RewAir2023@172.16.58.142:554/stream1")  ## tagging 1 auxiliar
+    # cap = cv2.VideoCapture("rtsp://RA-camara4:RewAir2023@172.16.58.17:554/stream1") ## tagging 2
+    # cap = cv2.VideoCapture("rtsp://RA-camara2:RewAir2023@172.16.58.180:554/stream1")  ## tagging 2 auxiliar
 
     if not cap.isOpened():
         print("Error: Could not open video.")
@@ -265,17 +323,19 @@ def main(stack_name,Width_dtr,Length_dtr):
                 ### write the text after drawing the 2 lines already
                 if i==0:
                     text1=f"LENGTH = {hyp} {L_text}, dist x= {xt}, dist y= {yt}"
-                    cv2.putText(frame,text1, (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
+                    cv2.putText(frame,text1, (200, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
+                    l_real=hyp
                 else:
                     text2=f"WIDTH = {hyp} {W_text}, dist x= {xt}, dist y= {yt}"
-                    cv2.putText(frame,text2, (900, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
+                    cv2.putText(frame,text2, (200, 30 + i * 30), cv2.FONT_HERSHEY_SIMPLEX, 1, color_text, 1, cv2.LINE_AA)
+                    w_real=hyp
 
         # Draw the button
         cv2.rectangle(frame, (button_rect[0], button_rect[1]), (button_rect[2], button_rect[3]), button_color, -1)
         cv2.putText(frame, button_text, (button_rect[0] + 5, button_rect[1] + 20), cv2.FONT_HERSHEY_SIMPLEX, 0.5,(0, 0, 0), 1, cv2.LINE_AA)
 
         # draw name and mesaures from DTR
-        cv2.putText(frame, f"STACK {stack_name}, Length_DTR= {Length_dtr}, Width_DTR= {Width_dtr}", (500, 900), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 2, cv2.LINE_AA)
+        cv2.putText(frame, f"STACK {stack_name}, Length_DTR= {Length_dtr}, Width_DTR= {Width_dtr}", (100, 900), cv2.FONT_HERSHEY_SIMPLEX, 1, (255,0,0), 2, cv2.LINE_AA)
 
         # Display the combined frame
         cv2.imshow('Video Feed', frame)
@@ -283,50 +343,202 @@ def main(stack_name,Width_dtr,Length_dtr):
         # Save screenshot if the button was pressed
         if button_pressed:
             # screenshot_filename = rf"C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\screenshots\{stack_name}_{screenshot_count}.png"
-            screenshot_filename = rf"{saved_images_path}\{stack_name}.png"
+            screenshot_filename = rf"{saved_images_path}\{stack_name}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.png"
             cv2.imwrite(screenshot_filename, frame)
             print(f"\n Foto guardada como  {stack_name}.png")
             button_pressed = False
             break
 
 
-
-
         #### # Exit loop on 'ESC' key press
         if cv2.waitKey(1) & 0xFF == 27:  # ASCII value for ESC is 27
             break
 
-        # Break the loop if 'q' key, 'Escape' key is pressed, or if the window is closed
-        # key = cv2.waitKey(1) & 0xFF
-        # if key == ord('q') or key == 27 or cv2.getWindowProperty("Live Stream", cv2.WND_PROP_VISIBLE) < 1:
-        #     print("Exiting...")
-        #     break
-
-
     # Release the video capture object and close all OpenCV windows
     cap.release()
     cv2.destroyAllWindows()
-    return text1,text2
+    return l_real,w_real,L_text,W_text
 
 
 ######  START EXECUTION OF CODE HERE...............................
 
-print("\nCAMARAS DE MEDICION - DTR")
-odf=input("\n Numero de ODF: ")
+import tkinter as tk
+from tkinter import ttk
+class AutocompleteCombobox(ttk.Combobox):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self._full_values = self['values']  # Store the original list of values
+        self.bind('<KeyRelease>', self._on_keyrelease)
 
-while True:
-    stack_name = input("\n NOMBRE DEL STACK: ")
+    def _on_keyrelease(self, event):
+        # Get the current input
+        typed_text = self.get()
+
+        # Only filter if the length of input is at least 3
+        if len(typed_text) < 3:
+            self['values'] = self._full_values  # Reset to all options
+            return
+
+        # Filter the list based on the typed text
+        filtered_values = [
+            item for item in self._full_values if typed_text.lower() in item.lower()
+        ]
+
+        # Update the combobox values
+        self['values'] = filtered_values
+
+        # Automatically show the dropdown if there are filtered values
+        if filtered_values:
+            self.event_generate('<Down>')
+def submit_action():
+    # Fetch input values
+    batch = entry1.get()
+    turno = combobox1.get()
+    maquina = combobox2.get()
+    stack_name = autocomplete_entry.get()
+    quality1 = combobox4.get()
+    quality2 = combobox5.get()
+    quality3 = combobox6.get()
+    quality4 = combobox7.get()
+    quality5 = combobox8.get()
+    quality6 = combobox9.get()
+    item_nr  = entry2.get()
+    quality_check=0
+    if quality1=="Yes" and quality2=="Yes" and quality3=="Yes" and quality4=="Yes" and quality5=="Yes" and quality6=="Yes":
+        quality_check=1
+    ### Perform some action with the collected data
     stack_check = (DTR.index == stack_name).any()   ### im using stack names as the index of the DTR, here I check if it exists
-    if stack_check:
+    if stack_check and quality_check:
         print("\n Activando camara")
         Width_dtr = DTR.at[stack_name, 'Width']
         Length_dtr = DTR.at[stack_name, 'Length']
-        stack_name = DTR.at[stack_name, 'Name']
-        text1,text2=main(stack_name, Width_dtr, Length_dtr)
-        print(text1," AND ",text2)
-        date_stamp=datetime.datetime.now().strftime('%Y%m%d_%H%M%S')
-        print(f"\n Siguiente Stack")
-    else:
-        print("\n",stack_name, "No existe el stack, corregir nombre")
+        ####  execute main code.........................
+        l_real,w_real,L_text,W_text=main(stack_name, Width_dtr, Length_dtr)
+        print(l_real,w_real,L_text,W_text)
+        ######.......... save excel file.................
+        guardar_registro_dtr(dtr_register_path, stack_name, Width_dtr, Length_dtr, l_real, w_real, L_text, W_text,batch, turno, maquina,quality1,quality2,quality3,quality4,quality5,quality6,item_nr)
+        ######................save log file.......................
+        with open(log_file_path, "a") as log_file:
+            timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+            log_file.write(f"{timestamp},STACK: {stack_name},BATCH: {batch},MAQUINA: {maquina}, ITEM: {item_nr}\n")
 
-#stack_name ="270_05_OVER"
+        result_message="GUARDADO!- Siguiente Stack.."
+        print(f"\n", result_message)
+        result_label.configure(text=result_message)
+        combobox4.set("No")
+        combobox5.set("No")
+        combobox6.set("No")
+        combobox7.set("No")
+        combobox8.set("No")
+        combobox9.set("No")
+    else:
+        result_message="Error de Inspecciones"
+        print(f"\n", result_message)
+        result_label.configure(text=result_message)
+
+
+
+# Create the main window
+root = tk.Tk()
+root.title("DTR CAMERA")
+
+# Create and place widgets
+# Label and Entry for the first input (text input)
+label1 = tk.Label(root, text="Batch:")
+label1.grid(row=0, column=0, padx=10, pady=5, sticky="w")
+entry1 = tk.Entry(root)
+entry1.grid(row=0, column=1, padx=10, pady=5)
+
+# Label and Combobox for the second input (list input)
+label2 = tk.Label(root, text="Turno:")
+label2.grid(row=1, column=0, padx=10, pady=5, sticky="w")
+combobox1 = ttk.Combobox(root, values=["Mañana", "Tarde"])
+combobox1.grid(row=1, column=1, padx=10, pady=5)
+combobox1.set("Mañana")  # Default value
+
+# Label and Combobox for the fourth input (list input)
+label3 = tk.Label(root, text="Maquina:")
+label3.grid(row=2, column=0, padx=10, pady=5, sticky="w")
+combobox2 = ttk.Combobox(root, values=["ASM004", "ASM002", "ASM003"])
+combobox2.grid(row=2, column=1, padx=10, pady=5)
+combobox2.set("ASM004")  # Default value
+
+# Label and Combobox for the third input (list input)
+label4 = tk.Label(root, text="STACK:")
+label4.grid(row=4, column=0, padx=10, pady=5, sticky="w")
+# combobox3 = ttk.Combobox(root, values=["280_08_OVER", "280_05_OVER", "280_02_OVER"])
+# combobox3.grid(row=4, column=1, padx=10, pady=5)
+# combobox3.set(" ")  # Default value
+options = stack_list
+autocomplete_entry = AutocompleteCombobox(root, values=options)
+autocomplete_entry.grid(row=4, column=1, padx=10, pady=5)
+
+
+
+
+# Additional input
+label5 = tk.Label(root, text="Intermediate RM: ")
+label5.grid(row=0, column=2, padx=10, pady=5, sticky="w")
+combobox4 = ttk.Combobox(root, values=["Yes", "No"])
+combobox4.grid(row=0, column=3, padx=10, pady=5)
+combobox4.set("No")  # Default value
+
+# Additional input
+label6 = tk.Label(root, text="Visual Inspection: ")
+label6.grid(row=1, column=2, padx=10, pady=5, sticky="w")
+combobox5 = ttk.Combobox(root, values=["Yes", "No"])
+combobox5.grid(row=1, column=3, padx=10, pady=5)
+combobox5.set("No")  # Default value
+
+# Additional input
+label7 = tk.Label(root, text="All marks placed: ")
+label7.grid(row=2, column=2, padx=10, pady=5, sticky="w")
+combobox6 = ttk.Combobox(root, values=["Yes", "No"])
+combobox6.grid(row=2, column=3, padx=10, pady=5)
+combobox6.set("No")  # Default value
+
+# Additional input
+label8 = tk.Label(root, text="FoD Free: ")
+label8.grid(row=0, column=4, padx=10, pady=5, sticky="w")
+combobox7 = ttk.Combobox(root, values=["Yes", "No"])
+combobox7.grid(row=0, column=5, padx=10, pady=5)
+combobox7.set("No")  # Default value
+
+# Additional input
+label9 = tk.Label(root, text="Laser Check: ")
+label9.grid(row=1, column=4, padx=10, pady=5, sticky="w")
+combobox8 = ttk.Combobox(root, values=["Yes", "No"])
+combobox8.grid(row=1, column=5, padx=10, pady=5)
+combobox8.set("No")  # Default value
+
+# Additional input
+label10 = tk.Label(root, text="Overlap Check: ")
+label10.grid(row=2, column=4, padx=10, pady=5, sticky="w")
+combobox9 = ttk.Combobox(root, values=["Yes", "No"])
+combobox9.grid(row=2, column=5, padx=10, pady=5)
+combobox9.set("No")  # Default value
+
+
+# Additional input
+label11 = tk.Label(root, text="ITEM:")
+label11.grid(row=3, column=0, padx=10, pady=5, sticky="w")
+entry2 = tk.Entry(root)
+entry2.grid(row=3, column=1, padx=10, pady=5)
+
+
+# Submit Button
+submit_button = tk.Button(root, text="ACTIVAR CAMARA", command=submit_action)
+submit_button.grid(row=5, column=5, columnspan=2, pady=10)
+
+# Label to display the result message
+result_label = tk.Label(root, text=" Camara Lista ", fg="blue", justify="left")
+result_label.grid(row=6, column=0, columnspan=2, padx=10, pady=10)
+
+
+# Run the application
+root.mainloop()
+
+
+
+
+

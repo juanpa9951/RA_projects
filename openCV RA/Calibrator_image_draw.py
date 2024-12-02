@@ -15,7 +15,7 @@ def click_event(event, x, y, flags, param):
 
 
 # Load an image
-photo_name="Lona1_vlc.png"
+photo_name="Lona2_opencv.png"
 #photo_name="Lona1_opencv.png"
 image = cv2.imread(fr'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\{photo_name}')
 
@@ -39,7 +39,7 @@ cv2.destroyAllWindows()
 print("x")
 for tup in coordinates:
     print(tup[0])
-
+print('\n \n \n \n \n')
 print("y")
 for tup in coordinates:
     print(tup[1])

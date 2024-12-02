@@ -12,19 +12,19 @@ def click_event(event, x, y, flags, param):
         print(f"Mouse clicked at: ({x}, {y})")
 
 # Load an image
-photo_name="Lona1_vlc.png"
+photo_name="Lona2_vlc.png"
 #photo_name="Lona1_opencv.png"
 image = cv2.imread(fr'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\{photo_name}')
 
 
-##### This is to draw the separation line
-mid_x=1000
-height=1000
-start_point = (mid_x, 0)  # Top of the image
-end_point = (mid_x+10, height)  # Bottom of the image
-color = (0, 0, 255)  # Red color in BGR
-thickness = 1  # Line thickness
-cv2.line(image, start_point, end_point, color, thickness)   ### This can be omited to delete the line
+# ##### This is to draw the separation line This can be omited to delete the line
+# mid_x=1000
+# height=1000
+# start_point = (mid_x, 0)  # Top of the image
+# end_point = (mid_x+10, height)  # Bottom of the image
+# color = (0, 0, 255)  # Red color in BGR
+# thickness = 1  # Line thickness
+# cv2.line(image, start_point, end_point, color, thickness)
 
 # Create a window and display the image
 cv2.namedWindow('Image')
@@ -32,8 +32,8 @@ cv2.imshow('Image', image)
 
 #####     Set the mouse callback function to the window
 
-cv2.setMouseCallback('Image', mouse_callback)    ##### to print all positions
-#cv2.setMouseCallback('Image', click_event)         ##### to print only the clic
+#cv2.setMouseCallback('Image', mouse_callback)    ##### to print all positions
+cv2.setMouseCallback('Image', click_event)         ##### to print only the clic
 
 ##### Keep the window open until a key is pressed
 cv2.waitKey(0)
