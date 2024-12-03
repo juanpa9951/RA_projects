@@ -277,6 +277,7 @@ def main(stack_name,Width_dtr,Length_dtr):
         color_line2 = (255, 150, 0)
         green_color=(0, 255, 0)
         red_color=(0,0,255)
+        yellow_color = (0, 255, 255)
 
         #### Draw the lines with different colors
         ln=0
@@ -296,29 +297,47 @@ def main(stack_name,Width_dtr,Length_dtr):
                 row1 = line[0][1]
                 row2 = line[1][1]
                 xt, yt, hyp = distance_real(col1, col2, row1, row2)
-                check_length= (hyp>=Length_dtr-20) and (hyp<=Length_dtr+20)
-                check_width= (hyp>=Width_dtr-20) and (hyp<=Width_dtr+20)
-                if check_length:
-                    L_text="OK"
+
+                check_length=hyp-Length_dtr
+                check_width=hyp-Width_dtr
+
+               ## check length and assign texts OK NOT OK
+                if check_length>=30:
+                    L_text="NOT-OK"
+                elif check_length>=20 and check_length<=30:
+                    L_text = "OK_"
+                elif check_length>=-20 and check_length<=20:
+                    L_text = "OK"
                 else:
                     L_text = "NOT-OK"
-
-                if check_width:
-                    W_text="OK"
+                     
+                if check_width>=30:
+                    W_text="NOT-OK"
+                elif check_width>=20 and check_width<=30:
+                    W_text = "OK_"
+                elif check_width>=-20 and check_width<=20:
+                    W_text = "OK"
                 else:
                     W_text = "NOT-OK"
+
+
 
                 ### assign color to the text
                 if i==0:
                     if L_text=="OK":
                       color_text=green_color
+                    elif L_text=="OK_":
+                      color_text = yellow_color
                     else:
                       color_text = red_color
                 else:
                     if W_text=="OK":
                       color_text=green_color
+                    elif W_text=="OK_":
+                      color_text = yellow_color
                     else:
                       color_text = red_color
+
 
                 ### write the text after drawing the 2 lines already
                 if i==0:
