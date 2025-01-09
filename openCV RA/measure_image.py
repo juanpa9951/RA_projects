@@ -60,7 +60,7 @@ def find_closest_tupleV2(tuples_list_real,tuples_list_autocad, input_tuple):
 # .....LOAD THE TABLE CALIBRATION DATA.......................................................................................................
 import pandas as pd
 excel_table_calib = r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\feeder_right.xlsx'
-Surface_map = pd.read_excel(excel_table_calib, sheet_name='lona', header=0)
+Surface_map = pd.read_excel(excel_table_calib, sheet_name='lona_izq', header=0)
 tuples_list_real=[]
 tuples_list_pixel=[]
 for i in range(0,len(Surface_map)):
@@ -128,7 +128,7 @@ def draw_lines(event, x, y, flags, param):
             lines.clear()
 
 # Load an image from a local file
-photo_name="vtt5.png"
+photo_name="sam5.png"
 original_img = cv2.imread(fr'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Documents\Camaras ASM004\capturas\{photo_name}')
 
 if original_img is None:
