@@ -188,7 +188,6 @@ def master_pattern_square(image_size,Left_centering,Top_centering,Axis_Limit,bac
                         # prs.save('Layers.pptx')
 
     prs.save('Master_Pattern_square.pptx')
-
 def master_pattern_crossV1(image_size,Left_centering,Top_centering,Axis_Limit,background_color,layer_color,close_image,Axis_Limit_Y,x_base,y_base,x_step,y_step,x_init,x_final,y_init):
 
     import matplotlib.pyplot as plt
