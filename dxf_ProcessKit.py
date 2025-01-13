@@ -1139,11 +1139,11 @@ def read_and_plot_PSv3(file_path,name,image_size,Left_centering,Top_centering,Ax
 
 Origin_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\LG projecting files\origin'
 Destination_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\LG projecting files\destiny'
-image_size = 12.9  # in inches    12.9
-Left_centering = -1.6  # in inches   -1.6
-Top_centering = -4.0  # in inches     -4.0
-Axis_Limit = 10010  # in MM    10000, last 10015
-Axis_Limit_Y=10010  # ONLY FOR V19 and following,  10000, last 10020
+image_size = 17  # in inches    12.9
+Left_centering = -3.7  # in inches   -1.6
+Top_centering = -8.85  # in inches     -4.0
+Axis_Limit = 9800  # in MM    10000, last 10015
+Axis_Limit_Y=9800  # ONLY FOR V19 and following,  10000, last 10020
 background_color = 'white'
 layer_color = 'blue'
 close_image = 1  # 1- close all images, 0- open all images
@@ -1156,7 +1156,7 @@ d2=1    ### reorder layer d2 =1  ONLY FOR DOUBLES CODE
 
 import os
 DXF_Names = os.listdir(Origin_path)  # this extracts the names of the files inside source folder
-for k1 in DXF_Names:  # this is for eliminating the files that are not photos
+for k1 in DXF_Names:  # this is for eliminating the files that are not dxf
     if k1.endswith("dxf") == False:  # dxf
         Path2Remove = f"{Origin_path}\{k1}"
         os.remove(Path2Remove)
