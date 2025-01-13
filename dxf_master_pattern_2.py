@@ -353,8 +353,8 @@ def master_pattern_squareV1(image_size,Left_centering,Top_centering,Axis_Limit,b
     # x_base=400    #500
     # y_base=300    #100
 
-    for k in range(1,y_step):   ## divisiones eje Y     25
-            for i in range(1,x_step):  ## divisiones eje X     32
+    for k in range(0,y_step):   ## divisiones eje Y     25
+            for i in range(0,x_step):  ## divisiones eje X     32
 
                         if i==0:
                             x_lenght=x_init                  ####modo x
@@ -410,24 +410,24 @@ def master_pattern_squareV1(image_size,Left_centering,Top_centering,Axis_Limit,b
     prs.save('Master_Pattern_square.pptx')
 
 
-image_size = 12.9  # in inches    12.9
-Left_centering = -1.60  # in inches   -1.60
-Top_centering = -4.0  # in inches   -4.0
-Axis_Limit = 10000  # in MM    # 10000
-Axis_Limit_Y=10000  # ONLY FOR V19,  LAST OFFICIAL 10000
+image_size = 17  # in inches    12.9
+Left_centering = -3.7  # in inches   -1.60
+Top_centering = -8.85  # in inches   -4.0
+Axis_Limit  = 9800  # in MM    # 10000
+Axis_Limit_Y=9800  # ONLY FOR V19,  LAST OFFICIAL 10000
 
 background_color = 'white'
 layer_color = 'blue'
 close_image = 1  # 1- close all images, 2- open all images
 
-x_base=1250
-y_base=850
-x_step=9
-y_step=9
-mode=0    #  0- normal     1- limit values
-x_init=20
-x_final=9980
-y_init=20
+x_base=1000
+y_base=500
+x_step=10
+y_step=10
+mode=1    #  0- normal     1- limit values
+x_init=10
+x_final=9790
+y_init=10
 
 ####  CHOOSE EITHER X OR Y
 if mode==0:
