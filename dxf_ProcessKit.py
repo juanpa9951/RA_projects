@@ -1141,17 +1141,17 @@ Origin_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Pyt
 Destination_path=r'C:\Users\Juan Pablo Lopez\OneDrive - Rewair A S\Desktop\PFILES\Python_versions\LG projecting files\destiny'
 image_size = 17  # in inches    12.9
 Left_centering = -3.7  # in inches   -1.6
-Top_centering = -8.85  # in inches     -4.0
+Top_centering = -8.85 # in inches     -4.0
 Axis_Limit = 9800  # in MM    10000, last 10015
 Axis_Limit_Y=9800  # ONLY FOR V19 and following,  10000, last 10020
 background_color = 'white'
 layer_color = 'blue'
 close_image = 1  # 1- close all images, 0- open all images
 scale_mode = 1  # 1-apply scale, 0- no scale
-filling=1     # 1- fill the polygons      , 0 - just scatter plot
+filling=0     # 1- fill the polygons      , 0 - just scatter plot
 reorder_points=1   # 1- reorder points to guess polygon,   0- no reorder
 d1=1    ### reorder layer d1 =1  ONLY FOR DOUBLES CODE
-d2=1    ### reorder layer d2 =1  ONLY FOR DOUBLES CODE
+d2=1    #
 
 
 import os

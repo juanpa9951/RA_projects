@@ -422,12 +422,13 @@ close_image = 1  # 1- close all images, 2- open all images
 
 x_base=1000
 y_base=500
-x_step=10
-y_step=10
+x_step=11
+y_step=11
 mode=1    #  0- normal     1- limit values
-x_init=10
-x_final=9790
-y_init=10
+x_init=30
+x_final=9760
+y_init=30
+y_final=4690
 
 ####  CHOOSE EITHER X OR Y
 if mode==0:
